@@ -38,7 +38,7 @@ public class OpenDialog extends JDialog {
         lblMode = new JLabel("Mode:");
         cmbMode = new JComboBox<>();
         cmbMode.addItem("Readable (txt)");
-        cmbMode.addItem("Binary");
+        cmbMode.addItem("Hash");
         pnlMode.add(lblMode);
         pnlMode.add(cmbMode);
         pnlAppend = new JPanel();
