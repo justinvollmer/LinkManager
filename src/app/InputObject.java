@@ -1,4 +1,4 @@
-package classes;
+package app;
 
 import java.io.Serial;
 import java.io.Serializable;

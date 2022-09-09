@@ -1,4 +1,4 @@
-package classes;
+package app;
 
 public class Main {
 

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Private.iml" filepath="$PROJECT_DIR$/Private.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MassLinkOpener.iml" filepath="$PROJECT_DIR$/MassLinkOpener.iml" />
     </modules>
   </component>
 </project>
