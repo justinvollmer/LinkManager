@@ -1,6 +1,6 @@
 package classes;
 
-public class StartProgram {
+public class Main {
 
     public static void main(String[] args) {
 
