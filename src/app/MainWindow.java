@@ -136,6 +136,7 @@ public class MainWindow extends JFrame {
                 }
             }
         });
+        pnlSouth.add(btnDownloadManager);
         pnlSouth.add(btnEdit);
         pnlSouth.add(btnClear);
         pnlSouth.add(btnExecute);
