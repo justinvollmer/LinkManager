@@ -15,6 +15,7 @@ public class MainWindow extends JFrame {
     private JScrollPane scrollPane;
     private JTextArea taDisplay;
     private JPanel pnlSouth;
+    private JButton btnDownloadManager;
     private JButton btnEdit;
     private JButton btnClear;
     private JButton btnExecute;
@@ -104,6 +105,10 @@ public class MainWindow extends JFrame {
         flowRight.setAlignment(FlowLayout.RIGHT);
         pnlSouth.setLayout(flowRight);
         pnlSouth.setBorder(new EmptyBorder(0, 5, 5, 5));
+        btnDownloadManager = new JButton("Download Manager");
+        btnDownloadManager.addActionListener(e -> {
+            // TODO: Download Manager Dialog
+        });
         btnEdit = new JButton("Edit");
         btnEdit.addActionListener(e -> {
             new EditDialog(MainWindow.this, this.taDisplay);
