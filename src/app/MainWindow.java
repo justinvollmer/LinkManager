@@ -15,6 +15,8 @@ public class MainWindow extends JFrame {
     private JScrollPane scrollPane;
     private JTextArea taDisplay;
     private JPanel pnlSouth;
+    private JPanel pnlSouthLeft;
+    private JPanel pnlSouthRight;
     private JButton btnDownloadManager;
     private JButton btnEdit;
     private JButton btnClear;
@@ -101,10 +103,16 @@ public class MainWindow extends JFrame {
 
         // BUTTONS
         pnlSouth = new JPanel();
+        pnlSouthLeft = new JPanel();
+        pnlSouthRight = new JPanel();
         FlowLayout flowRight = new FlowLayout();
         flowRight.setAlignment(FlowLayout.RIGHT);
-        pnlSouth.setLayout(flowRight);
         pnlSouth.setBorder(new EmptyBorder(0, 5, 5, 5));
+        pnlSouthLeft.setBorder(new EmptyBorder(0, 0, 0, 0));
+        pnlSouthRight.setBorder(new EmptyBorder(0, 0, 0, 0));
+        pnlSouth.setLayout(new BorderLayout());
+        pnlSouthRight.setLayout(flowRight);
+        pnlSouthLeft.setLayout(new FlowLayout());
         btnDownloadManager = new JButton("Download Manager");
         btnDownloadManager.addActionListener(e -> {
             // TODO: Download Manager Dialog
@@ -136,10 +144,12 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        pnlSouth.add(btnDownloadManager);
-        pnlSouth.add(btnEdit);
-        pnlSouth.add(btnClear);
-        pnlSouth.add(btnExecute);
+        pnlSouthLeft.add(btnDownloadManager);
+        pnlSouthRight.add(btnEdit);
+        pnlSouthRight.add(btnClear);
+        pnlSouthRight.add(btnExecute);
+        pnlSouth.add(pnlSouthLeft, BorderLayout.WEST);
+        pnlSouth.add(pnlSouthRight, BorderLayout.EAST);
 
         super.setJMenuBar(menuBar);
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
