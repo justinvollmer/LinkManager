@@ -59,7 +59,7 @@ public class MainWindow extends JFrame {
         mnHelp = new JMenu("Help");
         mniAbout = new JMenuItem("About");
         mniAbout.addActionListener(e -> {
-            JOptionPane.showMessageDialog(MainWindow.this, "About section is coming soon!", "About - WORK IN PROGRESS", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: Jvst1n01", "About", JOptionPane.INFORMATION_MESSAGE);
         });
         menuBar.add(mnFile);
         mnFile.add(mniImport);
