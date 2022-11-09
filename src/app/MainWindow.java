@@ -115,7 +115,11 @@ public class MainWindow extends JFrame {
         pnlSouthLeft.setLayout(new FlowLayout());
         btnDownloadManager = new JButton("Download Manager");
         btnDownloadManager.addActionListener(e -> {
-            // TODO: Download Manager Dialog
+            if (taDisplay.getText().equals(displayPlaceholder)) {
+                JOptionPane.showMessageDialog(MainWindow.this, "Please import or edit the link list!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            new DownloadManagerDialog(MainWindow.this, this.taDisplay);
         });
         btnEdit = new JButton("Edit");
         btnEdit.addActionListener(e -> {
@@ -124,10 +128,18 @@ public class MainWindow extends JFrame {
 
         btnClear = new JButton("Clear");
         btnClear.addActionListener(e -> {
+            if (taDisplay.getText().equals(displayPlaceholder)) {
+                JOptionPane.showMessageDialog(MainWindow.this, "The list has already been cleared!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             taDisplay.setText(displayPlaceholder);
         });
         btnExecute = new JButton("Execute");
         btnExecute.addActionListener(e -> {
+            if (taDisplay.getText().equals(displayPlaceholder)) {
+                JOptionPane.showMessageDialog(MainWindow.this, "Please import or edit the link list!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             int yesNo = JOptionPane.showConfirmDialog(MainWindow.this, "Please only use this when you have a short list. " +
                     "\nThe links will be opened with no delay. " +
                     "\nThe websites might detect this as a spam. " +

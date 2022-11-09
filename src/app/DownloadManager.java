@@ -16,6 +16,8 @@ public class DownloadManager {
         String filetype;
         if (linkToMedia.contains(".jpg")) {
             filetype = ".jpg";
+        } else if (linkToMedia.contains(".jpeg")) {
+            filetype = ".jpeg";
         } else if (linkToMedia.contains(".png")) {
             filetype = ".png";
         } else if (linkToMedia.contains(".gif")) {

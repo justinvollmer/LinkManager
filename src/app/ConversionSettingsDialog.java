@@ -64,7 +64,7 @@ public class ConversionSettingsDialog extends JDialog {
         lblMode.setFont(new Font(null, Font.BOLD, 15));
         pnlNorth.add(lblMode);
 
-        // CENTER
+        // DISPLAY
         pnlCenter = new JPanel();
         pnlCenter.setBorder(new EmptyBorder(0, 5, 0, 5));
         taDisplay = new JTextArea();
