@@ -35,7 +35,7 @@ public class DownloadManager {
         }
         URL url = new URL(linkToMedia);
         InputStream in = new BufferedInputStream(url.openStream());
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(path + this.enforcedNamingSystem + "_" + imageNumber + filetype));
+        OutputStream out = new BufferedOutputStream(new FileOutputStream(path + this.enforcedNamingSystem + imageNumber + filetype));
 
         for ( int i; (i = in.read()) != -1; ) {
             out.write(i);

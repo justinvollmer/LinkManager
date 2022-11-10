@@ -42,7 +42,7 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenter.setLayout(new BorderLayout());
         pnlCenterRight = new JPanel();
         pnlCenterRight.setBorder(new EmptyBorder(0, 5, 0, 0));
-        lblNamingSystem = new JLabel("Naming: ");
+        lblNamingSystem = new JLabel("file name: ");
         tfNamingSystem = new JTextField();
         tfNamingSystem.setColumns(30);
         scrollPane = new JScrollPane();
