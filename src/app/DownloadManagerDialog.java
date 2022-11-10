@@ -10,7 +10,13 @@ public class DownloadManagerDialog extends JDialog {
     private JPanel pnlCenter;
     private JScrollPane scrollPane;
     private JTextArea taDisplay;
+    private JPanel pnlCenterRight;
+    private JLabel lblNamingSystem ;
+    private JTextField tfNamingSystem;
     private JPanel pnlSouth;
+    private JPanel pnlSouthLeft;
+    private JPanel pnlSouthRight;
+    private JButton btnHow;
 
     public DownloadManagerDialog(MainWindow mw, JTextArea taDisplayMW) {
         super(mw, true);
@@ -32,18 +38,44 @@ public class DownloadManagerDialog extends JDialog {
 
         // DISPLAY
         pnlCenter = new JPanel();
-        pnlCenter.setBorder(new EmptyBorder(0, 5, 0, 5));
+        pnlCenter.setBorder(new EmptyBorder(5, 10, 0, 5));
+        pnlCenter.setLayout(new BorderLayout());
+        pnlCenterRight = new JPanel();
+        pnlCenterRight.setBorder(new EmptyBorder(0, 5, 0, 0));
+        lblNamingSystem = new JLabel("Naming: ");
+        tfNamingSystem = new JTextField();
+        tfNamingSystem.setColumns(30);
         scrollPane = new JScrollPane();
         taDisplay = new JTextArea();
-        taDisplay.setColumns(75);
+        taDisplay.setColumns(40);
         taDisplay.setRows(25);
         taDisplay.setText(taDisplayMW.getText());
         taDisplay.setEditable(false);
+        pnlCenterRight.add(lblNamingSystem);
+        pnlCenterRight.add(tfNamingSystem);
         scrollPane.setViewportView(taDisplay);
-        pnlCenter.add(scrollPane);
+        pnlCenter.add(scrollPane, BorderLayout.CENTER);
+        pnlCenter.add(pnlCenterRight, BorderLayout.EAST);
 
-        // BUTTONS
+        // SOUTH
         pnlSouth = new JPanel();
+        pnlSouth.setBorder(new EmptyBorder(5, 5, 5, 5));
+        pnlSouth.setLayout(new BorderLayout());
+        FlowLayout flowRight = new FlowLayout();
+        flowRight.setAlignment(FlowLayout.RIGHT);
+        pnlSouthLeft = new JPanel();
+        pnlSouthLeft.setLayout(new FlowLayout());
+        btnHow = new JButton("How it works");
+        btnHow.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "The Download Manager allows you to download media such as images, gifs & videos.", "How it works", JOptionPane.INFORMATION_MESSAGE);
+        });
+        pnlSouthRight = new JPanel();
+        pnlSouthRight.setLayout(flowRight);
+
+        pnlSouthLeft.add(btnHow);
+
+        pnlSouth.add(pnlSouthLeft, BorderLayout.WEST);
+        pnlSouth.add(pnlSouthRight, BorderLayout.EAST);
 
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
         super.getContentPane().add(pnlCenter, BorderLayout.CENTER);

@@ -115,7 +115,7 @@ public class MainWindow extends JFrame {
         pnlSouthLeft.setLayout(new FlowLayout());
         btnDownloadManager = new JButton("Download Manager");
         btnDownloadManager.addActionListener(e -> {
-            if (taDisplay.getText().equals(displayPlaceholder)) {
+            if (taDisplay.getText().equals(displayPlaceholder) || taDisplay.getText().equals("")) {
                 JOptionPane.showMessageDialog(MainWindow.this, "Please import or edit the link list!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -136,7 +136,7 @@ public class MainWindow extends JFrame {
         });
         btnExecute = new JButton("Execute");
         btnExecute.addActionListener(e -> {
-            if (taDisplay.getText().equals(displayPlaceholder)) {
+            if (taDisplay.getText().equals(displayPlaceholder) || taDisplay.getText().equals("")) {
                 JOptionPane.showMessageDialog(MainWindow.this, "Please import or edit the link list!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
