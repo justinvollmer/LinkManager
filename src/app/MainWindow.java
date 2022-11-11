@@ -32,7 +32,7 @@ public class MainWindow extends JFrame {
 
     public MainWindow() {
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        super.setTitle("MassLinkOpener");
+        super.setTitle("MassLinkOpener" + " | " + Version.getSoftwareState());
         super.setLayout(new BorderLayout());
         super.setResizable(false);
         Image icon = Toolkit.getDefaultToolkit().getImage("src/ico/icon.png");
@@ -62,7 +62,7 @@ public class MainWindow extends JFrame {
         mnHelp = new JMenu("Help");
         mniAbout = new JMenuItem("About");
         mniAbout.addActionListener(e -> {
-            JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: Jvst1n01", "About", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: Jvst1n01 \nVersion:     " + Version.getSoftwareVersion() + " " + Version.getSoftwareState(), "About", JOptionPane.INFORMATION_MESSAGE);
         });
         menuBar.add(mnFile);
         mnFile.add(mniImport);
