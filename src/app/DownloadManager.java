@@ -2,37 +2,51 @@ package app;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DownloadManager {
     private String path;
     private String enforcedNamingSystem;
+    private List<String> filetypeList;
 
     public DownloadManager (String path, String enforcedNamingSystem) {
         this.path = path;
         this.enforcedNamingSystem = enforcedNamingSystem;
+        filetypeList = DownloadManager.getSupportedFiletypes();
+    }
+
+    public static List<String> getSupportedFiletypes() {
+        List<String> supportedFiletypes = new ArrayList<>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("src/app/supportedFiletypes.txt"));
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.startsWith("//")) { // allows comments in the supportedFileTypes.txt
+                    supportedFiletypes.add(line);
+                }
+            }
+            br.close();
+        } catch (IOException io) {
+            System.err.println("IOException due to the filetype: " + io.getMessage());
+        }
+        return supportedFiletypes;
     }
 
     public void downloadMedia(String linkToMedia, int imageNumber) throws IOException {
-        String filetype;
-        if (linkToMedia.contains(".jpg")) {
-            filetype = ".jpg";
-        } else if (linkToMedia.contains(".jpeg")) {
-            filetype = ".jpeg";
-        } else if (linkToMedia.contains(".png")) {
-            filetype = ".png";
-        } else if (linkToMedia.contains(".gif")) {
-            filetype = ".gif";
-        } else if (linkToMedia.contains(".mp4")) {
-            filetype = ".mp4";
-        } else if(linkToMedia.contains(".mp3")) {
-            filetype = ".mp3";
-        } else if(linkToMedia.contains(".webm")) {
-            filetype = ".webm";
-        } else if(linkToMedia.contains(".webp")) {
-            filetype = ".jpg";
-        } else {
-            filetype = ".jpg";
+        String filetype = null;
+        for(String filetypeFromList : filetypeList) {
+            if(linkToMedia.contains(filetypeFromList) || filetypeFromList.equals(filetypeList.get(filetypeList.size()-1))) {
+                if (filetypeFromList.equals(".webp") || (filetypeFromList.equals(filetypeList.get(filetypeList.size()-1)) && !filetypeFromList.equals(filetypeList.get(filetypeList.size()-1)))) {
+                    filetype = ".jpg";
+                    break;
+                } else {
+                    filetype = filetypeFromList;
+                    break;
+                }
+            }
         }
+
         URL url = new URL(linkToMedia);
         InputStream in = new BufferedInputStream(url.openStream());
         OutputStream out = new BufferedOutputStream(new FileOutputStream(path + this.enforcedNamingSystem + imageNumber + filetype));

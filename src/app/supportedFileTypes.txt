@@ -1,0 +1,6 @@
+// TIP: with double slashes you can comment in this text file, and it won't be read by the script
+.jpg
+.jpeg
+.png
+.gif
+.webp
