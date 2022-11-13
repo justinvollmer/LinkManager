@@ -42,7 +42,11 @@ public class DownloadManagerTableModel extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int row, int col) {
-        return false;
+        if(col == 2) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void setValueAt(Object value, int row, int col) {
