@@ -3,13 +3,16 @@ package app;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DownloadManagerDialog extends JDialog {
     private JPanel pnlNorth;
     private JLabel lblTitle;
     private JPanel pnlCenter;
     private JScrollPane scrollPane;
-    private JTextArea taDisplay;
+    private JTable table;
+    private List<LinkEntry> linkEntryList;
     private JPanel pnlCenterRight;
     private JLabel lblNamingSystem ;
     private JTextField tfNamingSystem;
@@ -26,6 +29,15 @@ public class DownloadManagerDialog extends JDialog {
         super.setLocation(mw.getLocation());
         super.setResizable(false);
 
+        // SAVING LINKS IN ENTRY AND ADDING TO ARRAYLIST
+        linkEntryList = new ArrayList<>();
+        String[] linkArr = taDisplayMW.getText().trim().split("\n");
+        int id = 0;
+        for(String link : linkArr) {
+            id++;
+            linkEntryList.add(new LinkEntry(id, link, "", "ready"));
+        }
+
         // HEADER
         pnlNorth = new JPanel();
         FlowLayout flowCenter = new FlowLayout();
@@ -40,20 +52,16 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenter = new JPanel();
         pnlCenter.setBorder(new EmptyBorder(5, 10, 0, 5));
         pnlCenter.setLayout(new BorderLayout());
+        table = new JTable(new DownloadManagerTableModel(linkEntryList));
         pnlCenterRight = new JPanel();
         pnlCenterRight.setBorder(new EmptyBorder(0, 5, 0, 0));
         lblNamingSystem = new JLabel("file name: ");
         tfNamingSystem = new JTextField();
         tfNamingSystem.setColumns(30);
         scrollPane = new JScrollPane();
-        taDisplay = new JTextArea();
-        taDisplay.setColumns(40);
-        taDisplay.setRows(25);
-        taDisplay.setText(taDisplayMW.getText());
-        taDisplay.setEditable(false);
         pnlCenterRight.add(lblNamingSystem);
         pnlCenterRight.add(tfNamingSystem);
-        scrollPane.setViewportView(taDisplay);
+        scrollPane.setViewportView(table);
         pnlCenter.add(scrollPane, BorderLayout.CENTER);
         pnlCenter.add(pnlCenterRight, BorderLayout.EAST);
 
