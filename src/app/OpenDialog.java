@@ -22,7 +22,7 @@ public class OpenDialog extends JDialog {
         super(mw, true);
         super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         super.setLayout(new BorderLayout());
-        super.setTitle("MassLinkOpener - Open");
+        super.setTitle("MassLinkOpener - Import");
         super.setLocation(mw.getLocation());
         super.setResizable(false);
         super.setBounds(mw.getX(), mw.getY(), 250, 150);
@@ -67,6 +67,8 @@ public class OpenDialog extends JDialog {
             super.setVisible(false);
             if(this.cmbMode.getSelectedIndex() == 0) {
                 JFileChooser fc = new JFileChooser();
+                fc.setCurrentDirectory(new java.io.File("."));
+                fc.setDialogTitle("MassLinkOpener - Import");
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file (.txt)", "txt");
                 fc.setFileFilter(filter);
                 int retVal = fc.showOpenDialog(mw);
@@ -89,6 +91,8 @@ public class OpenDialog extends JDialog {
             }
             if(this.cmbMode.getSelectedIndex() == 1) {
                 JFileChooser fc = new JFileChooser();
+                fc.setCurrentDirectory(new java.io.File("."));
+                fc.setDialogTitle("MassLinkOpener - Import");
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("MassList (.mll)", "mll");
                 fc.setFileFilter(filter);
                 int retVal = fc.showOpenDialog(mw);

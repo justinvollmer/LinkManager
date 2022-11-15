@@ -12,6 +12,7 @@ public class EditDialog extends JDialog {
     private JTextArea taDisplay;
     private JPanel pnlSouth;
     private JButton btnSaveChanges;
+    private JButton btnClear;
     private JButton btnCancel;
 
     public EditDialog(MainWindow mw, JTextArea taDisplayMW) {
@@ -54,11 +55,20 @@ public class EditDialog extends JDialog {
             taDisplayMW.setText(this.taDisplay.getText());
             this.setVisible(false);
         });
+        btnClear = new JButton("Clear");
+        btnClear.addActionListener(e -> {
+            if(this.taDisplay.getText().equals("")) {
+                JOptionPane.showMessageDialog(EditDialog.this, "This list has already been cleared!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            this.taDisplay.setText("");
+        });
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(e -> {
             this.setVisible(false);
         });
         pnlSouth.add(btnSaveChanges);
+        pnlSouth.add(btnClear);
         pnlSouth.add(btnCancel);
 
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);

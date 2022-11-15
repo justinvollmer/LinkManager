@@ -3,8 +3,6 @@ package app;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +23,14 @@ public class DownloadManagerDialog extends JDialog {
     private JLabel lblToPos2;
     private JTextField tfPos2;
     private JButton btnApplyNaming;
+    private JPanel pnlCenterAction3;
+    private JButton btnApplyNameToSelected;
+    private JButton btnClearAllName;
+    private JPanel pnlCenterAction4;
+    private JLabel lblDirectory;
+    private JButton btnSelectFolder;
+    private JPanel pnlCenterAction5;
+    private JTextField tfPath;
     private JPanel pnlSouth;
     private JPanel pnlSouthLeft;
     private JPanel pnlSouthRight;
@@ -37,7 +43,7 @@ public class DownloadManagerDialog extends JDialog {
         super.setLayout(new BorderLayout());
         super.setTitle("Download Manager");
         super.setLocation(mw.getLocation());
-        super.setResizable(false);
+        super.setResizable(true);
 
         // SAVING LINKS IN ENTRY AND ADDING TO ARRAYLIST
         linkEntryList = new ArrayList<>();
@@ -66,8 +72,18 @@ public class DownloadManagerDialog extends JDialog {
         pnlActionBar = new JPanel();
         pnlActionBar.setBorder(new EmptyBorder(0, 5, 0, 0));
         pnlActionBar.setLayout(new GridLayout(10, 1));
+        FlowLayout flowLeft = new FlowLayout();
+        flowLeft.setAlignment(FlowLayout.LEFT);
         pnlCenterAction1 = new JPanel();
+        pnlCenterAction1.setLayout(flowLeft);
         pnlCenterAction2 = new JPanel();
+        pnlCenterAction2.setLayout(flowLeft);
+        pnlCenterAction3 = new JPanel();
+        pnlCenterAction3.setLayout(flowLeft);
+        pnlCenterAction4 = new JPanel();
+        pnlCenterAction4.setLayout(flowLeft);
+        pnlCenterAction5 = new JPanel();
+        pnlCenterAction5.setLayout(flowLeft);
         lblNamingSystem = new JLabel("file name: ");
         tfNamingSystem = new JTextField();
         tfNamingSystem.setColumns(20);
@@ -78,6 +94,27 @@ public class DownloadManagerDialog extends JDialog {
         tfPos2 = new JTextField();
         tfPos2.setColumns(3);
         btnApplyNaming = new JButton("Apply Name");
+        btnApplyNameToSelected = new JButton("Apply Name to selection");
+        btnClearAllName = new JButton("Clear all");
+        lblDirectory = new JLabel("Directory: ");
+        btnSelectFolder = new JButton("Select folder");
+        btnSelectFolder.addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            fc.setCurrentDirectory(new java.io.File("."));
+            fc.setDialogTitle("Download Manager - Select folder");
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fc.setAcceptAllFileFilterUsed(false); // "All files" option disabled
+            int retVal = fc.showOpenDialog(DownloadManagerDialog.this);
+            if (retVal == JFileChooser.APPROVE_OPTION) {
+                tfPath.setText(fc.getSelectedFile().toString() + "\\");
+            } else {
+                System.out.println("No Selection");
+            }
+        });
+        tfPath = new JTextField();
+        tfPath.setColumns(30);
+        tfPath.setText("No directory selected!");
+        tfPath.setEditable(false);
         scrollPane = new JScrollPane();
         pnlCenterAction1.add(lblNamingSystem);
         pnlCenterAction1.add(tfNamingSystem);
@@ -86,9 +123,16 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenterAction2.add(lblToPos2);
         pnlCenterAction2.add(tfPos2);
         pnlCenterAction2.add(btnApplyNaming);
-        
+        pnlCenterAction3.add(btnApplyNameToSelected);
+        pnlCenterAction3.add(btnClearAllName);
+        pnlCenterAction4.add(lblDirectory);
+        pnlCenterAction4.add(btnSelectFolder);
+        pnlCenterAction5.add(tfPath);
         pnlActionBar.add(pnlCenterAction1);
         pnlActionBar.add(pnlCenterAction2);
+        pnlActionBar.add(pnlCenterAction3);
+        pnlActionBar.add(pnlCenterAction4);
+        pnlActionBar.add(pnlCenterAction5);
         scrollPane.setViewportView(table);
         pnlCenter.add(scrollPane, BorderLayout.CENTER);
         pnlCenter.add(pnlActionBar, BorderLayout.EAST);

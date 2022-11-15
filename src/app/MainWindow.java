@@ -20,6 +20,7 @@ public class MainWindow extends JFrame {
     private JButton btnDownloadManager;
     private JButton btnEdit;
     private JButton btnClear;
+    private JButton btnReset;
     private JButton btnExecute;
     private JMenuBar menuBar;
     private JMenu mnFile;
@@ -125,11 +126,18 @@ public class MainWindow extends JFrame {
         btnEdit.addActionListener(e -> {
             new EditDialog(MainWindow.this, this.taDisplay);
         });
-
         btnClear = new JButton("Clear");
         btnClear.addActionListener(e -> {
+            if (taDisplay.getText().equals("")) {
+                JOptionPane.showMessageDialog(MainWindow.this, "This list has already been cleared!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            taDisplay.setText("");
+        });
+        btnReset = new JButton("Reset");
+        btnReset.addActionListener(e -> {
             if (taDisplay.getText().equals(displayPlaceholder)) {
-                JOptionPane.showMessageDialog(MainWindow.this, "The list has already been cleared!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(MainWindow.this, "The list has already been reset!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             taDisplay.setText(displayPlaceholder);
@@ -159,6 +167,7 @@ public class MainWindow extends JFrame {
         pnlSouthLeft.add(btnDownloadManager);
         pnlSouthRight.add(btnEdit);
         pnlSouthRight.add(btnClear);
+        pnlSouthRight.add(btnReset);
         pnlSouthRight.add(btnExecute);
         pnlSouth.add(pnlSouthLeft, BorderLayout.WEST);
         pnlSouth.add(pnlSouthRight, BorderLayout.EAST);

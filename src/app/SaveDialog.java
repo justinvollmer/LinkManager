@@ -51,6 +51,8 @@ public class SaveDialog extends JDialog {
             super.setVisible(false);
             if(cmbMode.getSelectedIndex() == 0) {
                 JFileChooser fc = new JFileChooser();
+                fc.setCurrentDirectory(new java.io.File("."));
+                fc.setDialogTitle("MassLinkOpener - Save");
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file (.txt)", "txt");
                 fc.setFileFilter(filter);
                 int retVal = fc.showSaveDialog(mw);
@@ -65,6 +67,8 @@ public class SaveDialog extends JDialog {
             }
             if(cmbMode.getSelectedIndex() == 1) {
                 JFileChooser fc = new JFileChooser();
+                fc.setCurrentDirectory(new java.io.File("."));
+                fc.setDialogTitle("MassLinkOpener - Save");
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("MassList (.mll)", "mll");
                 fc.setFileFilter(filter);
                 int retVal = fc.showSaveDialog(mw);
