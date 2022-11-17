@@ -7,8 +7,8 @@ public class StrongAES
     public void run()
     {
         try
-        {
-            String text = "Hello World";
+        { // TODO: Implement Encryption
+            String text = "PUT TEXT HERE";
             String key = "PUT KEY HERE"; // 128 bit key
             // Create key and cipher
             Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
