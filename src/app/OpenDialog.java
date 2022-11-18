@@ -100,11 +100,11 @@ public class OpenDialog extends JDialog {
                     File file = fc.getSelectedFile();
                     try(ObjectInputStream o_in = new ObjectInputStream(new FileInputStream(file))) {
                         Object o = o_in.readObject();
-                        if(o instanceof InputObject) {
+                        if(o instanceof HashObject) {
                             if (!this.chckAppend.isSelected()) {
-                                taDisplayMW.setText(((InputObject) o).getInput());
+                                taDisplayMW.setText(((HashObject) o).getInput());
                             } else {
-                                taDisplayMW.append("\n" + ((InputObject) o).getInput());
+                                taDisplayMW.append("\n" + ((HashObject) o).getInput());
                             }
                         }
                     } catch (IOException io) {

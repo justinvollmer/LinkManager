@@ -4,11 +4,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class InputObject implements Serializable {
+public class HashObject implements Serializable {
     @Serial
     private static final long serialVersionUID = -6151682804935689639L;
     private String input;
-    public InputObject(String input) {
+    public HashObject(String input) {
         this.input = input;
     }
 
@@ -24,7 +24,7 @@ public class InputObject implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        InputObject inputText = (InputObject) o;
+        HashObject inputText = (HashObject) o;
         return Objects.equals(input, inputText.input);
     }
 

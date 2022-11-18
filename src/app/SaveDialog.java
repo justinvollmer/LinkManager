@@ -75,7 +75,7 @@ public class SaveDialog extends JDialog {
                 if (retVal == JFileChooser.APPROVE_OPTION) {
                     File file = new File(fc.getSelectedFile().getAbsolutePath() + ".mll");
                     try(ObjectOutputStream o_out = new ObjectOutputStream(new FileOutputStream(file))) {
-                        InputObject inObj = new InputObject(taDisplayMW.getText());
+                        HashObject inObj = new HashObject(taDisplayMW.getText());
                         o_out.writeObject(inObj);
                     } catch (FileNotFoundException fnf) {
                         JOptionPane.showMessageDialog(mw, fnf.getMessage());
