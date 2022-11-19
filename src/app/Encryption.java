@@ -56,7 +56,7 @@ public class Encryption {
      */
 
     public static void printAlgorithmList() {
-        String[] algorithmList = {"AES", "Test", "Test2"};
+        String[] algorithmList = {"AES"};
         System.out.print("List of algorithms:\n     -->     ");
         for (String algorithm : algorithmList) {
             System.out.print(algorithm + "     ");
