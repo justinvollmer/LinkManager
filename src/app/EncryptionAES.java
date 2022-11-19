@@ -1,5 +1,7 @@
 package app;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
+import java.security.CryptoPrimitive;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -43,15 +45,15 @@ public class EncryptionAES {
     public void decrypt(String encryptedText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         // Decryption
         cipher.init(Cipher.DECRYPT_MODE, aesKey);
-        String decrypted = new String(cipher.doFinal(Base64.getDecoder().decode(encryptedText)));
-        System.out.println(decrypted); // TODO: remove this
+        byte[] decrypted = cipher.doFinal(encryptedText.getBytes());
+        System.out.println(new String(decrypted)); // TODO: remove this
     }
 
     public static void main(String[] args) {
         String input = "Hallo du liebe Welt #23 34!";
-        String key = "&E)H@McQfThWmZq4t7w!z%C*F-JaNdRg";
+        String key = "McQfTjWnZr4t7w!z%C*F-JaNdRgUkXp2";
         try {
-            EncryptionAES aes = new EncryptionAES("&E)H@McQfThWmZq4t7w!z%C*F-JaNdRg");
+            EncryptionAES aes = new EncryptionAES(key);
             String encrypted = aes.encrypt(input);
             aes.decrypt(encrypted);
         } catch (Exception e) {
