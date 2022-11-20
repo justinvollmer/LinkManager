@@ -46,7 +46,7 @@ public class MainWindow extends JFrame {
         mnFile = new JMenu("File");
         mniImport = new JMenuItem("Import...");
         mniImport.addActionListener(e -> {
-            new OpenDialog(MainWindow.this, this.taDisplay);
+            new ImportDialog(MainWindow.this, this.taDisplay);
         });
         mniSaveAs = new JMenuItem("Save as...");
         mniSaveAs.addActionListener(e -> {

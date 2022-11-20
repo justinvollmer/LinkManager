@@ -6,7 +6,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.*;
 
-public class OpenDialog extends JDialog {
+public class ImportDialog extends JDialog {
     private JPanel pnlCenter;
     private JPanel pnlMode;
     private JLabel lblMode;
@@ -18,7 +18,7 @@ public class OpenDialog extends JDialog {
     private JButton btnCancel;
     private JButton btnSelect;
 
-    public OpenDialog(MainWindow mw, JTextArea taDisplayMW) {
+    public ImportDialog(MainWindow mw, JTextArea taDisplayMW) {
         super(mw, true);
         super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         super.setLayout(new BorderLayout());
@@ -37,8 +37,7 @@ public class OpenDialog extends JDialog {
         pnlMode.setLayout(flowCenter);
         lblMode = new JLabel("Mode:");
         cmbMode = new JComboBox<>();
-        cmbMode.addItem("Readable (txt)");
-        cmbMode.addItem("MassLinkList (mll)");
+        cmbMode.addItem("Textfile (txt)");
         pnlMode.add(lblMode);
         pnlMode.add(cmbMode);
         pnlAppend = new JPanel();
@@ -86,31 +85,6 @@ public class OpenDialog extends JDialog {
                         }
                     } catch (IOException io) {
                         JOptionPane.showMessageDialog(mw, io.getMessage());
-                    }
-                }
-            }
-            if(this.cmbMode.getSelectedIndex() == 1) {
-                JFileChooser fc = new JFileChooser();
-                fc.setCurrentDirectory(new java.io.File("."));
-                fc.setDialogTitle("MassLinkOpener - Import");
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("MassLinkList (.mll)", "mll");
-                fc.setFileFilter(filter);
-                int retVal = fc.showOpenDialog(mw);
-                if(retVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    try(ObjectInputStream o_in = new ObjectInputStream(new FileInputStream(file))) {
-                        Object o = o_in.readObject();
-                        if(o instanceof HashObject) {
-                            if (!this.chckAppend.isSelected()) {
-                                taDisplayMW.setText(((HashObject) o).getInput());
-                            } else {
-                                taDisplayMW.append("\n" + ((HashObject) o).getInput());
-                            }
-                        }
-                    } catch (IOException io) {
-                        JOptionPane.showMessageDialog(mw, io.getMessage());
-                    } catch (ClassNotFoundException cnf) {
-                        JOptionPane.showMessageDialog(mw, cnf.getMessage());
                     }
                 }
             }

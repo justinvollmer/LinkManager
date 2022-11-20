@@ -31,8 +31,7 @@ public class SaveDialog extends JDialog {
         pnlCenter.setLayout(flowCenter);
         lblMode = new JLabel("Mode:");
         cmbMode = new JComboBox<>();
-        cmbMode.addItem("Readable (txt)");
-        cmbMode.addItem("MassLinkList (mll)");
+        cmbMode.addItem("Textfile (txt)");
         pnlCenter.add(lblMode);
         pnlCenter.add(cmbMode);
 
@@ -53,6 +52,7 @@ public class SaveDialog extends JDialog {
                 JFileChooser fc = new JFileChooser();
                 fc.setCurrentDirectory(new java.io.File("."));
                 fc.setDialogTitle("MassLinkOpener - Save");
+                fc.setAcceptAllFileFilterUsed(false); // "All files" option disabled
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file (.txt)", "txt");
                 fc.setFileFilter(filter);
                 int retVal = fc.showSaveDialog(mw);
@@ -60,25 +60,6 @@ public class SaveDialog extends JDialog {
                     File file = new File(fc.getSelectedFile().getAbsolutePath() + ".txt");
                     try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
                         bw.write(taDisplayMW.getText());
-                    } catch (IOException io) {
-                        JOptionPane.showMessageDialog(mw, io.getMessage());
-                    }
-                }
-            }
-            if(cmbMode.getSelectedIndex() == 1) {
-                JFileChooser fc = new JFileChooser();
-                fc.setCurrentDirectory(new java.io.File("."));
-                fc.setDialogTitle("MassLinkOpener - Save");
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("MassLinkList (.mll)", "mll");
-                fc.setFileFilter(filter);
-                int retVal = fc.showSaveDialog(mw);
-                if (retVal == JFileChooser.APPROVE_OPTION) {
-                    File file = new File(fc.getSelectedFile().getAbsolutePath() + ".mll");
-                    try(ObjectOutputStream o_out = new ObjectOutputStream(new FileOutputStream(file))) {
-                        HashObject inObj = new HashObject(taDisplayMW.getText());
-                        o_out.writeObject(inObj);
-                    } catch (FileNotFoundException fnf) {
-                        JOptionPane.showMessageDialog(mw, fnf.getMessage());
                     } catch (IOException io) {
                         JOptionPane.showMessageDialog(mw, io.getMessage());
                     }
