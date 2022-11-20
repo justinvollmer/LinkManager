@@ -126,7 +126,7 @@ public class DownloadManagerDialog extends JDialog {
             fc.setCurrentDirectory(new java.io.File("."));
             fc.setDialogTitle("Download Manager - Select folder");
             fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            fc.setAcceptAllFileFilterUsed(false); // "All files" option disabled
+            fc.setAcceptAllFileFilterUsed(false); // "All files" option disabled TODO: Add this to import and save + remove Hash function
             int retVal = fc.showOpenDialog(DownloadManagerDialog.this);
             if (retVal == JFileChooser.APPROVE_OPTION) {
                 tfPath.setText(fc.getSelectedFile().toString() + "\\");
