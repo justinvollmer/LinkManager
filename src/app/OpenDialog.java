@@ -38,7 +38,7 @@ public class OpenDialog extends JDialog {
         lblMode = new JLabel("Mode:");
         cmbMode = new JComboBox<>();
         cmbMode.addItem("Readable (txt)");
-        cmbMode.addItem("Hash");
+        cmbMode.addItem("MassLinkList (mll)");
         pnlMode.add(lblMode);
         pnlMode.add(cmbMode);
         pnlAppend = new JPanel();
@@ -93,7 +93,7 @@ public class OpenDialog extends JDialog {
                 JFileChooser fc = new JFileChooser();
                 fc.setCurrentDirectory(new java.io.File("."));
                 fc.setDialogTitle("MassLinkOpener - Import");
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("MassList (.mll)", "mll");
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("MassLinkList (.mll)", "mll");
                 fc.setFileFilter(filter);
                 int retVal = fc.showOpenDialog(mw);
                 if(retVal == JFileChooser.APPROVE_OPTION) {

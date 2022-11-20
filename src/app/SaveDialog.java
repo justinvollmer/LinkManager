@@ -32,7 +32,7 @@ public class SaveDialog extends JDialog {
         lblMode = new JLabel("Mode:");
         cmbMode = new JComboBox<>();
         cmbMode.addItem("Readable (txt)");
-        cmbMode.addItem("Hash");
+        cmbMode.addItem("MassLinkList (mll)");
         pnlCenter.add(lblMode);
         pnlCenter.add(cmbMode);
 
@@ -69,7 +69,7 @@ public class SaveDialog extends JDialog {
                 JFileChooser fc = new JFileChooser();
                 fc.setCurrentDirectory(new java.io.File("."));
                 fc.setDialogTitle("MassLinkOpener - Save");
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("MassList (.mll)", "mll");
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("MassLinkList (.mll)", "mll");
                 fc.setFileFilter(filter);
                 int retVal = fc.showSaveDialog(mw);
                 if (retVal == JFileChooser.APPROVE_OPTION) {
