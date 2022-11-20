@@ -185,7 +185,16 @@ public class DownloadManagerDialog extends JDialog {
         pnlSouthLeft.setLayout(new FlowLayout());
         btnHow = new JButton("How it works");
         btnHow.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "The Download Manager allows you to download media such as images or gifs (videos aren't supported as of right now).", "How it works", JOptionPane.INFORMATION_MESSAGE);
+            List<String> filetypes = DownloadManager.getSupportedFiletypes();
+            StringBuilder sb = new StringBuilder();
+            for (String filetype : filetypes) {
+                if(!filetype.equals(filetypes.get(filetypes.size()-1))) {
+                    sb.append(filetype + ", ");
+                } else {
+                    sb.append(filetype);
+                }
+            }
+            JOptionPane.showMessageDialog(this, "The Download Manager allows you to download media such as images or gifs (videos aren't supported as of right now).\nSupported file types: " + sb, "How it works", JOptionPane.INFORMATION_MESSAGE);
         });
         pnlSouthRight = new JPanel();
         pnlSouthRight.setLayout(flowRight);
