@@ -4,4 +4,3 @@
 .png
 .gif
 .webp
-// TODO: supportedFileTypes editable in settings tab -> BufferedWriter to save changes + reset button activates bufferedwriter -> default filetypes

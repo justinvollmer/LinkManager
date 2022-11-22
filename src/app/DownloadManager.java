@@ -33,7 +33,7 @@ public class DownloadManager {
         return supportedFiletypes;
     }
 
-    public void downloadMedia(String linkToMedia, int imageNumber) throws IOException {
+    public void download(String linkToMedia, int imageNumber) throws IOException {
         String filetype = null;
         for(String filetypeFromList : filetypeList) {
             if(linkToMedia.contains(filetypeFromList) || filetypeFromList.equals(filetypeList.get(filetypeList.size()-1))) {
@@ -58,7 +58,7 @@ public class DownloadManager {
         out.close();
     }
 
-    public static void downloadMedia(String linkToMedia, String path, String filename, String filetype) throws IOException {
+    public static void download(String linkToMedia, String path, String filename, String filetype) throws IOException {
         URL url = new URL(linkToMedia);
         InputStream in = new BufferedInputStream(url.openStream());
         OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + filetype));
