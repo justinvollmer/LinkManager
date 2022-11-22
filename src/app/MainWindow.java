@@ -67,7 +67,7 @@ public class MainWindow extends JFrame {
         mnSettings.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                JOptionPane.showMessageDialog(MainWindow.this, "COMING SOON!", "Settings", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(MainWindow.this, "COMING SOON!", "MassLinkOpener - Settings", JOptionPane.INFORMATION_MESSAGE);
             }
             @Override
             public void menuDeselected(MenuEvent e) {}
@@ -77,7 +77,7 @@ public class MainWindow extends JFrame {
         mnHelp = new JMenu("Help");
         mniAbout = new JMenuItem("About");
         mniAbout.addActionListener(e -> {
-            JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: Jvst1n01 \nVersion:     " + Version.getSoftwareVersion() + " " + Version.getSoftwareState(), "About", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: Jvst1n01 \nVersion:     " + Version.getSoftwareVersion() + " " + Version.getSoftwareState(), "MassLinkOpener - About", JOptionPane.INFORMATION_MESSAGE);
         });
         mnFile.add(mniImport);
         mnFile.add(mniSaveAs);
@@ -93,6 +93,7 @@ public class MainWindow extends JFrame {
         mniSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
         mniConvert.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
         mniExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
+        mnSettings.setMnemonic((KeyEvent.VK_S));
         mnHelp.setMnemonic(KeyEvent.VK_H);
 
         // HEADER
