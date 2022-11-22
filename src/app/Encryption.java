@@ -75,13 +75,6 @@ public class Encryption {
         return new String(encrypted);
     }
 
-    public static String generateKey(int keyBitSize, String algorithm) throws NoSuchAlgorithmException {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);
-        keyGenerator.init(keyBitSize, new SecureRandom());
-        SecretKey secretKey = keyGenerator.generateKey();
-        return Base64.getEncoder().encodeToString(secretKey.getEncoded());
-    }
-
     public static void printAlgorithmList() {
         String[] algorithmList = {"AES"};
         System.out.print("List of algorithms:\n     -->     ");
