@@ -2,6 +2,8 @@ package app;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -28,6 +30,7 @@ public class MainWindow extends JFrame {
     private JMenuItem mniSaveAs;
     private JMenuItem mniConvert;
     private JMenuItem mniExit;
+    private JMenu mnSettings;
     private JMenu mnHelp;
     private JMenuItem mniAbout;
 
@@ -60,18 +63,30 @@ public class MainWindow extends JFrame {
         mniExit.addActionListener(e -> {
             System.exit(0);
         });
+        mnSettings = new JMenu("Settings");
+        mnSettings.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                JOptionPane.showMessageDialog(MainWindow.this, "COMING SOON!", "Settings", JOptionPane.INFORMATION_MESSAGE);
+            }
+            @Override
+            public void menuDeselected(MenuEvent e) {}
+            @Override
+            public void menuCanceled(MenuEvent e) {}
+        });
         mnHelp = new JMenu("Help");
         mniAbout = new JMenuItem("About");
         mniAbout.addActionListener(e -> {
             JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: Jvst1n01 \nVersion:     " + Version.getSoftwareVersion() + " " + Version.getSoftwareState(), "About", JOptionPane.INFORMATION_MESSAGE);
         });
-        menuBar.add(mnFile);
         mnFile.add(mniImport);
         mnFile.add(mniSaveAs);
         mnFile.add(mniConvert);
         mnFile.add(mniExit);
-        menuBar.add(mnHelp);
         mnHelp.add(mniAbout);
+        menuBar.add(mnFile);
+        menuBar.add(mnSettings);
+        menuBar.add(mnHelp);
 
         mnFile.setMnemonic(KeyEvent.VK_F);
         mniImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
