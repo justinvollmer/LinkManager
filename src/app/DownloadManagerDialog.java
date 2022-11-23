@@ -40,6 +40,8 @@ public class DownloadManagerDialog extends JDialog {
     private JLabel lblDownloadStatus;
     private JTextField tfDownloadStatus;
     private JPanel pnlCenterAction10;
+    private JButton btnDownload;
+    private JButton btnCancelDownload;
     private JPanel pnlSouth;
     private JPanel pnlSouthLeft;
     private JPanel pnlSouthRight;
@@ -103,7 +105,6 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenterAction9 = new JPanel();
         pnlCenterAction9.setLayout(flowLeft);
         pnlCenterAction10 = new JPanel();
-        pnlCenterAction10.setLayout(flowLeft);
         lblNamingSystem = new JLabel("file name: ");
         tfNamingSystem = new JTextField();
         tfNamingSystem.setFont(new Font(null, Font.PLAIN, 15));
@@ -148,6 +149,17 @@ public class DownloadManagerDialog extends JDialog {
         tfDownloadStatus.setDisabledTextColor(Color.red);
         tfDownloadStatus.setEnabled(false);
         tfDownloadStatus.setFont(new Font(null, Font.BOLD, 15));
+        btnDownload = new JButton("Start Download");
+        btnDownload.addActionListener(e -> {
+            btnDownload.setVisible(false);
+            btnCancelDownload.setVisible(true);
+        });
+        btnCancelDownload = new JButton("Cancel Download");
+        btnCancelDownload.addActionListener(e -> {
+            btnCancelDownload.setVisible(false);
+            btnDownload.setVisible(true);
+        });
+        btnCancelDownload.setVisible(false);
         scrollPane = new JScrollPane();
         pnlCenterAction1.add(lblNamingSystem);
         pnlCenterAction1.add(tfNamingSystem);
@@ -161,6 +173,8 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenterAction5.add(tfPath);
         pnlCenterAction9.add(lblDownloadStatus);
         pnlCenterAction9.add(tfDownloadStatus);
+        pnlCenterAction10.add(btnDownload);
+        pnlCenterAction10.add(btnCancelDownload);
         pnlActionBar.add(pnlCenterAction1);
         pnlActionBar.add(pnlCenterAction2);
         pnlActionBar.add(pnlCenterAction3);
