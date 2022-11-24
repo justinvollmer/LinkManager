@@ -2,12 +2,9 @@ package app;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class DownloadManagerDialog extends JDialog {
     private JPanel pnlNorth;
@@ -39,9 +36,8 @@ public class DownloadManagerDialog extends JDialog {
     private JPanel pnlCenterAction9;
     private JLabel lblDownloadStatus;
     private JTextField tfDownloadStatus;
-    private JPanel pnlCenterAction10;
     private JButton btnDownload;
-    private JButton btnCancelDownload;
+    private Boolean isDownloading;
     private JPanel pnlSouth;
     private JPanel pnlSouthLeft;
     private JPanel pnlSouthRight;
@@ -104,7 +100,6 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenterAction8.setLayout(flowLeft);
         pnlCenterAction9 = new JPanel();
         pnlCenterAction9.setLayout(flowLeft);
-        pnlCenterAction10 = new JPanel();
         lblNamingSystem = new JLabel("file name: ");
         tfNamingSystem = new JTextField();
         tfNamingSystem.setFont(new Font(null, Font.PLAIN, 15));
@@ -149,17 +144,17 @@ public class DownloadManagerDialog extends JDialog {
         tfDownloadStatus.setDisabledTextColor(Color.red);
         tfDownloadStatus.setEnabled(false);
         tfDownloadStatus.setFont(new Font(null, Font.BOLD, 15));
+        isDownloading = false;
         btnDownload = new JButton("Start Download");
         btnDownload.addActionListener(e -> {
-            btnDownload.setVisible(false);
-            btnCancelDownload.setVisible(true);
+            if (!isDownloading) {
+                btnDownload.setText("Stop Download");
+                isDownloading = true;
+            } else {
+                btnDownload.setText("Start Download");
+                isDownloading = false;
+            }
         });
-        btnCancelDownload = new JButton("Cancel Download");
-        btnCancelDownload.addActionListener(e -> {
-            btnCancelDownload.setVisible(false);
-            btnDownload.setVisible(true);
-        });
-        btnCancelDownload.setVisible(false);
         scrollPane = new JScrollPane();
         pnlCenterAction1.add(lblNamingSystem);
         pnlCenterAction1.add(tfNamingSystem);
@@ -173,8 +168,6 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenterAction5.add(tfPath);
         pnlCenterAction9.add(lblDownloadStatus);
         pnlCenterAction9.add(tfDownloadStatus);
-        pnlCenterAction10.add(btnDownload);
-        pnlCenterAction10.add(btnCancelDownload);
         pnlActionBar.add(pnlCenterAction1);
         pnlActionBar.add(pnlCenterAction2);
         pnlActionBar.add(pnlCenterAction3);
@@ -184,7 +177,7 @@ public class DownloadManagerDialog extends JDialog {
         pnlActionBar.add(pnlCenterAction7);
         pnlActionBar.add(pnlCenterAction8);
         pnlActionBar.add(pnlCenterAction9);
-        pnlActionBar.add(pnlCenterAction10);
+        pnlActionBar.add(btnDownload);
         scrollPane.setViewportView(table);
         pnlCenter.add(scrollPane, BorderLayout.CENTER);
         pnlCenter.add(pnlActionBar, BorderLayout.EAST);
