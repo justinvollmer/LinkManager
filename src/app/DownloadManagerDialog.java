@@ -42,6 +42,7 @@ public class DownloadManagerDialog extends JDialog {
     private JPanel pnlSouthLeft;
     private JPanel pnlSouthRight;
     private JButton btnHow;
+    private JProgressBar progressBar;
     private JButton btnCancel;
 
     public DownloadManagerDialog(MainWindow mw, JTextArea taDisplayMW) {
@@ -149,9 +150,15 @@ public class DownloadManagerDialog extends JDialog {
         btnDownload.addActionListener(e -> {
             if (!isDownloading) {
                 btnDownload.setText("Stop Download");
+                tfDownloadStatus.setText(inProgress);
+                tfDownloadStatus.setDisabledTextColor(Color.blue);
+                progressBar.setVisible(true);
                 isDownloading = true;
             } else {
                 btnDownload.setText("Start Download");
+                tfDownloadStatus.setText(notStarted);
+                tfDownloadStatus.setDisabledTextColor(Color.red);
+                progressBar.setVisible(false);
                 isDownloading = false;
             }
         });
@@ -203,6 +210,10 @@ public class DownloadManagerDialog extends JDialog {
             }
             JOptionPane.showMessageDialog(this, "The Download Manager allows you to download media such as images or gifs (videos aren't supported as of right now).\nSupported file types: " + sb, "How it works", JOptionPane.INFORMATION_MESSAGE);
         });
+        progressBar = new JProgressBar(0, 100);
+        progressBar.setVisible(false);
+        progressBar.setValue(0);
+        progressBar.setStringPainted(true);
         pnlSouthRight = new JPanel();
         pnlSouthRight.setLayout(flowRight);
         btnCancel = new JButton("Cancel");
@@ -212,6 +223,7 @@ public class DownloadManagerDialog extends JDialog {
         pnlSouthLeft.add(btnHow);
         pnlSouthRight.add(btnCancel);
         pnlSouth.add(pnlSouthLeft, BorderLayout.WEST);
+        pnlSouth.add(progressBar, BorderLayout.CENTER);
         pnlSouth.add(pnlSouthRight, BorderLayout.EAST);
 
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
