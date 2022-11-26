@@ -58,8 +58,10 @@ public class DownloadManagerDialog extends JDialog {
         String[] linkArr = taDisplayMW.getText().trim().split("\n");
         int id = 0;
         for(String link : linkArr) {
-            id++;
-            linkEntryList.add(new LinkEntry(id, link, "", "ready"));
+            if(!link.startsWith("//") && !link.isBlank()) {
+                id++;
+                linkEntryList.add(new LinkEntry(id, link, "", "ready"));
+            }
         }
 
         // HEADER
