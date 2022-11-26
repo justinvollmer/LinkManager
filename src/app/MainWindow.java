@@ -64,11 +64,10 @@ public class MainWindow extends JFrame {
             System.exit(0);
         });
         mnSettings = new JMenu("Settings");
+        mnSettings.setEnabled(false);
         mnSettings.addMenuListener(new MenuListener() {
             @Override
-            public void menuSelected(MenuEvent e) {
-                JOptionPane.showMessageDialog(MainWindow.this, "COMING SOON!", "MassLinkOpener - Settings", JOptionPane.INFORMATION_MESSAGE);
-            }
+            public void menuSelected(MenuEvent e) {}
             @Override
             public void menuDeselected(MenuEvent e) {}
             @Override
