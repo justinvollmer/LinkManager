@@ -10,7 +10,7 @@ public class DownloadManager {
     private String enforcedNamingSystem;
     private List<String> filetypeList;
 
-    public DownloadManager (String path, String enforcedNamingSystem) {
+    public DownloadManager(String path, String enforcedNamingSystem) {
         this.path = path;
         this.enforcedNamingSystem = enforcedNamingSystem;
         filetypeList = DownloadManager.getSupportedFiletypes();
@@ -35,9 +35,9 @@ public class DownloadManager {
 
     public void download(String linkToMedia, int imageNumber) throws IOException {
         String filetype = null;
-        for(String filetypeFromList : filetypeList) {
-            if(linkToMedia.contains(filetypeFromList) || filetypeFromList.equals(filetypeList.get(filetypeList.size()-1))) {
-                if (filetypeFromList.equals(".webp") || (filetypeFromList.equals(filetypeList.get(filetypeList.size()-1)) && !filetypeFromList.equals(filetypeList.get(filetypeList.size()-1)))) {
+        for (String filetypeFromList : filetypeList) {
+            if (linkToMedia.contains(filetypeFromList) || filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1))) {
+                if (filetypeFromList.equals(".webp") || (filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1)) && !filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1)))) {
                     filetype = ".jpg";
                     break;
                 } else {
@@ -51,7 +51,7 @@ public class DownloadManager {
         InputStream in = new BufferedInputStream(url.openStream());
         OutputStream out = new BufferedOutputStream(new FileOutputStream(path + this.enforcedNamingSystem + imageNumber + filetype));
 
-        for ( int i; (i = in.read()) != -1; ) {
+        for (int i; (i = in.read()) != -1; ) {
             out.write(i);
         }
         in.close();
@@ -63,7 +63,7 @@ public class DownloadManager {
         InputStream in = new BufferedInputStream(url.openStream());
         OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + filetype));
 
-        for ( int i; (i = in.read()) != -1; ) {
+        for (int i; (i = in.read()) != -1; ) {
             out.write(i);
         }
         in.close();

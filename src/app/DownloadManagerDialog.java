@@ -57,8 +57,8 @@ public class DownloadManagerDialog extends JDialog {
         linkEntryList = new ArrayList<>();
         String[] linkArr = taDisplayMW.getText().trim().split("\n");
         int id = 0;
-        for(String link : linkArr) {
-            if(!link.startsWith("//") && !link.isBlank()) {
+        for (String link : linkArr) {
+            if (!link.startsWith("//") && !link.isBlank()) {
                 id++;
                 linkEntryList.add(new LinkEntry(id, link, "", "ready"));
             }
@@ -142,7 +142,9 @@ public class DownloadManagerDialog extends JDialog {
         lblDownloadStatus = new JLabel("Download Status: ");
         tfDownloadStatus = new JTextField();
         tfDownloadStatus.setColumns(20);
-        String notStarted = "Not started!"; String inProgress = "In progress!"; String done = "Done!";
+        String notStarted = "Not started!";
+        String inProgress = "In progress!";
+        String done = "Done!";
         tfDownloadStatus.setText(notStarted);
         tfDownloadStatus.setDisabledTextColor(Color.red);
         tfDownloadStatus.setEnabled(false);
@@ -204,7 +206,7 @@ public class DownloadManagerDialog extends JDialog {
             List<String> filetypes = DownloadManager.getSupportedFiletypes();
             StringBuilder sb = new StringBuilder();
             for (String filetype : filetypes) {
-                if(!filetype.equals(filetypes.get(filetypes.size()-1))) {
+                if (!filetype.equals(filetypes.get(filetypes.size() - 1))) {
                     sb.append(filetype + ", ");
                 } else {
                     sb.append(filetype);

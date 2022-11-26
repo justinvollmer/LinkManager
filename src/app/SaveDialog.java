@@ -49,7 +49,7 @@ public class SaveDialog extends JDialog {
         btnSelect = new JButton("Select");
         btnSelect.addActionListener(e -> {
             super.setVisible(false);
-            if(cmbMode.getSelectedIndex() == 0) {
+            if (cmbMode.getSelectedIndex() == 0) {
                 JFileChooser fc = new JFileChooser();
                 fc.setCurrentDirectory(new java.io.File("."));
                 fc.setDialogTitle("MassLinkOpener - Save");
@@ -59,7 +59,7 @@ public class SaveDialog extends JDialog {
                 int retVal = fc.showSaveDialog(mw);
                 if (retVal == JFileChooser.APPROVE_OPTION) {
                     File file = new File(fc.getSelectedFile().getAbsolutePath() + ".txt");
-                    try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                    try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
                         bw.write(taDisplayMW.getText());
                     } catch (IOException io) {
                         JOptionPane.showMessageDialog(mw, io.getMessage());
