@@ -40,6 +40,7 @@ public class ImportDialog extends JDialog {
         cmbMode.addItem("Textfile (txt)");
         pnlMode.add(lblMode);
         pnlMode.add(cmbMode);
+        cmbMode.setEnabled(false);
         pnlAppend = new JPanel();
         pnlAppend.setLayout(flowCenter);
         lblAppend = new JLabel("Append text: ");

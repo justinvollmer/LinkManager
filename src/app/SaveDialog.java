@@ -34,6 +34,7 @@ public class SaveDialog extends JDialog {
         cmbMode.addItem("Textfile (txt)");
         pnlCenter.add(lblMode);
         pnlCenter.add(cmbMode);
+        cmbMode.setEnabled(false);
 
         // SOUTH
         pnlSouth = new JPanel();
