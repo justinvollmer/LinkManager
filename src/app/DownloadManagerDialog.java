@@ -53,7 +53,7 @@ public class DownloadManagerDialog extends JDialog {
         super.setLocation(mw.getLocation());
         super.setResizable(true);
 
-        // SAVING LINKS IN ENTRY AND ADDING TO ARRAYLIST
+        // SAVING LINKS IN ENTRIES AND ADDING TO ARRAYLIST
         linkEntryList = new ArrayList<>();
         String[] linkArr = taDisplayMW.getText().trim().split("\n");
         int id = 0;
