@@ -14,7 +14,7 @@ public class EditDialog extends JDialog {
     private JButton btnSaveChanges;
     private JButton btnClear;
     private JButton btnCancel;
-
+    // TODO: Add formatter button
     public EditDialog(MainWindow mw, JTextArea taDisplayMW) {
         super(mw, true);
         super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
