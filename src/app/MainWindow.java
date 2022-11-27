@@ -67,11 +67,16 @@ public class MainWindow extends JFrame {
         mnSettings.setEnabled(false);
         mnSettings.addMenuListener(new MenuListener() {
             @Override
-            public void menuSelected(MenuEvent e) {}
+            public void menuSelected(MenuEvent e) {
+            }
+
             @Override
-            public void menuDeselected(MenuEvent e) {}
+            public void menuDeselected(MenuEvent e) {
+            }
+
             @Override
-            public void menuCanceled(MenuEvent e) {}
+            public void menuCanceled(MenuEvent e) {
+            }
         });
         mnHelp = new JMenu("Help");
         mniAbout = new JMenuItem("About");
@@ -167,7 +172,7 @@ public class MainWindow extends JFrame {
                     "\nThe links will be opened with no delay. " +
                     "\nThe websites might detect this as a spam. " +
                     "\nIf you have a long list, please \"convert to a batch file\"", "Warning", JOptionPane.YES_NO_OPTION);
-            if(yesNo == 0) {
+            if (yesNo == 0) {
                 String completelist = this.taDisplay.getText();
                 String[] list = completelist.trim().split("\n");
                 for (String s : list) {

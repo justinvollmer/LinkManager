@@ -14,6 +14,7 @@ public class EditDialog extends JDialog {
     private JButton btnSaveChanges;
     private JButton btnClear;
     private JButton btnCancel;
+
     // TODO: Add formatter button
     public EditDialog(MainWindow mw, JTextArea taDisplayMW) {
         super(mw, true);
@@ -57,7 +58,7 @@ public class EditDialog extends JDialog {
         });
         btnClear = new JButton("Clear");
         btnClear.addActionListener(e -> {
-            if(this.taDisplay.getText().equals("")) {
+            if (this.taDisplay.getText().equals("")) {
                 JOptionPane.showMessageDialog(EditDialog.this, "This list has already been cleared!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }

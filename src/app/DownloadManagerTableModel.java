@@ -33,16 +33,21 @@ public class DownloadManagerTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int col) {
         switch (col) {
-            case 0: return linkEntryList.get(row).getId();
-            case 1: return linkEntryList.get(row).getLink();
-            case 2: return linkEntryList.get(row).getFilename();
-            case 3: return linkEntryList.get(row).getProgress();
-            default: return null;
+            case 0:
+                return linkEntryList.get(row).getId();
+            case 1:
+                return linkEntryList.get(row).getLink();
+            case 2:
+                return linkEntryList.get(row).getFilename();
+            case 3:
+                return linkEntryList.get(row).getProgress();
+            default:
+                return null;
         }
     }
 
     public boolean isCellEditable(int row, int col) {
-        if(col == 2) {
+        if (col == 2) {
             return true;
         } else {
             return false;
@@ -53,16 +58,16 @@ public class DownloadManagerTableModel extends AbstractTableModel {
         LinkEntry entry = linkEntryList.get(row);
         switch (col) {
             case 0:
-                entry.setId((int)value);
+                entry.setId((int) value);
                 break;
             case 1:
-                entry.setLink((String)value);
+                entry.setLink((String) value);
                 break;
             case 2:
-                entry.setFilename((String)value);
+                entry.setFilename((String) value);
                 break;
             case 3:
-                entry.setProgress((String)value);
+                entry.setProgress((String) value);
                 break;
         }
     }

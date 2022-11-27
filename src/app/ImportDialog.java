@@ -65,23 +65,23 @@ public class ImportDialog extends JDialog {
         btnSelect = new JButton("Select");
         btnSelect.addActionListener(e -> {
             super.setVisible(false);
-            if(this.cmbMode.getSelectedIndex() == 0) {
+            if (this.cmbMode.getSelectedIndex() == 0) {
                 JFileChooser fc = new JFileChooser();
                 fc.setCurrentDirectory(new java.io.File("."));
                 fc.setDialogTitle("MassLinkOpener - Import");
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file (.txt)", "txt");
                 fc.setFileFilter(filter);
                 int retVal = fc.showOpenDialog(mw);
-                if(retVal == JFileChooser.APPROVE_OPTION) {
+                if (retVal == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
-                    try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+                    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                         String zeile;
                         if (!this.chckAppend.isSelected()) {
                             taDisplayMW.setText("");
                         } else {
                             taDisplayMW.append("\n");
                         }
-                        while((zeile = br.readLine()) != null) {
+                        while ((zeile = br.readLine()) != null) {
                             taDisplayMW.append(zeile + "\n");
                         }
                     } catch (IOException io) {

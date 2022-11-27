@@ -92,7 +92,7 @@ public class ConversionSettingsDialog extends JDialog {
             int retVal = fc.showSaveDialog(mw);
             if (retVal == JFileChooser.APPROVE_OPTION) {
                 File file = new File(fc.getSelectedFile().getAbsolutePath() + ".bat");
-                try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
                     bw.write(this.taDisplay.getText());
                 } catch (IOException io) {
                     JOptionPane.showMessageDialog(mw, io.getMessage());
@@ -146,8 +146,22 @@ public class ConversionSettingsDialog extends JDialog {
         pnlButtons.add(btnReset);
         pnlButtons.add(btnCancel);
         pnlInnerGrid = new JPanel();
-        pnlInnerGrid1 = new JPanel(); pnlInnerGrid2 = new JPanel(); pnlInnerGrid3 = new JPanel(); pnlInnerGrid4 = new JPanel(); pnlInnerGrid5 = new JPanel(); pnlInnerGrid6 = new JPanel(); pnlInnerGrid7 = new JPanel(); pnlInnerGrid8 = new JPanel();
-        pnlInnerGrid1.setLayout(flowRight); pnlInnerGrid2.setLayout(flowLeft); pnlInnerGrid3.setLayout(flowRight); pnlInnerGrid4.setLayout(flowLeft); pnlInnerGrid5.setLayout(flowRight); pnlInnerGrid6.setLayout(flowLeft); pnlInnerGrid7.setLayout(flowRight); pnlInnerGrid8.setLayout(flowLeft);
+        pnlInnerGrid1 = new JPanel();
+        pnlInnerGrid2 = new JPanel();
+        pnlInnerGrid3 = new JPanel();
+        pnlInnerGrid4 = new JPanel();
+        pnlInnerGrid5 = new JPanel();
+        pnlInnerGrid6 = new JPanel();
+        pnlInnerGrid7 = new JPanel();
+        pnlInnerGrid8 = new JPanel();
+        pnlInnerGrid1.setLayout(flowRight);
+        pnlInnerGrid2.setLayout(flowLeft);
+        pnlInnerGrid3.setLayout(flowRight);
+        pnlInnerGrid4.setLayout(flowLeft);
+        pnlInnerGrid5.setLayout(flowRight);
+        pnlInnerGrid6.setLayout(flowLeft);
+        pnlInnerGrid7.setLayout(flowRight);
+        pnlInnerGrid8.setLayout(flowLeft);
         pnlInnerGrid.setLayout(new GridLayout(1, 8));
         lblBrowser = new JLabel("Browser: ");
         cmbBrowser = new JComboBox<>();
@@ -164,8 +178,22 @@ public class ConversionSettingsDialog extends JDialog {
         tfDelay = new JTextField();
         tfDelay.setColumns(2);
         tfDelay.setText(Integer.toString(1));
-        pnlInnerGrid1.add(lblBrowser); pnlInnerGrid2.add(cmbBrowser); pnlInnerGrid3.add(lblIncognito); pnlInnerGrid4.add(chckIncognito); pnlInnerGrid5.add(lblDelay); pnlInnerGrid6.add(chckDelay); pnlInnerGrid7.add(lblDelayLength); pnlInnerGrid8.add(tfDelay);
-        pnlInnerGrid.add(pnlInnerGrid1); pnlInnerGrid.add(pnlInnerGrid2); pnlInnerGrid.add(pnlInnerGrid3); pnlInnerGrid.add(pnlInnerGrid4); pnlInnerGrid.add(pnlInnerGrid5); pnlInnerGrid.add(pnlInnerGrid6); pnlInnerGrid.add(pnlInnerGrid7); pnlInnerGrid.add(pnlInnerGrid8);
+        pnlInnerGrid1.add(lblBrowser);
+        pnlInnerGrid2.add(cmbBrowser);
+        pnlInnerGrid3.add(lblIncognito);
+        pnlInnerGrid4.add(chckIncognito);
+        pnlInnerGrid5.add(lblDelay);
+        pnlInnerGrid6.add(chckDelay);
+        pnlInnerGrid7.add(lblDelayLength);
+        pnlInnerGrid8.add(tfDelay);
+        pnlInnerGrid.add(pnlInnerGrid1);
+        pnlInnerGrid.add(pnlInnerGrid2);
+        pnlInnerGrid.add(pnlInnerGrid3);
+        pnlInnerGrid.add(pnlInnerGrid4);
+        pnlInnerGrid.add(pnlInnerGrid5);
+        pnlInnerGrid.add(pnlInnerGrid6);
+        pnlInnerGrid.add(pnlInnerGrid7);
+        pnlInnerGrid.add(pnlInnerGrid8);
         pnlSouth.add(pnlInnerGrid);
         pnlSouth.add(pnlButtons);
 
