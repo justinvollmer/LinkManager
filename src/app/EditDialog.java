@@ -3,6 +3,8 @@ package app;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditDialog extends JDialog {
     private JPanel pnlNorth;
@@ -91,10 +93,32 @@ public class EditDialog extends JDialog {
                 cmbFormatter.setSelectedIndex(0);
             }
             if (cmbFormatter.getSelectedIndex() == 3) {
-                // TODO: Add formatting for duplicates
+                String[] linkArr = taDisplay.getText().trim().split("\n");
+                StringBuilder sb = new StringBuilder();
+                List<String> checkList = new ArrayList<>();
+                for (String link : linkArr) {
+                    if (!checkList.contains(link)) {
+                        sb.append(link).append("\n");
+                    }
+                    checkList.add(link);
+                }
+                taDisplay.setText(sb.toString().trim());
+                cmbFormatter.setSelectedIndex(0);
             }
             if (cmbFormatter.getSelectedIndex() == 4) {
                 // TODO: Add combination of all formats
+                String[] linkArr = taDisplay.getText().trim().split("\n");
+                StringBuilder sb = new StringBuilder();
+                List<String> checkList = new ArrayList<>();
+                for (String link : linkArr) {
+                    if (!checkList.contains(link) && !link.isBlank() && !link.startsWith("//")) {
+                        link = link.trim();
+                        sb.append(link).append("\n");
+                    }
+                    checkList.add(link);
+                }
+                taDisplay.setText(sb.toString().trim());
+                cmbFormatter.setSelectedIndex(0);
             }
         });
         btnSaveChanges = new JButton("Save & Submit");
