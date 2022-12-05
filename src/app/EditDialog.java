@@ -20,7 +20,6 @@ public class EditDialog extends JDialog {
     private JButton btnClear;
     private JButton btnCancel;
 
-    // TODO: Add formatter button
     public EditDialog(MainWindow mw, JTextArea taDisplayMW) {
         super(mw, true);
         super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -85,7 +84,7 @@ public class EditDialog extends JDialog {
                 String[] linkArr = taDisplay.getText().trim().split("\n");
                 StringBuilder sb = new StringBuilder();
                 for (String link : linkArr) {
-                    if (!link.startsWith("//")) {
+                    if (!link.trim().startsWith("//")) {
                         sb.append(link).append("\n");
                     }
                 }
@@ -97,25 +96,24 @@ public class EditDialog extends JDialog {
                 StringBuilder sb = new StringBuilder();
                 List<String> checkList = new ArrayList<>();
                 for (String link : linkArr) {
-                    if (!checkList.contains(link)) {
+                    if (!checkList.contains(link.trim())) {
                         sb.append(link).append("\n");
                     }
-                    checkList.add(link);
+                    checkList.add(link.trim());
                 }
                 taDisplay.setText(sb.toString().trim());
                 cmbFormatter.setSelectedIndex(0);
             }
             if (cmbFormatter.getSelectedIndex() == 4) {
-                // TODO: Add combination of all formats
                 String[] linkArr = taDisplay.getText().trim().split("\n");
                 StringBuilder sb = new StringBuilder();
                 List<String> checkList = new ArrayList<>();
                 for (String link : linkArr) {
-                    if (!checkList.contains(link) && !link.isBlank() && !link.startsWith("//")) {
-                        link = link.trim();
+                    link = link.trim();
+                    if (!checkList.contains(link.trim()) && !link.isBlank() && !link.trim().startsWith("//")) {
                         sb.append(link).append("\n");
                     }
-                    checkList.add(link);
+                    checkList.add(link.trim());
                 }
                 taDisplay.setText(sb.toString().trim());
                 cmbFormatter.setSelectedIndex(0);
