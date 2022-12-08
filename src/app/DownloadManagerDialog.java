@@ -33,7 +33,7 @@ public class DownloadManagerDialog extends JDialog {
     private JPanel pnlCenterAction6;
     private JPanel pnlCenterAction7;
     private JPanel pnlCenterAction8;
-    private JPanel pnlCenterAction9;
+    private JButton btnCheckLinks;
     private JLabel lblDownloadStatus;
     private JTextField tfDownloadStatus;
     private JButton btnDownload;
@@ -60,7 +60,7 @@ public class DownloadManagerDialog extends JDialog {
         for (String link : linkArr) {
             if (!link.startsWith("//") && !link.isBlank()) {
                 id++;
-                linkEntryList.add(new LinkEntry(id, link, "", "ready"));
+                linkEntryList.add(new LinkEntry(id, link, "", "not ready"));
             }
         }
 
@@ -101,8 +101,6 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenterAction7.setLayout(flowLeft);
         pnlCenterAction8 = new JPanel();
         pnlCenterAction8.setLayout(flowLeft);
-        pnlCenterAction9 = new JPanel();
-        pnlCenterAction9.setLayout(flowLeft);
         lblNamingSystem = new JLabel("file name: ");
         tfNamingSystem = new JTextField();
         tfNamingSystem.setFont(new Font(null, Font.PLAIN, 15));
@@ -142,15 +140,18 @@ public class DownloadManagerDialog extends JDialog {
         lblDownloadStatus = new JLabel("Download Status: ");
         tfDownloadStatus = new JTextField();
         tfDownloadStatus.setColumns(20);
+        String notCheckedLinks = "Please check the links first!";
+        String checkingLinks = "Checking links...";
         String notStarted = "Not started!";
-        String inProgress = "In progress!";
+        String inProgress = "In progress...";
         String done = "Done!";
-        tfDownloadStatus.setText(notStarted);
+        tfDownloadStatus.setText(notCheckedLinks);
         tfDownloadStatus.setDisabledTextColor(Color.red);
         tfDownloadStatus.setEnabled(false);
         tfDownloadStatus.setFont(new Font(null, Font.BOLD, 15));
         isDownloading = false;
         btnDownload = new JButton("Start Download");
+        btnDownload.setEnabled(false);
         btnDownload.addActionListener(e -> {
             if (!isDownloading) {
                 btnDownload.setText("Stop Download");
@@ -166,6 +167,34 @@ public class DownloadManagerDialog extends JDialog {
                 isDownloading = false;
             }
         });
+        btnCheckLinks = new JButton("Check Links for compatibility");
+        btnCheckLinks.addActionListener(e -> { // TODO: Complete checking process + testing
+            btnCheckLinks.setEnabled(false);
+            tfDownloadStatus.setText(checkingLinks);
+            tfDownloadStatus.setDisabledTextColor(Color.orange);
+            Boolean eligibleForDownload = true;
+            List<String> supportedFiletypes = DownloadManager.getSupportedFiletypes();
+            for (LinkEntry entry : linkEntryList) {
+                for (String filetype : supportedFiletypes) {
+                    if (entry.getLink().contains(filetype)) {
+                        entry.setProgress("ready");
+                        break;
+                    }
+                    if (!entry.getLink().contains(filetype) && supportedFiletypes.get(supportedFiletypes.size()-1).equalsIgnoreCase(filetype)) {
+                        entry.setProgress("error");
+                    }
+                }
+                if (eligibleForDownload == false && !entry.getProgress().equalsIgnoreCase("ready")) {
+                    eligibleForDownload = false;
+                }
+                tableModel.fireTableDataChanged();
+            }
+            if (eligibleForDownload == true) {
+                btnDownload.setEnabled(true);
+            } else if (eligibleForDownload == false) {
+                tfDownloadStatus.setText("Please fix the links.");
+            }
+        });
         scrollPane = new JScrollPane();
         pnlCenterAction1.add(lblNamingSystem);
         pnlCenterAction1.add(tfNamingSystem);
@@ -177,8 +206,8 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenterAction4.add(lblDirectory);
         pnlCenterAction4.add(btnSelectFolder);
         pnlCenterAction5.add(tfPath);
-        pnlCenterAction9.add(lblDownloadStatus);
-        pnlCenterAction9.add(tfDownloadStatus);
+        pnlCenterAction8.add(lblDownloadStatus);
+        pnlCenterAction8.add(tfDownloadStatus);
         pnlActionBar.add(pnlCenterAction1);
         pnlActionBar.add(pnlCenterAction2);
         pnlActionBar.add(pnlCenterAction3);
@@ -187,7 +216,7 @@ public class DownloadManagerDialog extends JDialog {
         pnlActionBar.add(pnlCenterAction6);
         pnlActionBar.add(pnlCenterAction7);
         pnlActionBar.add(pnlCenterAction8);
-        pnlActionBar.add(pnlCenterAction9);
+        pnlActionBar.add(btnCheckLinks);
         pnlActionBar.add(btnDownload);
         scrollPane.setViewportView(table);
         pnlCenter.add(scrollPane, BorderLayout.CENTER);
