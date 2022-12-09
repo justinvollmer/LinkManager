@@ -44,6 +44,12 @@ public class DownloadManagerDialog extends JDialog {
     private JButton btnHow;
     private JProgressBar progressBar;
     private JButton btnCancel;
+    private String notCheckedLinks;
+    private String checkingLinks;
+    private String readyForDownload;
+    private String inProgress;
+    private String done;
+    private String error;
 
     public DownloadManagerDialog(MainWindow mw, JTextArea taDisplayMW) {
         super(mw, true);
@@ -140,13 +146,13 @@ public class DownloadManagerDialog extends JDialog {
         lblDownloadStatus = new JLabel("Download Status: ");
         tfDownloadStatus = new JTextField();
         tfDownloadStatus.setColumns(20);
-        String notCheckedLinks = "Please check the links first!";
-        String checkingLinks = "Checking links...";
-        String notStarted = "Not started!";
-        String inProgress = "In progress...";
-        String done = "Done!";
-        tfDownloadStatus.setText(notCheckedLinks);
-        tfDownloadStatus.setDisabledTextColor(Color.red);
+        notCheckedLinks = "Please check the links first!";
+        checkingLinks = "Checking links...";
+        readyForDownload = "Ready for download!";
+        inProgress = "In progress...";
+        done = "Done!";
+        error = "Please fix the links!";
+        setDownloadStatus(notCheckedLinks);
         tfDownloadStatus.setEnabled(false);
         tfDownloadStatus.setFont(new Font(null, Font.BOLD, 15));
         isDownloading = false;
@@ -155,14 +161,12 @@ public class DownloadManagerDialog extends JDialog {
         btnDownload.addActionListener(e -> {
             if (!isDownloading) {
                 btnDownload.setText("Stop Download");
-                tfDownloadStatus.setText(inProgress);
-                tfDownloadStatus.setDisabledTextColor(Color.blue);
+                setDownloadStatus(inProgress);
                 progressBar.setVisible(true);
                 isDownloading = true;
             } else {
                 btnDownload.setText("Start Download");
-                tfDownloadStatus.setText(notStarted);
-                tfDownloadStatus.setDisabledTextColor(Color.red);
+                setDownloadStatus(readyForDownload);
                 progressBar.setVisible(false);
                 isDownloading = false;
             }
@@ -170,8 +174,7 @@ public class DownloadManagerDialog extends JDialog {
         btnCheckLinks = new JButton("Check Links for compatibility");
         btnCheckLinks.addActionListener(e -> { // TODO: Complete checking process + testing
             btnCheckLinks.setEnabled(false);
-            tfDownloadStatus.setText(checkingLinks);
-            tfDownloadStatus.setDisabledTextColor(Color.orange);
+            setDownloadStatus(checkingLinks);
             Boolean eligibleForDownload = true;
             List<String> supportedFiletypes = DownloadManager.getSupportedFiletypes();
             for (LinkEntry entry : linkEntryList) {
@@ -184,15 +187,16 @@ public class DownloadManagerDialog extends JDialog {
                         entry.setProgress("error");
                     }
                 }
-                if (eligibleForDownload == false && !entry.getProgress().equalsIgnoreCase("ready")) {
+                if (eligibleForDownload && !entry.getProgress().equalsIgnoreCase("ready")) {
                     eligibleForDownload = false;
                 }
                 tableModel.fireTableDataChanged();
             }
-            if (eligibleForDownload == true) {
+            if (eligibleForDownload) {
                 btnDownload.setEnabled(true);
-            } else if (eligibleForDownload == false) {
-                tfDownloadStatus.setText("Please fix the links.");
+                setDownloadStatus(readyForDownload);
+            } else {
+                setDownloadStatus(error);
             }
         });
         scrollPane = new JScrollPane();
@@ -264,5 +268,32 @@ public class DownloadManagerDialog extends JDialog {
         super.getContentPane().add(pnlSouth, BorderLayout.SOUTH);
         super.pack();
         super.setVisible(true);
+    }
+
+    private void setDownloadStatus(String status) {
+        if (status.equalsIgnoreCase(notCheckedLinks)) {
+            tfDownloadStatus.setText(notCheckedLinks);
+            tfDownloadStatus.setDisabledTextColor(Color.gray);
+        }
+        if (status.equalsIgnoreCase(checkingLinks)) {
+            tfDownloadStatus.setText(checkingLinks);
+            tfDownloadStatus.setDisabledTextColor(Color.orange);
+        }
+        if (status.equalsIgnoreCase(readyForDownload)) {
+            tfDownloadStatus.setText(readyForDownload);
+            tfDownloadStatus.setDisabledTextColor(Color.black);
+        }
+        if (status.equalsIgnoreCase(inProgress)) {
+            tfDownloadStatus.setText(inProgress);
+            tfDownloadStatus.setDisabledTextColor(Color.blue);
+        }
+        if (status.equalsIgnoreCase(done)) {
+            tfDownloadStatus.setText(done);
+            tfDownloadStatus.setDisabledTextColor(Color.green);
+        }
+        if (status.equalsIgnoreCase(error)) {
+            tfDownloadStatus.setText(error);
+            tfDownloadStatus.setDisabledTextColor(Color.red);
+        }
     }
 }
