@@ -60,6 +60,7 @@ public class DownloadManagerDialog extends JDialog {
         super.setResizable(true);
 
         // SAVING LINKS IN ENTRIES AND ADDING TO ARRAYLIST
+        char[] illegalChars = {'<', '>', '/', '\\', '|', '*', ':', '"'}; // TODO: implement check for illegal characters
         linkEntryList = new ArrayList<>();
         String[] linkArr = taDisplayMW.getText().trim().split("\n");
         int id = 0;
@@ -125,17 +126,7 @@ public class DownloadManagerDialog extends JDialog {
         lblDirectory = new JLabel("Directory: ");
         btnSelectFolder = new JButton("Select folder");
         btnSelectFolder.addActionListener(e -> {
-            JFileChooser fc = new JFileChooser();
-            fc.setCurrentDirectory(new java.io.File("."));
-            fc.setDialogTitle("Download Manager - Select folder");
-            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            fc.setAcceptAllFileFilterUsed(false); // "All files" option disabled
-            int retVal = fc.showOpenDialog(DownloadManagerDialog.this);
-            if (retVal == JFileChooser.APPROVE_OPTION) {
-                tfPath.setText(fc.getSelectedFile().toString() + "\\");
-            } else {
-                System.out.println("No Selection");
-            }
+            chooseFolder();
         });
         tfPath = new JTextField();
         tfPath.setColumns(30);
@@ -175,7 +166,7 @@ public class DownloadManagerDialog extends JDialog {
         btnCheckLinks.addActionListener(e -> { // TODO: Complete checking process + testing
             btnCheckLinks.setEnabled(false);
             setDownloadStatus(checkingLinks);
-            Boolean eligibleForDownload = true;
+            boolean eligibleForDownload = true;
             List<String> supportedFiletypes = DownloadManager.getSupportedFiletypes();
             for (LinkEntry entry : linkEntryList) {
                 for (String filetype : supportedFiletypes) {
@@ -268,6 +259,18 @@ public class DownloadManagerDialog extends JDialog {
         super.getContentPane().add(pnlSouth, BorderLayout.SOUTH);
         super.pack();
         super.setVisible(true);
+    }
+
+    private void chooseFolder() {
+        JFileChooser fc = new JFileChooser();
+        fc.setCurrentDirectory(new java.io.File("."));
+        fc.setDialogTitle("Download Manager - Select folder");
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fc.setAcceptAllFileFilterUsed(false); // "All files" option disabled
+        int retVal = fc.showOpenDialog(DownloadManagerDialog.this);
+        if (retVal == JFileChooser.APPROVE_OPTION) {
+            tfPath.setText(fc.getSelectedFile().toString() + "\\");
+        }
     }
 
     private void setDownloadStatus(String status) {
