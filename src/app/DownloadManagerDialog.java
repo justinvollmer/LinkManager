@@ -32,7 +32,7 @@ public class DownloadManagerDialog extends JDialog {
     private JTextField tfPath;
     private JPanel pnlCenterAction6;
     private JPanel pnlCenterAction7;
-    private JPanel pnlCenterAction8;
+    private JButton btnCheckFilenames;
     private JButton btnCheckLinks;
     private JLabel lblDownloadStatus;
     private JTextField tfDownloadStatus;
@@ -60,7 +60,6 @@ public class DownloadManagerDialog extends JDialog {
         super.setResizable(true);
 
         // SAVING LINKS IN ENTRIES AND ADDING TO ARRAYLIST
-        char[] illegalChars = {'<', '>', '/', '\\', '|', '*', ':', '"'}; // TODO: implement check for illegal characters
         linkEntryList = new ArrayList<>();
         String[] linkArr = taDisplayMW.getText().trim().split("\n");
         int id = 0;
@@ -106,8 +105,6 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenterAction6.setLayout(flowLeft);
         pnlCenterAction7 = new JPanel();
         pnlCenterAction7.setLayout(flowLeft);
-        pnlCenterAction8 = new JPanel();
-        pnlCenterAction8.setLayout(flowLeft);
         lblNamingSystem = new JLabel("file name: ");
         tfNamingSystem = new JTextField();
         tfNamingSystem.setFont(new Font(null, Font.PLAIN, 15));
@@ -146,22 +143,6 @@ public class DownloadManagerDialog extends JDialog {
         setDownloadStatus(notCheckedLinks);
         tfDownloadStatus.setEnabled(false);
         tfDownloadStatus.setFont(new Font(null, Font.BOLD, 15));
-        isDownloading = false;
-        btnDownload = new JButton("Start Download");
-        btnDownload.setEnabled(false);
-        btnDownload.addActionListener(e -> {
-            if (!isDownloading) {
-                btnDownload.setText("Stop Download");
-                setDownloadStatus(inProgress);
-                progressBar.setVisible(true);
-                isDownloading = true;
-            } else {
-                btnDownload.setText("Start Download");
-                setDownloadStatus(readyForDownload);
-                progressBar.setVisible(false);
-                isDownloading = false;
-            }
-        });
         btnCheckLinks = new JButton("Check Links for compatibility");
         btnCheckLinks.addActionListener(e -> { // TODO: Complete checking process + testing
             btnCheckLinks.setEnabled(false);
@@ -190,6 +171,26 @@ public class DownloadManagerDialog extends JDialog {
                 setDownloadStatus(error);
             }
         });
+        btnCheckFilenames = new JButton("Check filenames for compatibility");
+        btnCheckFilenames.addActionListener(e -> {
+            // TODO: Implement checking filenames
+        });
+        isDownloading = false;
+        btnDownload = new JButton("Start Download");
+        btnDownload.setEnabled(false);
+        btnDownload.addActionListener(e -> {
+            if (!isDownloading) {
+                btnDownload.setText("Stop Download");
+                setDownloadStatus(inProgress);
+                progressBar.setVisible(true);
+                isDownloading = true;
+            } else {
+                btnDownload.setText("Start Download");
+                setDownloadStatus(readyForDownload);
+                progressBar.setVisible(false);
+                isDownloading = false;
+            }
+        });
         scrollPane = new JScrollPane();
         pnlCenterAction1.add(lblNamingSystem);
         pnlCenterAction1.add(tfNamingSystem);
@@ -201,8 +202,8 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenterAction4.add(lblDirectory);
         pnlCenterAction4.add(btnSelectFolder);
         pnlCenterAction5.add(tfPath);
-        pnlCenterAction8.add(lblDownloadStatus);
-        pnlCenterAction8.add(tfDownloadStatus);
+        pnlCenterAction7.add(lblDownloadStatus);
+        pnlCenterAction7.add(tfDownloadStatus);
         pnlActionBar.add(pnlCenterAction1);
         pnlActionBar.add(pnlCenterAction2);
         pnlActionBar.add(pnlCenterAction3);
@@ -210,8 +211,8 @@ public class DownloadManagerDialog extends JDialog {
         pnlActionBar.add(pnlCenterAction5);
         pnlActionBar.add(pnlCenterAction6);
         pnlActionBar.add(pnlCenterAction7);
-        pnlActionBar.add(pnlCenterAction8);
         pnlActionBar.add(btnCheckLinks);
+        pnlActionBar.add(btnCheckFilenames);
         pnlActionBar.add(btnDownload);
         scrollPane.setViewportView(table);
         pnlCenter.add(scrollPane, BorderLayout.CENTER);

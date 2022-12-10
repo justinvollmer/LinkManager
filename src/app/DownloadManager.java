@@ -9,6 +9,7 @@ public class DownloadManager {
     private String path;
     private String enforcedNamingSystem;
     private List<String> filetypeList;
+    public static final char[] illegalChars = {'<', '>', '/', '\\', '|', '*', ':', '"'}; // TODO: implement check for illegal characters
 
     public DownloadManager(String path, String enforcedNamingSystem) {
         this.path = path;
@@ -16,8 +17,8 @@ public class DownloadManager {
         filetypeList = DownloadManager.getSupportedFiletypes();
     }
 
-    public static List<String> getSupportedFiletypes() {
-        List<String> supportedFiletypes = new ArrayList<>();
+    public static ArrayList<String> getSupportedFiletypes() {
+        ArrayList<String> supportedFiletypes = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("src/app/supportedFiletypes.txt"));
             String line;
