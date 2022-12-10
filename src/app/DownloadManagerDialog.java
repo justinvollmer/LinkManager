@@ -30,6 +30,7 @@ public class DownloadManagerDialog extends JDialog {
     private JButton btnSelectFolder;
     private JPanel pnlCenterAction5;
     private JTextField tfPath;
+    private String notDirectory;
     private JPanel pnlCenterAction6;
     private JPanel pnlCenterAction7;
     private JButton btnCheckFilenames;
@@ -127,7 +128,8 @@ public class DownloadManagerDialog extends JDialog {
         });
         tfPath = new JTextField();
         tfPath.setColumns(30);
-        tfPath.setText("No directory selected!");
+        notDirectory = "No directory selected!";
+        tfPath.setText(notDirectory);
         tfPath.setEditable(false);
         tfPath.setBackground(Color.white);
         tfPath.setFont(new Font(null, Font.PLAIN, 15));
@@ -173,7 +175,7 @@ public class DownloadManagerDialog extends JDialog {
         });
         btnCheckFilenames = new JButton("Check filenames for compatibility");
         btnCheckFilenames.addActionListener(e -> {
-            // TODO: Implement checking filenames
+            // TODO: Implement checking filenames for illegal characters
         });
         isDownloading = false;
         btnDownload = new JButton("Start Download");

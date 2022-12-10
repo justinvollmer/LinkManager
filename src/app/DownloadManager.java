@@ -9,7 +9,7 @@ public class DownloadManager {
     private String path;
     private String enforcedNamingSystem;
     private List<String> filetypeList;
-    public static final char[] illegalChars = {'<', '>', '/', '\\', '|', '*', ':', '"'}; // TODO: implement check for illegal characters
+    public static final char[] illegalChars = {'<', '>', '/', '\\', '|', '*', ':', '"'};
 
     public DownloadManager(String path, String enforcedNamingSystem) {
         this.path = path;
