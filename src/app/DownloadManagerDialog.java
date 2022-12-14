@@ -167,13 +167,14 @@ public class DownloadManagerDialog extends JDialog {
                 tableModel.fireTableDataChanged();
             }
             if (eligibleForDownload) {
-                btnDownload.setEnabled(true);
+                btnCheckFilenames.setEnabled(true);
                 setDownloadStatus(readyForDownload);
             } else {
                 setDownloadStatus(error);
             }
         });
         btnCheckFilenames = new JButton("Check filenames for compatibility");
+        btnCheckFilenames.setEnabled(false);
         btnCheckFilenames.addActionListener(e -> {
             // TODO: Implement checking filenames for illegal characters
         });
