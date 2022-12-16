@@ -38,8 +38,8 @@ public class DownloadManager {
         String filetype = null;
         for (String filetypeFromList : filetypeList) {
             if (linkToMedia.contains(filetypeFromList) || filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1))) {
-                if (filetypeFromList.equals(".webp") || (filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1)) && !filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1)))) {
-                    filetype = ".jpg";
+                if (filetypeFromList.equals("webp") || (filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1)) && !filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1)))) {
+                    filetype = "jpg";
                     break;
                 } else {
                     filetype = filetypeFromList;
@@ -50,7 +50,7 @@ public class DownloadManager {
 
         URL url = new URL(linkToMedia);
         InputStream in = new BufferedInputStream(url.openStream());
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(path + this.enforcedNamingSystem + imageNumber + filetype));
+        OutputStream out = new BufferedOutputStream(new FileOutputStream(path + this.enforcedNamingSystem + imageNumber + "." + filetype));
 
         for (int i; (i = in.read()) != -1; ) {
             out.write(i);
@@ -62,7 +62,7 @@ public class DownloadManager {
     public static void download(String linkToMedia, String path, String filename, String filetype) throws IOException {
         URL url = new URL(linkToMedia);
         InputStream in = new BufferedInputStream(url.openStream());
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + filetype));
+        OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + "." + filetype));
 
         for (int i; (i = in.read()) != -1; ) {
             out.write(i);

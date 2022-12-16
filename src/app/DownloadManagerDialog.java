@@ -183,7 +183,7 @@ public class DownloadManagerDialog extends JDialog {
             // TODO: Implement checking filenames for illegal characters and length + testing
             setDownloadStatus(checkingFilenames);
             boolean eligibleForDownload = true;
-            boolean errorInCurrentRun = false; // Helps to deceipher whether an ERROR status is from the current run or an old error is rechecked
+            boolean errorInCurrentRun = false; // Helps to decipher whether an ERROR status is from the current run or an old error is rechecked
             for (LinkEntry entry : linkEntryList) {
                 String filename = entry.getFilename();
                 if (filename.length() > 50 || filename.isBlank()) {
