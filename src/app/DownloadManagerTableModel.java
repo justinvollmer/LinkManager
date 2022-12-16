@@ -5,12 +5,14 @@ import java.util.List;
 
 public class DownloadManagerTableModel extends AbstractTableModel {
     private List<LinkEntry> linkEntryList;
+    private boolean isFilenameEditable = true;
 
     public DownloadManagerTableModel(List<LinkEntry> linkEntryList) {
         this.linkEntryList = linkEntryList;
     }
 
     String[] columnNames = {"ID", "Link", "Filename", "Progress"};
+
 
     public String getColumnName(int col) {
         return columnNames[col];
@@ -47,11 +49,15 @@ public class DownloadManagerTableModel extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int row, int col) {
-        if (col == 2) {
+        if (col == 2 && isFilenameEditable) {
             return true;
         } else {
             return false;
         }
+    }
+
+    public void setFilenameEditable(boolean mode) {
+        isFilenameEditable = mode;
     }
 
     public void setValueAt(Object value, int row, int col) {

@@ -47,10 +47,12 @@ public class DownloadManagerDialog extends JDialog {
     private JButton btnCancel;
     private String notCheckedLinks;
     private String checkingLinks;
+    private String checkingFilenames;
     private String readyForDownload;
     private String inProgress;
     private String done;
-    private String error;
+    private String errorLinks;
+    private String errorFilenames;
 
     public DownloadManagerDialog(MainWindow mw, JTextArea taDisplayMW) {
         super(mw, true);
@@ -138,15 +140,17 @@ public class DownloadManagerDialog extends JDialog {
         tfDownloadStatus.setColumns(20);
         notCheckedLinks = "Please check the links first!";
         checkingLinks = "Checking links...";
+        checkingFilenames = "Checking filenames...";
         readyForDownload = "Ready for download!";
         inProgress = "In progress...";
         done = "Done!";
-        error = "Please fix the links!";
+        errorLinks = "Please fix the links!";
+        errorFilenames = "Please fix the filenames";
         setDownloadStatus(notCheckedLinks);
         tfDownloadStatus.setEnabled(false);
         tfDownloadStatus.setFont(new Font(null, Font.BOLD, 15));
         btnCheckLinks = new JButton("Check Links for compatibility");
-        btnCheckLinks.addActionListener(e -> { // TODO: Complete checking process + testing
+        btnCheckLinks.addActionListener(e -> { // TODO: Check for link format (only implemented filetype)
             btnCheckLinks.setEnabled(false);
             setDownloadStatus(checkingLinks);
             boolean eligibleForDownload = true;
@@ -170,13 +174,50 @@ public class DownloadManagerDialog extends JDialog {
                 btnCheckFilenames.setEnabled(true);
                 setDownloadStatus(readyForDownload);
             } else {
-                setDownloadStatus(error);
+                setDownloadStatus(errorLinks);
             }
         });
         btnCheckFilenames = new JButton("Check filenames for compatibility");
         btnCheckFilenames.setEnabled(false);
         btnCheckFilenames.addActionListener(e -> {
-            // TODO: Implement checking filenames for illegal characters
+            // TODO: Implement checking filenames for illegal characters and length + testing
+            setDownloadStatus(checkingFilenames);
+            boolean eligibleForDownload = true;
+            boolean errorInCurrentRun = false; // Helps to deceipher whether an ERROR status is from the current run or an old error is rechecked
+            for (LinkEntry entry : linkEntryList) {
+                String filename = entry.getFilename();
+                if (filename.length() > 50 || filename.isBlank()) {
+                    if (eligibleForDownload) {
+                        eligibleForDownload = false;
+                        setDownloadStatus(errorFilenames);
+                    }
+                    entry.setProgress("error");
+                    errorInCurrentRun = true;
+                    tableModel.fireTableDataChanged();
+                } else {
+                    entry.setProgress("ready");
+                    tableModel.fireTableDataChanged();
+                }
+                for (char illegalChar : DownloadManager.illegalChars) {
+                    if (filename.contains(Character.toString(illegalChar))) {
+                        if (eligibleForDownload) {
+                            eligibleForDownload = false;
+                            setDownloadStatus(errorFilenames);
+                        }
+                        entry.setProgress("error");
+                        tableModel.fireTableDataChanged();
+                    } else if (!errorInCurrentRun) {
+                        entry.setProgress("ready");
+                        tableModel.fireTableDataChanged();
+                    }
+                }
+            }
+            if (eligibleForDownload) {
+                tableModel.setFilenameEditable(false);
+                btnCheckFilenames.setEnabled(false);
+                btnDownload.setEnabled(true);
+                setDownloadStatus(readyForDownload);
+            }
         });
         isDownloading = false;
         btnDownload = new JButton("Start Download");
@@ -286,6 +327,10 @@ public class DownloadManagerDialog extends JDialog {
             tfDownloadStatus.setText(checkingLinks);
             tfDownloadStatus.setDisabledTextColor(Color.orange);
         }
+        if (status.equalsIgnoreCase(checkingFilenames)) {
+            tfDownloadStatus.setText(checkingFilenames);
+            tfDownloadStatus.setDisabledTextColor(Color.orange);
+        }
         if (status.equalsIgnoreCase(readyForDownload)) {
             tfDownloadStatus.setText(readyForDownload);
             tfDownloadStatus.setDisabledTextColor(Color.black);
@@ -298,8 +343,12 @@ public class DownloadManagerDialog extends JDialog {
             tfDownloadStatus.setText(done);
             tfDownloadStatus.setDisabledTextColor(Color.green);
         }
-        if (status.equalsIgnoreCase(error)) {
-            tfDownloadStatus.setText(error);
+        if (status.equalsIgnoreCase(errorLinks)) {
+            tfDownloadStatus.setText(errorLinks);
+            tfDownloadStatus.setDisabledTextColor(Color.red);
+        }
+        if (status.equalsIgnoreCase(errorFilenames)) {
+            tfDownloadStatus.setText(errorFilenames);
             tfDownloadStatus.setDisabledTextColor(Color.red);
         }
     }
