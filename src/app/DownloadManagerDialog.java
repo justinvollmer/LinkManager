@@ -3,6 +3,8 @@ package app;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +55,7 @@ public class DownloadManagerDialog extends JDialog {
     private String done;
     private String errorLinks;
     private String errorFilenames;
+    private int maxFilenameLength;
 
     public DownloadManagerDialog(MainWindow mw, JTextArea taDisplayMW) {
         super(mw, true);
@@ -83,7 +86,8 @@ public class DownloadManagerDialog extends JDialog {
         lblTitle.setFont(new Font(null, Font.BOLD, 20));
         pnlNorth.add(lblTitle);
 
-        // DISPLAY
+        // CENTER
+        maxFilenameLength = 50;
         pnlCenter = new JPanel();
         pnlCenter.setBorder(new EmptyBorder(5, 10, 0, 5));
         pnlCenter.setLayout(new BorderLayout());
@@ -150,7 +154,7 @@ public class DownloadManagerDialog extends JDialog {
         tfDownloadStatus.setEnabled(false);
         tfDownloadStatus.setFont(new Font(null, Font.BOLD, 15));
         btnCheckLinks = new JButton("Check Links for compatibility");
-        btnCheckLinks.addActionListener(e -> { // TODO: Check for link format (only implemented filetype)
+        btnCheckLinks.addActionListener(e -> {
             btnCheckLinks.setEnabled(false);
             setDownloadStatus(checkingLinks);
             boolean eligibleForDownload = true;
@@ -163,6 +167,11 @@ public class DownloadManagerDialog extends JDialog {
                     }
                     if (!entry.getLink().contains(filetype) && supportedFiletypes.get(supportedFiletypes.size()-1).equalsIgnoreCase(filetype)) {
                         entry.setProgress("error");
+                    }
+                    try {
+                        URL testValidlink = new URL(entry.getLink());
+                    } catch (MalformedURLException invalidUrl) {
+                        entry.setProgress("invalid link");
                     }
                 }
                 if (eligibleForDownload && !entry.getProgress().equalsIgnoreCase("ready")) {
@@ -185,7 +194,7 @@ public class DownloadManagerDialog extends JDialog {
             boolean errorInCurrentRun = false; // Helps to decipher whether an ERROR status is from the current run or an old error is rechecked
             for (LinkEntry entry : linkEntryList) {
                 String filename = entry.getFilename();
-                if (filename.length() > 50 || filename.isBlank()) {
+                if (filename.length() > maxFilenameLength || filename.isBlank()) {
                     if (eligibleForDownload) {
                         eligibleForDownload = false;
                         setDownloadStatus(errorFilenames);
@@ -322,30 +331,37 @@ public class DownloadManagerDialog extends JDialog {
         if (status.equalsIgnoreCase(notCheckedLinks)) {
             tfDownloadStatus.setText(notCheckedLinks);
             tfDownloadStatus.setDisabledTextColor(Color.gray);
+            return;
         }
         if (status.equalsIgnoreCase(checkingLinks)) {
             tfDownloadStatus.setText(checkingLinks);
             tfDownloadStatus.setDisabledTextColor(Color.orange);
+            return;
         }
         if (status.equalsIgnoreCase(checkingFilenames)) {
             tfDownloadStatus.setText(checkingFilenames);
             tfDownloadStatus.setDisabledTextColor(Color.orange);
+            return;
         }
         if (status.equalsIgnoreCase(readyForDownload)) {
             tfDownloadStatus.setText(readyForDownload);
             tfDownloadStatus.setDisabledTextColor(Color.black);
+            return;
         }
         if (status.equalsIgnoreCase(inProgress)) {
             tfDownloadStatus.setText(inProgress);
             tfDownloadStatus.setDisabledTextColor(Color.blue);
+            return;
         }
         if (status.equalsIgnoreCase(done)) {
             tfDownloadStatus.setText(done);
             tfDownloadStatus.setDisabledTextColor(Color.green);
+            return;
         }
         if (status.equalsIgnoreCase(errorLinks)) {
             tfDownloadStatus.setText(errorLinks);
             tfDownloadStatus.setDisabledTextColor(Color.red);
+            return;
         }
         if (status.equalsIgnoreCase(errorFilenames)) {
             tfDownloadStatus.setText(errorFilenames);
