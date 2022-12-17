@@ -56,8 +56,10 @@ public class DownloadManagerTableModel extends AbstractTableModel {
         }
     }
 
-    public void setFilenameEditable(boolean mode) {
-        isFilenameEditable = mode;
+    public void lockFilenames() {
+        isFilenameEditable = false;
+        columnNames[2] = "Filenames [LOCKED]";
+        this.fireTableStructureChanged();
     }
 
     public void setValueAt(Object value, int row, int col) {

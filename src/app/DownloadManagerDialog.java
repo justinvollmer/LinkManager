@@ -30,7 +30,7 @@ public class DownloadManagerDialog extends JDialog {
     private JButton btnSelectFolder;
     private JPanel pnlCenterAction5;
     private JTextField tfPath;
-    private String notDirectory;
+    private String noDirectory;
     private JPanel pnlCenterAction6;
     private JPanel pnlCenterAction7;
     private JButton btnCheckFilenames;
@@ -130,8 +130,8 @@ public class DownloadManagerDialog extends JDialog {
         });
         tfPath = new JTextField();
         tfPath.setColumns(30);
-        notDirectory = "No directory selected!";
-        tfPath.setText(notDirectory);
+        noDirectory = "No directory selected!";
+        tfPath.setText(noDirectory);
         tfPath.setEditable(false);
         tfPath.setBackground(Color.white);
         tfPath.setFont(new Font(null, Font.PLAIN, 15));
@@ -180,7 +180,6 @@ public class DownloadManagerDialog extends JDialog {
         btnCheckFilenames = new JButton("Check filenames for compatibility");
         btnCheckFilenames.setEnabled(false);
         btnCheckFilenames.addActionListener(e -> {
-            // TODO: Implement checking filenames for illegal characters and length + testing
             setDownloadStatus(checkingFilenames);
             boolean eligibleForDownload = true;
             boolean errorInCurrentRun = false; // Helps to decipher whether an ERROR status is from the current run or an old error is rechecked
@@ -205,6 +204,7 @@ public class DownloadManagerDialog extends JDialog {
                             setDownloadStatus(errorFilenames);
                         }
                         entry.setProgress("error");
+                        errorInCurrentRun = true;
                         tableModel.fireTableDataChanged();
                     } else if (!errorInCurrentRun) {
                         entry.setProgress("ready");
@@ -213,7 +213,7 @@ public class DownloadManagerDialog extends JDialog {
                 }
             }
             if (eligibleForDownload) {
-                tableModel.setFilenameEditable(false);
+                tableModel.lockFilenames();
                 btnCheckFilenames.setEnabled(false);
                 btnDownload.setEnabled(true);
                 setDownloadStatus(readyForDownload);

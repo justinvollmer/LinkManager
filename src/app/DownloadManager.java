@@ -48,7 +48,7 @@ public class DownloadManager {
             }
         }
 
-        URL url = new URL(linkToMedia);
+        URL url = new URL(linkToMedia.trim());
         InputStream in = new BufferedInputStream(url.openStream());
         OutputStream out = new BufferedOutputStream(new FileOutputStream(path + this.enforcedNamingSystem + imageNumber + "." + filetype));
 
@@ -60,7 +60,7 @@ public class DownloadManager {
     }
 
     public static void download(String linkToMedia, String path, String filename, String filetype) throws IOException {
-        URL url = new URL(linkToMedia);
+        URL url = new URL(linkToMedia.trim());
         InputStream in = new BufferedInputStream(url.openStream());
         OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + "." + filetype));
 
