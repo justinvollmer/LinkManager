@@ -3,7 +3,9 @@ package app;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -170,7 +172,8 @@ public class DownloadManagerDialog extends JDialog {
                     }
                     try {
                         URL testValidlink = new URL(entry.getLink());
-                    } catch (MalformedURLException invalidUrl) {
+                        testValidlink.toURI();
+                    } catch (MalformedURLException | URISyntaxException invalidUrl) {
                         entry.setProgress("invalid link");
                     }
                 }
