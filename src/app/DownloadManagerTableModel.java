@@ -1,6 +1,8 @@
 package app;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 import java.util.List;
 
 public class DownloadManagerTableModel extends AbstractTableModel {
@@ -56,10 +58,11 @@ public class DownloadManagerTableModel extends AbstractTableModel {
         }
     }
 
-    public void lockFilenames() {
+    public void lockFilenames(JTable table) {
         isFilenameEditable = false;
         columnNames[2] = "Filenames [LOCKED]";
         this.fireTableStructureChanged();
+        resetColumnWidth(table);
     }
 
     public void setValueAt(Object value, int row, int col) {
@@ -77,6 +80,22 @@ public class DownloadManagerTableModel extends AbstractTableModel {
             case 3:
                 entry.setProgress((String) value);
                 break;
+        }
+    }
+
+    public void resetColumnWidth(JTable table) {
+        TableColumn column;
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            column = table.getColumnModel().getColumn(i);
+            if (i == 0) {
+                column.setPreferredWidth(50);
+            } else if (i == 1) {
+                column.setPreferredWidth(300);
+            } else if (i == 2) {
+                column.setPreferredWidth(200);
+            } else if (i == 3) {
+                column.setPreferredWidth(100);
+            }
         }
     }
 }

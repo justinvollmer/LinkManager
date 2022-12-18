@@ -3,7 +3,6 @@ package app;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -66,6 +65,7 @@ public class DownloadManagerDialog extends JDialog {
         super.setTitle("Download Manager");
         super.setLocation(mw.getLocation());
         super.setResizable(true);
+        super.setSize((int) (mw.getWidth() * 1.2), mw.getHeight()); // I don't use super.pack() to improve the visibility of the columns
 
         // SAVING LINKS IN ENTRIES AND ADDING TO ARRAYLIST
         linkEntryList = new ArrayList<>();
@@ -95,6 +95,8 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenter.setLayout(new BorderLayout());
         tableModel = new DownloadManagerTableModel(linkEntryList);
         table = new JTable(tableModel);
+            // SETTING COLUMN WIDTHS
+        tableModel.resetColumnWidth(table);
         pnlActionBar = new JPanel();
         pnlActionBar.setBorder(new EmptyBorder(0, 5, 0, 0));
         pnlActionBar.setLayout(new GridLayout(10, 1));
@@ -168,12 +170,12 @@ public class DownloadManagerDialog extends JDialog {
                         break;
                     }
                     if (!entry.getLink().contains(filetype) && supportedFiletypes.get(supportedFiletypes.size()-1).equalsIgnoreCase(filetype)) {
-                        entry.setProgress("error");
+                        entry.setProgress("invalid filetype");
                     }
-                    try {
-                        URL testValidlink = new URL(entry.getLink());
-                        testValidlink.toURI();
-                    } catch (MalformedURLException | URISyntaxException invalidUrl) {
+                    if (!isValidLink(entry.getLink())) {
+                        entry.setProgress("invalid link");
+                    }
+                    if (!entry.getLink().contains(filetype) && supportedFiletypes.get(supportedFiletypes.size()-1).equalsIgnoreCase(filetype) && !isValidLink(entry.getLink())) {
                         entry.setProgress("invalid link");
                     }
                 }
@@ -225,7 +227,7 @@ public class DownloadManagerDialog extends JDialog {
                 }
             }
             if (eligibleForDownload) {
-                tableModel.lockFilenames();
+                tableModel.lockFilenames(table);
                 btnCheckFilenames.setEnabled(false);
                 btnDownload.setEnabled(true);
                 setDownloadStatus(readyForDownload);
@@ -314,7 +316,6 @@ public class DownloadManagerDialog extends JDialog {
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
         super.getContentPane().add(pnlCenter, BorderLayout.CENTER);
         super.getContentPane().add(pnlSouth, BorderLayout.SOUTH);
-        super.pack();
         super.setVisible(true);
     }
 
@@ -369,6 +370,16 @@ public class DownloadManagerDialog extends JDialog {
         if (status.equalsIgnoreCase(errorFilenames)) {
             tfDownloadStatus.setText(errorFilenames);
             tfDownloadStatus.setDisabledTextColor(Color.red);
+        }
+    }
+
+    private boolean isValidLink(String link) {
+        try {
+            URL url = new URL(link);
+            url.toURI();
+            return true;
+        } catch (MalformedURLException | URISyntaxException e) {
+            return false;
         }
     }
 }
