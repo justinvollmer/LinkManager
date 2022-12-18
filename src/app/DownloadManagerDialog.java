@@ -95,8 +95,9 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenter.setLayout(new BorderLayout());
         tableModel = new DownloadManagerTableModel(linkEntryList);
         table = new JTable(tableModel);
-            // SETTING COLUMN WIDTHS
+
         tableModel.resetColumnWidth(table);
+
         pnlActionBar = new JPanel();
         pnlActionBar.setBorder(new EmptyBorder(0, 5, 0, 0));
         pnlActionBar.setLayout(new GridLayout(10, 1));
@@ -137,15 +138,28 @@ public class DownloadManagerDialog extends JDialog {
             for (LinkEntry entry : linkEntryList) {
                 try {
                     entry.setFilename(tfNamingSystem.getText());
-                    tableModel.fireTableDataChanged();
                 } catch (Exception namingException) {
                     JOptionPane.showMessageDialog(this, "An error occured. Please make sure you do not apply a filename with illegal characters.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
+            tableModel.fireTableDataChanged();
         });
         btnApplyNameToSelected = new JButton("Apply name to selection");
+        btnApplyNameToSelected.addActionListener(e -> {
+            int[] selectedRows = table.getSelectedRows();
+            for (int row : selectedRows) {
+                linkEntryList.get(row).setFilename(tfNamingSystem.getText());
+            }
+            tableModel.fireTableDataChanged();
+        });
         btnClearAllName = new JButton("Clear all");
+        btnClearAllName.addActionListener(e -> {
+            for (LinkEntry entry : linkEntryList) {
+                entry.setFilename("");
+            }
+            tableModel.fireTableDataChanged();
+        });
         lblDirectory = new JLabel("Directory: ");
         btnSelectFolder = new JButton("Select folder");
         btnSelectFolder.addActionListener(e -> {
