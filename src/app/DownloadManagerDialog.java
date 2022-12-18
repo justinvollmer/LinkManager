@@ -120,6 +120,7 @@ public class DownloadManagerDialog extends JDialog {
         tfNamingSystem = new JTextField();
         tfNamingSystem.setFont(new Font(null, Font.PLAIN, 15));
         tfNamingSystem.setColumns(20);
+        tfNamingSystem.setDisabledTextColor(Color.black);
         lblPreviewName = new JLabel("Preview: ");
         tfPreviewName = new JTextField();
         tfPreviewName.setColumns(15);
@@ -129,6 +130,20 @@ public class DownloadManagerDialog extends JDialog {
         tfPreviewName.setFont(new Font(null, Font.PLAIN, 15));
         tfPreviewName.setText("'CustomName_'" + "ID");
         btnApplyNaming = new JButton("Apply name to all");
+        btnApplyNaming.addActionListener(e -> {
+            if (tfNamingSystem.getText().isEmpty()) {
+                return;
+            }
+            for (LinkEntry entry : linkEntryList) {
+                try {
+                    entry.setFilename(tfNamingSystem.getText());
+                    tableModel.fireTableDataChanged();
+                } catch (Exception namingException) {
+                    JOptionPane.showMessageDialog(this, "An error occured. Please make sure you do not apply a filename with illegal characters.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+        });
         btnApplyNameToSelected = new JButton("Apply name to selection");
         btnClearAllName = new JButton("Clear all");
         lblDirectory = new JLabel("Directory: ");
@@ -231,21 +246,31 @@ public class DownloadManagerDialog extends JDialog {
                 btnCheckFilenames.setEnabled(false);
                 btnDownload.setEnabled(true);
                 setDownloadStatus(readyForDownload);
+                tfNamingSystem.setEnabled(false);
+                btnApplyNaming.setEnabled(false);
+                btnApplyNameToSelected.setEnabled(false);
+                btnClearAllName.setEnabled(false);
             }
         });
         isDownloading = false;
         btnDownload = new JButton("Start Download");
         btnDownload.setEnabled(false);
         btnDownload.addActionListener(e -> {
-            if (!isDownloading) {
+            if (tfPath.getText().equalsIgnoreCase(noDirectory)) {
+                JOptionPane.showMessageDialog(this, "Please select a valid download path first!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!isDownloading ) {
                 btnDownload.setText("Stop Download");
                 setDownloadStatus(inProgress);
                 progressBar.setVisible(true);
+                btnSelectFolder.setEnabled(false);
                 isDownloading = true;
             } else {
                 btnDownload.setText("Start Download");
                 setDownloadStatus(readyForDownload);
                 progressBar.setVisible(false);
+                btnSelectFolder.setEnabled(true);
                 isDownloading = false;
             }
         });
