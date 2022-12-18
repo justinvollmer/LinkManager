@@ -35,6 +35,9 @@ public class DownloadManagerDialog extends JDialog {
     private JTextField tfPath;
     private String noDirectory;
     private JPanel pnlCenterAction6;
+    private JLabel lblInterval;
+    private JTextField tfInterval;
+    private JLabel lblSeconds;
     private JPanel pnlCenterAction7;
     private JButton btnCheckFilenames;
     private JButton btnCheckLinks;
@@ -172,6 +175,13 @@ public class DownloadManagerDialog extends JDialog {
         tfPath.setEditable(false);
         tfPath.setBackground(Color.white);
         tfPath.setFont(new Font(null, Font.PLAIN, 15));
+        lblInterval = new JLabel("Interval");
+        tfInterval = new JTextField();
+        tfInterval.setColumns(5);
+        tfInterval.setDisabledTextColor(Color.black);
+        tfInterval.setBackground(Color.white);
+        tfInterval.setFont(new Font(null, Font.PLAIN, 15));
+        lblSeconds = new JLabel("second(s) / image");
         lblDownloadStatus = new JLabel("Download Status: ");
         tfDownloadStatus = new JTextField();
         tfDownloadStatus.setColumns(20);
@@ -270,6 +280,22 @@ public class DownloadManagerDialog extends JDialog {
         btnDownload = new JButton("Start Download");
         btnDownload.setEnabled(false);
         btnDownload.addActionListener(e -> {
+            int interval;
+            try {
+                if ((tfInterval.getText().isBlank() || Integer.parseInt(tfInterval.getText()) < 1) && !isDownloading) {
+                    int yesno = JOptionPane.showConfirmDialog(this, "We would recommend using an interval. The website might detect you as spam. \nDo you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
+                    if (yesno == 1) {
+                        return;
+                    }
+                    tfInterval.setText("0");
+                    interval = 0;
+                } else {
+                    interval = Integer.parseInt(tfInterval.getText());
+                }
+            } catch (Exception cannotCastToInt) {
+                JOptionPane.showMessageDialog(this, "Your interval input is not a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if (tfPath.getText().equalsIgnoreCase(noDirectory)) {
                 JOptionPane.showMessageDialog(this, "Please select a valid download path first!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -279,12 +305,14 @@ public class DownloadManagerDialog extends JDialog {
                 setDownloadStatus(inProgress);
                 progressBar.setVisible(true);
                 btnSelectFolder.setEnabled(false);
+                tfInterval.setEnabled(false);
                 isDownloading = true;
             } else {
                 btnDownload.setText("Start Download");
                 setDownloadStatus(readyForDownload);
                 progressBar.setVisible(false);
                 btnSelectFolder.setEnabled(true);
+                tfInterval.setEnabled(true);
                 isDownloading = false;
             }
         });
@@ -299,6 +327,9 @@ public class DownloadManagerDialog extends JDialog {
         pnlCenterAction4.add(lblDirectory);
         pnlCenterAction4.add(btnSelectFolder);
         pnlCenterAction5.add(tfPath);
+        pnlCenterAction6.add(lblInterval);
+        pnlCenterAction6.add(tfInterval);
+        pnlCenterAction6.add(lblSeconds);
         pnlCenterAction7.add(lblDownloadStatus);
         pnlCenterAction7.add(tfDownloadStatus);
         pnlActionBar.add(pnlCenterAction1);

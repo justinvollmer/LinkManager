@@ -38,8 +38,8 @@ public class ConversionSettingsDialog extends JDialog {
     private JCheckBox chckIncognito;
     private JLabel lblDelay;
     private JCheckBox chckDelay;
-    private JLabel lblDelayLength;
-    private JTextField tfDelay;
+    private JLabel lblIntervalLength;
+    private JTextField tfInterval;
 
     public ConversionSettingsDialog(MainWindow mw, JTextArea taDisplayMW) {
         super(mw, true);
@@ -119,7 +119,7 @@ public class ConversionSettingsDialog extends JDialog {
             if (this.chckIncognito.isSelected()) {
                 incognito = "--incognito ";
             }
-            int delayLength = Integer.parseInt(tfDelay.getText());
+            int delayLength = Integer.parseInt(tfInterval.getText());
             String delay = "";
             if (this.chckDelay.isSelected()) {
                 delay = "TIMEOUT " + delayLength + "\n";
@@ -174,18 +174,18 @@ public class ConversionSettingsDialog extends JDialog {
         lblDelay = new JLabel("Delay: ");
         chckDelay = new JCheckBox();
         chckDelay.setSelected(false);
-        lblDelayLength = new JLabel("Delay length: ");
-        tfDelay = new JTextField();
-        tfDelay.setColumns(2);
-        tfDelay.setText(Integer.toString(1));
+        lblIntervalLength = new JLabel("Delay interval: ");
+        tfInterval = new JTextField();
+        tfInterval.setColumns(2);
+        tfInterval.setText(Integer.toString(1));
         pnlInnerGrid1.add(lblBrowser);
         pnlInnerGrid2.add(cmbBrowser);
         pnlInnerGrid3.add(lblIncognito);
         pnlInnerGrid4.add(chckIncognito);
         pnlInnerGrid5.add(lblDelay);
         pnlInnerGrid6.add(chckDelay);
-        pnlInnerGrid7.add(lblDelayLength);
-        pnlInnerGrid8.add(tfDelay);
+        pnlInnerGrid7.add(lblIntervalLength);
+        pnlInnerGrid8.add(tfInterval);
         pnlInnerGrid.add(pnlInnerGrid1);
         pnlInnerGrid.add(pnlInnerGrid2);
         pnlInnerGrid.add(pnlInnerGrid3);

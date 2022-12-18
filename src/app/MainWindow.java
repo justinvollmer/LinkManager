@@ -171,7 +171,8 @@ public class MainWindow extends JFrame {
             int yesNo = JOptionPane.showConfirmDialog(MainWindow.this, "Please only use this when you have a short list. " +
                     "\nThe links will be opened with no delay. " +
                     "\nThe websites might detect this as a spam. " +
-                    "\nIf you have a long list, please \"convert to a batch file\"", "Warning", JOptionPane.YES_NO_OPTION);
+                    "\nIf you have a long list, please \"convert to a batch file\"" +
+                    "\nDo you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
             if (yesNo == 0) {
                 String completelist = this.taDisplay.getText();
                 String[] list = completelist.trim().split("\n");

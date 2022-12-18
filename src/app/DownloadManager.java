@@ -72,6 +72,9 @@ public class DownloadManager {
     }
 
     public static void sleep(int seconds) {
+        if (seconds == 0) {
+            return;
+        }
         int milliseconds = seconds * 1000;
         try {
             Thread.sleep(milliseconds);
