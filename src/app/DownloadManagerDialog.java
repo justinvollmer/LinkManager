@@ -3,6 +3,7 @@ package app;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -280,6 +281,7 @@ public class DownloadManagerDialog extends JDialog {
         btnDownload = new JButton("Start Download");
         btnDownload.setEnabled(false);
         btnDownload.addActionListener(e -> {
+            DownloadManager manager = new DownloadManager(tfPath.getText());
             int interval;
             try {
                 if ((tfInterval.getText().isBlank() || Integer.parseInt(tfInterval.getText()) < 1) && !isDownloading) {
@@ -307,6 +309,7 @@ public class DownloadManagerDialog extends JDialog {
                 btnSelectFolder.setEnabled(false);
                 tfInterval.setEnabled(false);
                 isDownloading = true;
+                startDownload(manager, interval); // TODO: fix this
             } else {
                 btnDownload.setText("Start Download");
                 setDownloadStatus(readyForDownload);
@@ -450,6 +453,18 @@ public class DownloadManagerDialog extends JDialog {
             return true;
         } catch (MalformedURLException | URISyntaxException e) {
             return false;
+        }
+    }
+
+    private void startDownload(DownloadManager manager, int interval) {
+        try {
+            for (LinkEntry entry : linkEntryList) {
+                manager.download(entry.getLink(), entry.getFilename(), entry.getId());
+                DownloadManager.sleep(interval);
+            }
+            JOptionPane.showMessageDialog(this, "Downloading process finished!", "Done", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "An error occured while downloading a file. The download has been stopped!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

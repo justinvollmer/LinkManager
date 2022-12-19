@@ -7,13 +7,11 @@ import java.util.List;
 
 public class DownloadManager {
     private String path;
-    private String enforcedNamingSystem;
     private List<String> filetypeList;
     public static final char[] illegalChars = {'<', '>', '/', '\\', '|', '*', ':', '"'};
 
-    public DownloadManager(String path, String enforcedNamingSystem) {
+    public DownloadManager(String path) {
         this.path = path;
-        this.enforcedNamingSystem = enforcedNamingSystem;
         filetypeList = DownloadManager.getSupportedFiletypes();
     }
 
@@ -34,7 +32,7 @@ public class DownloadManager {
         return supportedFiletypes;
     }
 
-    public void download(String linkToMedia, int imageNumber) throws IOException {
+    public void download(String linkToMedia, String filename, int imageNumber) throws IOException {
         String filetype = null;
         for (String filetypeFromList : filetypeList) {
             if (linkToMedia.contains(filetypeFromList) || filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1))) {
@@ -50,7 +48,7 @@ public class DownloadManager {
 
         URL url = new URL(linkToMedia.trim());
         InputStream in = new BufferedInputStream(url.openStream());
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(path + this.enforcedNamingSystem + imageNumber + "." + filetype));
+        OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + imageNumber + "." + filetype));
 
         for (int i; (i = in.read()) != -1; ) {
             out.write(i);
