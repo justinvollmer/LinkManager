@@ -10,7 +10,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DownloadManagerDialog extends JDialog {
+public class DownloadManagerDialog extends JDialog implements Runnable {
+    private DownloadManager manager;
+    private int interval;
+    private Thread downloadingThread;
     private JPanel pnlNorth;
     private JLabel lblTitle;
     private JPanel pnlCenter;
@@ -281,8 +284,7 @@ public class DownloadManagerDialog extends JDialog {
         btnDownload = new JButton("Start Download");
         btnDownload.setEnabled(false);
         btnDownload.addActionListener(e -> {
-            DownloadManager manager = new DownloadManager(tfPath.getText());
-            int interval;
+            this.manager = new DownloadManager(tfPath.getText());
             try {
                 if ((tfInterval.getText().isBlank() || Integer.parseInt(tfInterval.getText()) < 1) && !isDownloading) {
                     int yesno = JOptionPane.showConfirmDialog(this, "We would recommend using an interval. The website might detect you as spam. \nDo you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
@@ -290,9 +292,9 @@ public class DownloadManagerDialog extends JDialog {
                         return;
                     }
                     tfInterval.setText("0");
-                    interval = 0;
+                    this.interval = 0;
                 } else {
-                    interval = Integer.parseInt(tfInterval.getText());
+                    this.interval = Integer.parseInt(tfInterval.getText());
                 }
             } catch (Exception cannotCastToInt) {
                 JOptionPane.showMessageDialog(this, "Your interval input is not a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -309,7 +311,9 @@ public class DownloadManagerDialog extends JDialog {
                 btnSelectFolder.setEnabled(false);
                 tfInterval.setEnabled(false);
                 isDownloading = true;
-                startDownload(manager, interval); // TODO: fix this
+                this.downloadingThread = new Thread(this);
+                downloadingThread.start();
+                // TODO: Add progressbar functionality
             } else {
                 btnDownload.setText("Start Download");
                 setDownloadStatus(readyForDownload);
@@ -317,6 +321,7 @@ public class DownloadManagerDialog extends JDialog {
                 btnSelectFolder.setEnabled(true);
                 tfInterval.setEnabled(true);
                 isDownloading = false;
+                Thread.currentThread().interrupt();
             }
         });
         scrollPane = new JScrollPane();
@@ -456,15 +461,18 @@ public class DownloadManagerDialog extends JDialog {
         }
     }
 
-    private void startDownload(DownloadManager manager, int interval) {
+    @Override
+    public void run() {
         try {
             for (LinkEntry entry : linkEntryList) {
                 manager.download(entry.getLink(), entry.getFilename(), entry.getId());
-                DownloadManager.sleep(interval);
+                Thread.sleep(interval * 1000L);
             }
             JOptionPane.showMessageDialog(this, "Downloading process finished!", "Done", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "An error occured while downloading a file. The download has been stopped!", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (InterruptedException ie) {
+            JOptionPane.showMessageDialog(this, "Downloading process has been cancelled!", "Cancelled", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
