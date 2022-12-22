@@ -20,6 +20,7 @@ public class MainWindow extends JFrame {
     private JPanel pnlSouthLeft;
     private JPanel pnlSouthRight;
     private JButton btnDownloadManager;
+    private JButton btnEncryptionManager;
     private JButton btnEdit;
     private JButton btnClear;
     private JButton btnReset;
@@ -142,6 +143,7 @@ public class MainWindow extends JFrame {
             }
             new DownloadManagerDialog(MainWindow.this, this.taDisplay);
         });
+        btnEncryptionManager = new JButton("Encryption Manager");
         btnEdit = new JButton("Edit");
         btnEdit.addActionListener(e -> {
             new EditDialog(MainWindow.this, this.taDisplay);
@@ -186,6 +188,7 @@ public class MainWindow extends JFrame {
             }
         });
         pnlSouthLeft.add(btnDownloadManager);
+        pnlSouthLeft.add(btnEncryptionManager);
         pnlSouthRight.add(btnEdit);
         pnlSouthRight.add(btnClear);
         pnlSouthRight.add(btnReset);
