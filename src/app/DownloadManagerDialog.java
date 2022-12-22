@@ -53,7 +53,6 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
     private JPanel pnlSouthLeft;
     private JPanel pnlSouthRight;
     private JButton btnHow;
-    private JProgressBar progressBar;
     private JButton btnCancel;
     private String notCheckedLinks;
     private String checkingLinks;
@@ -307,21 +306,15 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
             if (!isDownloading ) {
                 btnDownload.setText("Stop Download");
                 setDownloadStatus(inProgress);
-                progressBar.setVisible(true);
                 btnSelectFolder.setEnabled(false);
                 tfInterval.setEnabled(false);
                 isDownloading = true;
                 this.downloadingThread = new Thread(this);
                 downloadingThread.start();
-                // TODO: Add progressbar functionality
             } else {
-                btnDownload.setText("Start Download");
-                setDownloadStatus(readyForDownload);
-                progressBar.setVisible(false);
-                btnSelectFolder.setEnabled(true);
-                tfInterval.setEnabled(true);
+                resetUiAfterDownload();
                 isDownloading = false;
-                Thread.currentThread().interrupt();
+                downloadingThread.interrupt();
             }
         });
         scrollPane = new JScrollPane();
@@ -375,10 +368,6 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
             }
             JOptionPane.showMessageDialog(this, "The Download Manager allows you to download media such as images or gifs (videos aren't supported as of right now).\nSupported file types: " + sb, "How it works", JOptionPane.INFORMATION_MESSAGE);
         });
-        progressBar = new JProgressBar(0, 100);
-        progressBar.setVisible(false);
-        progressBar.setValue(0);
-        progressBar.setStringPainted(true);
         pnlSouthRight = new JPanel();
         pnlSouthRight.setLayout(flowRight);
         btnCancel = new JButton("Cancel");
@@ -388,7 +377,6 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         pnlSouthLeft.add(btnHow);
         pnlSouthRight.add(btnCancel);
         pnlSouth.add(pnlSouthLeft, BorderLayout.WEST);
-        pnlSouth.add(progressBar, BorderLayout.CENTER);
         pnlSouth.add(pnlSouthRight, BorderLayout.EAST);
 
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
@@ -461,14 +449,27 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         }
     }
 
+    private void resetUiAfterDownload() {
+        btnDownload.setText("Start Download");
+        setDownloadStatus(readyForDownload);
+        btnSelectFolder.setEnabled(true);
+        tfInterval.setEnabled(true);
+    }
+
     @Override
     public void run() {
+        int total = linkEntryList.size();
+        int current = 0;
+        String currentStatus = tfDownloadStatus.getText();
         try {
             for (LinkEntry entry : linkEntryList) {
                 manager.download(entry.getLink(), entry.getFilename(), entry.getId());
+                current++;
+                tfDownloadStatus.setText(currentStatus + " " + current + "/" + total);
                 Thread.sleep(interval * 1000L);
             }
             JOptionPane.showMessageDialog(this, "Downloading process finished!", "Done", JOptionPane.INFORMATION_MESSAGE);
+            resetUiAfterDownload();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "An error occured while downloading a file. The download has been stopped!", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (InterruptedException ie) {
