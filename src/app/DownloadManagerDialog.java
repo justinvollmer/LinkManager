@@ -468,12 +468,22 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                 tfDownloadStatus.setText(currentStatus + " " + current + "/" + total);
                 Thread.sleep(interval * 1000L);
             }
-            JOptionPane.showMessageDialog(this, "Downloading process finished!", "Done", JOptionPane.INFORMATION_MESSAGE);
+            int okQuit = JOptionPane.showConfirmDialog(DownloadManagerDialog.this, "Downloading process finished! \nDo you want to Exit the Download Manager?", "Done", JOptionPane.YES_NO_OPTION);
+            if (okQuit == 0) {
+                super.setVisible(false);
+            }
             resetUiAfterDownload();
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "An error occured while downloading a file. The download has been stopped!", "Error", JOptionPane.ERROR_MESSAGE);
+            int okQuit = JOptionPane.showConfirmDialog(DownloadManagerDialog.this, "An error occured while downloading a file. The download has been stopped! \nDo you want to Exit the Download Manager?", "Error", JOptionPane.YES_NO_OPTION);
+            if (okQuit == 0) {
+                super.setVisible(false);
+            }
+            resetUiAfterDownload();
         } catch (InterruptedException ie) {
-            JOptionPane.showMessageDialog(this, "Downloading process has been cancelled!", "Cancelled", JOptionPane.INFORMATION_MESSAGE);
+            int okQuit = JOptionPane.showConfirmDialog(DownloadManagerDialog.this, "Downloading process has been cancelled! \nDo you want to Exit the Download Manager?", "Cancelled", JOptionPane.YES_NO_OPTION);
+            if (okQuit == 0) {
+                super.setVisible(false);
+            }
         }
     }
 }
