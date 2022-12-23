@@ -309,6 +309,8 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                 btnSelectFolder.setEnabled(false);
                 tfInterval.setEnabled(false);
                 isDownloading = true;
+                btnCancel.setEnabled(false);
+                super.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                 this.downloadingThread = new Thread(this);
                 downloadingThread.start();
             } else {
@@ -453,6 +455,8 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         btnDownload.setText("Start Download");
         setDownloadStatus(readyForDownload);
         btnSelectFolder.setEnabled(true);
+        btnCancel.setEnabled(true);
+        super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         tfInterval.setEnabled(true);
     }
 
