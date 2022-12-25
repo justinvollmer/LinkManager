@@ -59,7 +59,6 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
     private String checkingFilenames;
     private String readyForDownload;
     private String inProgress;
-    private String done;
     private String errorLinks;
     private String errorFilenames;
     private int maxFilenameLength;
@@ -193,7 +192,6 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         checkingFilenames = "Checking filenames...";
         readyForDownload = "Ready for download!";
         inProgress = "In progress...";
-        done = "Done!";
         errorLinks = "Please fix the links!";
         errorFilenames = "Please fix the filenames";
         setDownloadStatus(notCheckedLinks);
@@ -425,11 +423,6 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
             tfDownloadStatus.setDisabledTextColor(Color.blue);
             return;
         }
-        if (status.equalsIgnoreCase(done)) {
-            tfDownloadStatus.setText(done);
-            tfDownloadStatus.setDisabledTextColor(Color.green);
-            return;
-        }
         if (status.equalsIgnoreCase(errorLinks)) {
             tfDownloadStatus.setText(errorLinks);
             tfDownloadStatus.setDisabledTextColor(Color.red);
@@ -458,6 +451,10 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         btnCancel.setEnabled(true);
         super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         tfInterval.setEnabled(true);
+        for (LinkEntry entry : linkEntryList) {
+            entry.setProgress("ready");
+        }
+        tableModel.fireTableDataChanged();
     }
 
     @Override
@@ -468,6 +465,8 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         try {
             for (LinkEntry entry : linkEntryList) {
                 manager.download(entry.getLink(), entry.getFilename(), entry.getId());
+                entry.setProgress("done");
+                tableModel.fireTableDataChanged();
                 current++;
                 tfDownloadStatus.setText(currentStatus + " " + current + "/" + total);
                 Thread.sleep(interval * 1000L);
@@ -476,18 +475,18 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
             if (okQuit == 0) {
                 super.setVisible(false);
             }
-            resetUiAfterDownload();
         } catch (IOException e) {
             int okQuit = JOptionPane.showConfirmDialog(DownloadManagerDialog.this, "An error occured while downloading a file. The download has been stopped! \nDo you want to Exit the Download Manager?", "Error", JOptionPane.YES_NO_OPTION);
             if (okQuit == 0) {
                 super.setVisible(false);
             }
-            resetUiAfterDownload();
         } catch (InterruptedException ie) {
             int okQuit = JOptionPane.showConfirmDialog(DownloadManagerDialog.this, "Downloading process has been cancelled! \nDo you want to Exit the Download Manager?", "Cancelled", JOptionPane.YES_NO_OPTION);
             if (okQuit == 0) {
                 super.setVisible(false);
             }
+        } finally {
+            resetUiAfterDownload();
         }
     }
 }
