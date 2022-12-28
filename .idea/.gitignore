@@ -8,3 +8,4 @@
 /httpRequests/
 /discord.xml
 /jpa-buddy.xml
+../src/config/config.properties
