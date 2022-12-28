@@ -12,8 +12,7 @@ public class Encryption {
     String key256bit;
     Cipher cipher;
     Key secretKey;
-
-    // TODO: Implement Encryption
+    
     public Encryption(String key256bit, String algorithm) {
         try {
             this.algorithm = algorithm;
