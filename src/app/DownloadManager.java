@@ -5,6 +5,7 @@ import config.Config;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DownloadManager {

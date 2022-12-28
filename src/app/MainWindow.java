@@ -65,10 +65,10 @@ public class MainWindow extends JFrame {
             System.exit(0);
         });
         mnSettings = new JMenu("Settings");
-        mnSettings.setEnabled(false);
         mnSettings.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
+                new SettingsDialog(MainWindow.this);
             }
 
             @Override
