@@ -104,7 +104,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         tableModel.resetColumnWidth(table);
 
         pnlActionBar = new JPanel();
-        pnlActionBar.setBorder(new EmptyBorder(0, 5, 0, 0));
+        pnlActionBar.setBorder(new EmptyBorder(0, 5, 0, 5));
         pnlActionBar.setLayout(new GridLayout(10, 1));
         FlowLayout flowLeft = new FlowLayout();
         flowLeft.setAlignment(FlowLayout.LEFT);
