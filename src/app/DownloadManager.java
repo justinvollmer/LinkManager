@@ -1,5 +1,7 @@
 package app;
 
+import config.Config;
+
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,16 +20,12 @@ public class DownloadManager {
     public static ArrayList<String> getSupportedFiletypes() {
         ArrayList<String> supportedFiletypes = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("src/app/supportedFiletypes.txt"));
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (!line.startsWith("//")) { // allows comments in the supportedFileTypes.txt
-                    supportedFiletypes.add(line);
-                }
+            String[] properties = Config.getProperties("supportedfiletypes").split(",");
+            for (String filetype : properties) {
+                supportedFiletypes.add(filetype);
             }
-            br.close();
-        } catch (IOException io) {
-            System.err.println("IOException due to the filetype: " + io.getMessage());
+        } catch (Exception e) {
+            System.err.println("Properties file error");
         }
         return supportedFiletypes;
     }

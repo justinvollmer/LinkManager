@@ -1,6 +1,0 @@
-// TIP: with double slashes you can comment in this text file, and it won't be read by the script. This will only work if you use a seperate line for you comments.
-jpg
-jpeg
-png
-gif
-webp

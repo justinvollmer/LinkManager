@@ -3,6 +3,7 @@ package app;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Properties;
 
 public class EncryptionDialog extends JDialog {
     private JPanel pnlNorth;
@@ -99,7 +100,13 @@ public class EncryptionDialog extends JDialog {
         pnlSouthRight.setBorder(new EmptyBorder(0, 0, 0, 0));
         pnlSouthRight.setLayout(flowRight);
         btnEncrypt = new JButton("Encrypt");
+        btnEncrypt.addActionListener(e -> {
+            // TODO: Add encrypt function
+        });
         btnDecrypt = new JButton("Decrypt");
+        btnDecrypt.addActionListener(e -> {
+            // TODO: Add decrypt function
+        });
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(e -> {
             super.setVisible(false);
