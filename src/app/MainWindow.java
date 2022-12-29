@@ -75,7 +75,7 @@ public class MainWindow extends JFrame {
         mnHelp = new JMenu("Help");
         mniAbout = new JMenuItem("About");
         mniAbout.addActionListener(e -> {
-            JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: Jvst1n01 \nVersion:     " + Version.getSoftwareVersion() + " " + Version.getSoftwareState(), "MassLinkOpener - About", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: justinvollmer \nVersion:     " + Version.getSoftwareVersion() + " " + Version.getSoftwareState(), "MassLinkOpener - About", JOptionPane.INFORMATION_MESSAGE);
         });
         mnFile.add(mniImport);
         mnFile.add(mniSaveAs);
