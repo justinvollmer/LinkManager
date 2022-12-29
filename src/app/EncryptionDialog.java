@@ -1,11 +1,13 @@
 package app;
 
+import config.Config;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Properties;
 
 public class EncryptionDialog extends JDialog {
+    private boolean eligibleChange;
     private JPanel pnlNorth;
     private JLabel lblTitle;
     private JPanel pnlCenterOriginal;
@@ -33,6 +35,8 @@ public class EncryptionDialog extends JDialog {
         super.setLocation(mw.getLocation());
         super.setResizable(false);
 
+        eligibleChange = true;
+
         // HEADER
         pnlNorth = new JPanel();
         FlowLayout flowCenter = new FlowLayout();
@@ -54,7 +58,7 @@ public class EncryptionDialog extends JDialog {
         taDisplayOriginal = new JTextArea();
         taDisplayOriginal.setColumns(40);
         taDisplayOriginal.setRows(25);
-        taDisplayOriginal.setText(taDisplayMW.getText());
+        taDisplayOriginal.setText(taDisplayMW.getText().trim());
         taDisplayOriginal.setEditable(false);
         scrollPaneOriginal.setViewportView(taDisplayOriginal);
         pnlCenterOriginal.add(lblCenterOriginal, BorderLayout.NORTH);
@@ -101,11 +105,40 @@ public class EncryptionDialog extends JDialog {
         pnlSouthRight.setLayout(flowRight);
         btnEncrypt = new JButton("Encrypt");
         btnEncrypt.addActionListener(e -> {
-            // TODO: Add encrypt function
+            if (eligibleChange) {
+                try {
+                    String key = Config.getProperties("encryptionkey");
+                    Encryption crypto = new Encryption(key, "AES");
+                    String encrypted = crypto.encrypt(taDisplayOriginal.getText());
+                    taDisplayPreview.setText(encrypted);
+                    eligibleChange = false;
+                    btnUse.setEnabled(true);
+                } catch (Exception e2) {
+                    JOptionPane.showMessageDialog(this, "An error occured while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "The list has already been edited. " +
+                        "\nSave or discard changes and reopen this window to apply new changes.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
         btnDecrypt = new JButton("Decrypt");
         btnDecrypt.addActionListener(e -> {
-            // TODO: Add decrypt function
+            if (eligibleChange) {
+                try {
+                    String key = Config.getProperties("encryptionkey");
+                    Encryption crypto = new Encryption(key, "AES");
+                    String decrypted = crypto.decrypt(taDisplayOriginal.getText());
+                    taDisplayPreview.setText(decrypted);
+                    eligibleChange = false;
+                    btnUse.setEnabled(true);
+                } catch (Exception e2) {
+                    JOptionPane.showMessageDialog(this, "An error occured while setting the encryption key. " +
+                            "\nOr the key cannot decrypt the list.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "The list has already been edited. " +
+                        "\nSave or discard changes and reopen this window to apply new changes.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(e -> {

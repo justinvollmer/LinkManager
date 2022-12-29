@@ -1,5 +1,7 @@
 package app;
 
+import config.Config;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.MenuEvent;
@@ -32,12 +34,13 @@ public class MainWindow extends JFrame {
     private JMenuItem mniConvert;
     private JMenuItem mniExit;
     private JMenu mnSettings;
+    private JMenuItem mniEncryption;
     private JMenu mnHelp;
     private JMenuItem mniAbout;
 
     public MainWindow() {
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        super.setTitle("MassLinkOpener" + " | " + Version.getSoftwareState());
+        super.setTitle("MassLinkOpener");
         super.setLayout(new BorderLayout());
         super.setResizable(false);
         Image icon = Toolkit.getDefaultToolkit().getImage("src/ico/icon.png");
@@ -65,19 +68,9 @@ public class MainWindow extends JFrame {
             System.exit(0);
         });
         mnSettings = new JMenu("Settings");
-        mnSettings.addMenuListener(new MenuListener() {
-            @Override
-            public void menuSelected(MenuEvent e) {
-                new SettingsDialog(MainWindow.this);
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-            }
+        mniEncryption = new JMenuItem("Encryption");
+        mniEncryption.addActionListener(e -> {
+            new SettingsDialog(MainWindow.this);
         });
         mnHelp = new JMenu("Help");
         mniAbout = new JMenuItem("About");
@@ -88,6 +81,7 @@ public class MainWindow extends JFrame {
         mnFile.add(mniSaveAs);
         mnFile.add(mniConvert);
         mnFile.add(mniExit);
+        mnSettings.add(mniEncryption);
         mnHelp.add(mniAbout);
         menuBar.add(mnFile);
         menuBar.add(mnSettings);
@@ -145,7 +139,16 @@ public class MainWindow extends JFrame {
         });
         btnEncryption = new JButton("Encryption");
         btnEncryption.addActionListener(e -> {
-            new EncryptionDialog(MainWindow.this, this.taDisplay);
+            try {
+                String key = Config.getProperties("encryptionkey");
+                if (!key.isBlank()) {
+                    new EncryptionDialog(MainWindow.this, this.taDisplay);
+                } else {
+                    JOptionPane.showMessageDialog(MainWindow.this, "Please add a encryption key in the settings!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e2) {
+                JOptionPane.showMessageDialog(MainWindow.this, "Please import or edit the link list!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
         btnEdit = new JButton("Edit");
         btnEdit.addActionListener(e -> {

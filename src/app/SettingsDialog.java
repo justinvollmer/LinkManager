@@ -5,14 +5,21 @@ import config.Config;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 
 public class SettingsDialog extends JDialog {
+    private JPanel pnlNorth;
+    private JLabel lblAlgorithm;
+    private JComboBox<String> cmbAlgorithm;
     private JPanel pnlCenter;
     private JLabel lblEncryptionKey;
     private JTextArea taEncryptionKey;
     private JScrollPane scrollPane;
     private JPanel pnlSouth;
-    private JButton btnSaveChanges;
+    private JButton btnClear;
+    private JButton btnCopyToClipboard;
+    private JButton btnApplyChanges;
     private JButton btnCancel;
 
     public SettingsDialog(MainWindow mw) {
@@ -22,10 +29,20 @@ public class SettingsDialog extends JDialog {
         super.setLocation(mw.getLocation());
         super.setResizable(false);
 
+        // NORTH
+        pnlNorth = new JPanel();
+        pnlNorth.setBorder(new EmptyBorder(5, 5, 0, 5));
+        lblAlgorithm = new JLabel("Algorithm:");
+        cmbAlgorithm = new JComboBox<>();
+        cmbAlgorithm.addItem("AES");
+        cmbAlgorithm.setEnabled(false);
+        pnlNorth.add(lblAlgorithm);
+        pnlNorth.add(cmbAlgorithm);
+
         // CENTER
         pnlCenter = new JPanel();
-        pnlCenter.setBorder(new EmptyBorder(5, 5, 0, 5));
-        lblEncryptionKey = new JLabel("Encryption Key:");
+        pnlCenter.setBorder(new EmptyBorder(0, 5, 0, 5));
+        lblEncryptionKey = new JLabel("Encryption Key (256bit):");
         taEncryptionKey = new JTextArea();
         taEncryptionKey.setColumns(40);
         taEncryptionKey.setRows(10);
@@ -45,10 +62,20 @@ public class SettingsDialog extends JDialog {
         FlowLayout flowRight = new FlowLayout();
         flowRight.setAlignment(FlowLayout.RIGHT);
         pnlSouth.setLayout(flowRight);
-        btnSaveChanges = new JButton("Save Changes");
-        btnSaveChanges.addActionListener(e -> {
+        btnClear = new JButton("Clear");
+        btnClear.addActionListener(e -> {
+            taEncryptionKey.setText("");
+        });
+        btnCopyToClipboard = new JButton("Copy Key");
+        btnCopyToClipboard.addActionListener(e -> {
+            StringSelection stringSelection = new StringSelection(taEncryptionKey.getText().trim());
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+        });
+        btnApplyChanges = new JButton("Apply Changes");
+        btnApplyChanges.addActionListener(e -> {
             try {
-                Config.setProperties("encryptionkey", taEncryptionKey.getText());
+                Config.setProperties("encryptionkey", taEncryptionKey.getText().trim());
             } catch (Exception e2) {
                 JOptionPane.showMessageDialog(this, "An error occured while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -58,9 +85,12 @@ public class SettingsDialog extends JDialog {
         btnCancel.addActionListener(e -> {
             super.setVisible(false);
         });
-        pnlSouth.add(btnSaveChanges);
+        pnlSouth.add(btnClear);
+        pnlSouth.add(btnCopyToClipboard);
+        pnlSouth.add(btnApplyChanges);
         pnlSouth.add(btnCancel);
 
+        super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
         super.getContentPane().add(pnlCenter, BorderLayout.CENTER);
         super.getContentPane().add(pnlSouth, BorderLayout.SOUTH);
         super.pack();
