@@ -45,7 +45,6 @@ public class SettingsDialog extends JDialog {
         lblEncryptionKey = new JLabel("Encryption Key (256bit):");
         taEncryptionKey = new JTextArea();
         taEncryptionKey.setColumns(40);
-        taEncryptionKey.setRows(10);
         scrollPane = new JScrollPane();
         try {
             taEncryptionKey.setText(Config.getProperties("encryptionkey"));
