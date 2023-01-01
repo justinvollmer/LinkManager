@@ -8,6 +8,7 @@ import java.awt.*;
 
 public class EncryptionDialog extends JDialog {
     private boolean eligibleChange;
+    private String encrypted;
     private JPanel pnlNorth;
     private JLabel lblTitle;
     private JPanel pnlCenterOriginal;
@@ -78,7 +79,7 @@ public class EncryptionDialog extends JDialog {
         scrollPanePeview.setViewportView(taDisplayPreview);
         btnUse = new JButton("Use");
         btnUse.addActionListener(e -> {
-            taDisplayMW.setText(taDisplayPreview.getText());
+            taDisplayMW.setText(encrypted);
             super.setVisible(false);
         });
         btnUse.setEnabled(false);
@@ -95,7 +96,7 @@ public class EncryptionDialog extends JDialog {
         pnlSouthLeft.setLayout(new FlowLayout());
         btnHow = new JButton("How it works");
         btnHow.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "First, please make sure that you set the 256bit Key in the settings tab. " +
+            JOptionPane.showMessageDialog(this, "First, please make sure that you set the 256bit Key in the settings tab." +
                     "\nNow you can simply press encrypt or decrypt." +
                     "\nWe recommend you to only encrypt a list ONCE." +
                     "\nAlso make sure to keep your key also somewhere outside of the application.", "How it works", JOptionPane.INFORMATION_MESSAGE);
@@ -109,8 +110,8 @@ public class EncryptionDialog extends JDialog {
                 try {
                     String key = Config.getProperties("encryptionkey");
                     Encryption crypto = new Encryption(key, "AES");
-                    String encrypted = crypto.encrypt(taDisplayOriginal.getText());
-                    taDisplayPreview.setText(encrypted);
+                    encrypted = crypto.encrypt(taDisplayOriginal.getText());
+                    taDisplayPreview.setText(splitString(encrypted, 60));
                     eligibleChange = false;
                     btnUse.setEnabled(true);
                 } catch (Exception e2) {
@@ -127,8 +128,8 @@ public class EncryptionDialog extends JDialog {
                 try {
                     String key = Config.getProperties("encryptionkey");
                     Encryption crypto = new Encryption(key, "AES");
-                    String decrypted = crypto.decrypt(taDisplayOriginal.getText());
-                    taDisplayPreview.setText(decrypted);
+                    encrypted = crypto.decrypt(taDisplayOriginal.getText());
+                    taDisplayPreview.setText(encrypted);
                     eligibleChange = false;
                     btnUse.setEnabled(true);
                 } catch (Exception e2) {
@@ -157,5 +158,14 @@ public class EncryptionDialog extends JDialog {
         super.getContentPane().add(pnlSouth, BorderLayout.SOUTH);
         super.pack();
         super.setVisible(true);
+    }
+
+    private String splitString(String text, int n) {
+        String[] arr = text.split("(?<=\\G.{" + n + "})");
+        StringBuilder res = new StringBuilder();
+        for (String s : arr) {
+            res.append(s + "\n");
+        }
+        return res.toString();
     }
 }
