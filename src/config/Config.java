@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public class Config {
     public static Properties prop = new Properties();
-    // public static String path = "config/config.properties"; // is used when installed via installer
+    // public static String path = System.getProperty("user.home") + "\\AppData\\Roaming\\MassLinkOpener\\config\\config.properties"; // is used when installed via installer
     public static String path = "src/config/config.properties"; // is used when pulled from repo
 
     public static String getProperties(String property) throws Exception {
