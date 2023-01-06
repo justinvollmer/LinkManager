@@ -43,7 +43,8 @@ public class MainWindow extends JFrame {
         super.setTitle("MassLinkOpener");
         super.setLayout(new BorderLayout());
         super.setResizable(false);
-        Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");
+        // Image icon = Toolkit.getDefaultToolkit().getImage("icon.png"); // icon is used when installed via installer
+        Image icon = Toolkit.getDefaultToolkit().getImage("src/ico/icon.png"); // icon is used when pulled from repo
         super.setIconImage(icon);
 
         displayPlaceholder = "https://example.com/image.jpg\nhttps://example.com/image.jpg\nhttps://example.com/image.jpg\nhttps://example.com/image.jpg";
