@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.security.NoSuchAlgorithmException;
 
 public class SettingsDialog extends JDialog {
     private JPanel pnlNorth;
@@ -17,6 +18,7 @@ public class SettingsDialog extends JDialog {
     private JTextArea taEncryptionKey;
     private JScrollPane scrollPane;
     private JPanel pnlSouth;
+    private JButton btnGenerateKey;
     private JButton btnClear;
     private JButton btnCopyToClipboard;
     private JButton btnApplyChanges;
@@ -61,6 +63,14 @@ public class SettingsDialog extends JDialog {
         FlowLayout flowRight = new FlowLayout();
         flowRight.setAlignment(FlowLayout.RIGHT);
         pnlSouth.setLayout(flowRight);
+        btnGenerateKey = new JButton("Generate Key");
+        btnGenerateKey.addActionListener(e -> {
+            try {
+                taEncryptionKey.setText(Encryption.generateKey());
+            } catch (NoSuchAlgorithmException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         btnClear = new JButton("Clear");
         btnClear.addActionListener(e -> {
             taEncryptionKey.setText("");
@@ -84,6 +94,7 @@ public class SettingsDialog extends JDialog {
         btnCancel.addActionListener(e -> {
             super.setVisible(false);
         });
+        pnlSouth.add(btnGenerateKey);
         pnlSouth.add(btnClear);
         pnlSouth.add(btnCopyToClipboard);
         pnlSouth.add(btnApplyChanges);

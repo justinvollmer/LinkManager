@@ -81,4 +81,11 @@ public class Encryption {
             System.out.print(algorithm + "     ");
         }
     }
+
+    public static String generateKey() throws NoSuchAlgorithmException {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(192);
+        byte[] key = keyGenerator.generateKey().getEncoded();
+        return Base64.getEncoder().encodeToString(key);
+    }
 }
