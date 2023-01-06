@@ -4,8 +4,6 @@ import config.Config;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
