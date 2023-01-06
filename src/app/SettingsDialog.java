@@ -18,6 +18,8 @@ public class SettingsDialog extends JDialog {
     private JTextArea taEncryptionKey;
     private JScrollPane scrollPane;
     private JPanel pnlSouth;
+    private JButton btnGetDefaultKey;
+    private JButton btnSetDefaultKey;
     private JButton btnGenerateKey;
     private JButton btnClear;
     private JButton btnCopyToClipboard;
@@ -63,6 +65,26 @@ public class SettingsDialog extends JDialog {
         FlowLayout flowRight = new FlowLayout();
         flowRight.setAlignment(FlowLayout.RIGHT);
         pnlSouth.setLayout(flowRight);
+        btnGetDefaultKey = new JButton("Get Default Key");
+        btnGetDefaultKey.addActionListener(e -> {
+            try {
+                if (!Config.getProperties("defaultkey").isBlank()) {
+                    taEncryptionKey.setText(Config.getProperties("defaultkey"));
+                } else {
+                    JOptionPane.showMessageDialog(this, "There is no key that has been set as default!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception getDefaultKeyError) {
+                JOptionPane.showMessageDialog(this, "An error occured!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        btnSetDefaultKey = new JButton("Set as Default Key");
+        btnSetDefaultKey.addActionListener(e -> {
+            try {
+                Config.setProperties("defaultkey", taEncryptionKey.getText().trim());
+            } catch (Exception setDefaultKeyError) {
+
+            }
+        });
         btnGenerateKey = new JButton("Generate Key");
         btnGenerateKey.addActionListener(e -> {
             try {
@@ -94,6 +116,8 @@ public class SettingsDialog extends JDialog {
         btnCancel.addActionListener(e -> {
             super.setVisible(false);
         });
+        pnlSouth.add(btnGetDefaultKey);
+        pnlSouth.add(btnSetDefaultKey);
         pnlSouth.add(btnGenerateKey);
         pnlSouth.add(btnClear);
         pnlSouth.add(btnCopyToClipboard);
