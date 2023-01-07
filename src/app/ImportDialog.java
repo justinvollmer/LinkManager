@@ -22,7 +22,7 @@ public class ImportDialog extends JDialog {
         super(mw, true);
         super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         super.setLayout(new BorderLayout());
-        super.setTitle("MassLinkOpener - Import");
+        super.setTitle("Link-Manager - Import");
         super.setLocation(mw.getLocation());
         super.setResizable(false);
         super.setBounds(mw.getX(), mw.getY(), 250, 150);

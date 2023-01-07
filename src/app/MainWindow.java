@@ -38,7 +38,7 @@ public class MainWindow extends JFrame {
 
     public MainWindow() {
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        super.setTitle("MassLinkOpener");
+        super.setTitle("Link-Manager");
         super.setLayout(new BorderLayout());
         super.setResizable(false);
         // Image icon = Toolkit.getDefaultToolkit().getImage("icon.png"); // icon is used when installed via installer
@@ -74,7 +74,7 @@ public class MainWindow extends JFrame {
         mnHelp = new JMenu("Help");
         mniAbout = new JMenuItem("About");
         mniAbout.addActionListener(e -> {
-            JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: justinvollmer \nVersion:     " + Version.getSoftwareVersion() + " " + Version.getSoftwareState(), "MassLinkOpener - About", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: justinvollmer \nVersion:     " + Version.getSoftwareVersion() + " " + Version.getSoftwareState(), "Link-Manager - About", JOptionPane.INFORMATION_MESSAGE);
         });
         mnFile.add(mniImport);
         mnFile.add(mniSaveAs);
@@ -100,7 +100,7 @@ public class MainWindow extends JFrame {
         flowCenter.setAlignment(FlowLayout.CENTER);
         pnlNorth.setLayout(flowCenter);
         pnlNorth.setBorder(new EmptyBorder(5, 5, 0, 5));
-        lblTitle = new JLabel("Mass Link Opener: Preview");
+        lblTitle = new JLabel("Link-Manager: Preview");
         lblTitle.setFont(new Font(null, Font.BOLD, 20));
         pnlNorth.add(lblTitle);
 

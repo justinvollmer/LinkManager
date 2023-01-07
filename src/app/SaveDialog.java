@@ -18,7 +18,7 @@ public class SaveDialog extends JDialog {
         super(mw, true);
         super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         super.setLayout(new BorderLayout());
-        super.setTitle("MassLinkOpener - Save");
+        super.setTitle("Link-Manager - Save");
         super.setLocation(mw.getLocation());
         super.setResizable(false);
         super.setBounds(mw.getX(), mw.getY(), 250, 125);

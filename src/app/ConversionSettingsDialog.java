@@ -45,7 +45,7 @@ public class ConversionSettingsDialog extends JDialog {
         super(mw, true);
         super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         super.setLayout(new BorderLayout());
-        super.setTitle("MassLinkOpener - Settings");
+        super.setTitle("Link-Manager - Settings");
         super.setLocation(mw.getLocation());
         super.setResizable(false);
 

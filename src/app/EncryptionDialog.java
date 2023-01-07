@@ -46,7 +46,7 @@ public class EncryptionDialog extends JDialog {
         flowRight.setAlignment(FlowLayout.RIGHT);
         pnlNorth.setLayout(flowCenter);
         pnlNorth.setBorder(new EmptyBorder(5, 5, 0, 5));
-        lblTitle = new JLabel("Mass Link Opener: Encryption");
+        lblTitle = new JLabel("Link-Manager: Encryption");
         lblTitle.setFont(new Font(null, Font.BOLD, 20));
         pnlNorth.add(lblTitle);
 

@@ -34,7 +34,7 @@ public class EditDialog extends JDialog {
         flowCenter.setAlignment(FlowLayout.CENTER);
         pnlNorth.setLayout(flowCenter);
         pnlNorth.setBorder(new EmptyBorder(5, 5, 0, 5));
-        lblTitle = new JLabel("Mass Link Opener: Editing");
+        lblTitle = new JLabel("Link-Manager: Editing");
         lblTitle.setFont(new Font(null, Font.BOLD, 20));
         pnlNorth.add(lblTitle);
 
