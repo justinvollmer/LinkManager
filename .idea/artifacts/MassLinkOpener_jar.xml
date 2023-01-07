@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="MassLinkOpener:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/MassLinkOpener_jar</output-path>
-    <root id="archive" name="MassLinkOpener.jar">
-      <element id="module-output" name="LinkManager" />
-    </root>
-  </artifact>
-</component>
