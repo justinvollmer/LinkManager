@@ -366,7 +366,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                     sb.append(filetype);
                 }
             }
-            JOptionPane.showMessageDialog(this, "The Download Manager allows you to download media such as images or gifs (videos aren't supported as of right now).\nSupported file types: " + sb, "How it works", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "The Download Manager allows you to download media such as images, videos or gifs (videos aren't supported as of right now).\nSupported file types: " + sb, "How it works", JOptionPane.INFORMATION_MESSAGE);
         });
         pnlSouthRight = new JPanel();
         pnlSouthRight.setLayout(flowRight);

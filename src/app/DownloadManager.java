@@ -3,9 +3,9 @@ package app;
 import config.Config;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class DownloadManager {
@@ -46,25 +46,73 @@ public class DownloadManager {
         }
 
         URL url = new URL(linkToMedia.trim());
-        InputStream in = new BufferedInputStream(url.openStream());
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + imageNumber + "." + filetype));
 
-        for (int i; (i = in.read()) != -1; ) {
-            out.write(i);
+        if (filetype.equals("mp4") || filetype.equals("avi") || filetype.equals("mkv")) {
+            // Video Download
+            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+            int responseCode = httpConn.getResponseCode();
+
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                throw new IOException();
+            }
+
+            InputStream in = httpConn.getInputStream();
+            FileOutputStream out = new FileOutputStream(path + filename + imageNumber + "." + filetype);
+
+            int bytesRead = -1;
+            byte[] buffer = new byte[4096];
+            while ((bytesRead = in.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            out.close();
+            in.close();
+            httpConn.disconnect();
+        } else {
+            // Image Download
+            InputStream in = new BufferedInputStream(url.openStream());
+            OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + imageNumber + "." + filetype));
+
+            for (int i; (i = in.read()) != -1; ) {
+                out.write(i);
+            }
+            in.close();
+            out.close();
         }
-        in.close();
-        out.close();
     }
 
     public static void download(String linkToMedia, String path, String filename, String filetype) throws IOException {
         URL url = new URL(linkToMedia.trim());
-        InputStream in = new BufferedInputStream(url.openStream());
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + "." + filetype));
+        if (filetype.equals("mp4") || filetype.equals("avi") || filetype.equals("mkv")) {
+            // Video Download
+            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+            int responseCode = httpConn.getResponseCode();
 
-        for (int i; (i = in.read()) != -1; ) {
-            out.write(i);
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                throw new IOException();
+            }
+
+            InputStream in = httpConn.getInputStream();
+            FileOutputStream out = new FileOutputStream(path + filename + "." + filetype);
+
+            int bytesRead = -1;
+            byte[] buffer = new byte[4096];
+            while ((bytesRead = in.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            out.close();
+            in.close();
+            httpConn.disconnect();
+        } else {
+            // Image Download
+            InputStream in = new BufferedInputStream(url.openStream());
+            OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + "." + filetype));
+
+            for (int i; (i = in.read()) != -1; ) {
+                out.write(i);
+            }
+            in.close();
+            out.close();
         }
-        in.close();
-        out.close();
+
     }
 }
