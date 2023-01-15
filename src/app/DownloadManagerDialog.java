@@ -205,17 +205,17 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
             List<String> supportedFiletypes = DownloadManager.getSupportedFiletypes();
             for (LinkEntry entry : linkEntryList) {
                 for (String filetype : supportedFiletypes) {
-                    if (entry.getLink().contains(filetype)) {
+                    if (entry.getLink().contains(filetype.toLowerCase()) || entry.getLink().contains(filetype.toUpperCase())) {
                         entry.setProgress("ready");
                         break;
                     }
-                    if (!entry.getLink().contains(filetype) && supportedFiletypes.get(supportedFiletypes.size()-1).equalsIgnoreCase(filetype)) {
+                    if ((!entry.getLink().contains(filetype.toLowerCase()) || !entry.getLink().contains(filetype.toUpperCase())) && supportedFiletypes.get(supportedFiletypes.size()-1).equalsIgnoreCase(filetype)) {
                         entry.setProgress("invalid filetype");
                     }
                     if (!isValidLink(entry.getLink())) {
                         entry.setProgress("invalid link");
                     }
-                    if (!entry.getLink().contains(filetype) && supportedFiletypes.get(supportedFiletypes.size()-1).equalsIgnoreCase(filetype) && !isValidLink(entry.getLink())) {
+                    if ((!entry.getLink().contains(filetype.toLowerCase()) || !entry.getLink().contains(filetype.toUpperCase()))&& supportedFiletypes.get(supportedFiletypes.size()-1).equalsIgnoreCase(filetype) && !isValidLink(entry.getLink())) {
                         entry.setProgress("invalid link");
                     }
                 }

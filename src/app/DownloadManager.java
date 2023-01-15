@@ -34,8 +34,8 @@ public class DownloadManager {
     public void download(String linkToMedia, String filename, int imageNumber) throws IOException {
         String filetype = null;
         for (String filetypeFromList : filetypeList) {
-            if (linkToMedia.contains(filetypeFromList) || filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1))) {
-                if (filetypeFromList.equals("webp") || (filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1)) && !filetypeFromList.equals(filetypeList.get(filetypeList.size() - 1)))) {
+            if (linkToMedia.contains(filetypeFromList) || filetypeFromList.equalsIgnoreCase(filetypeList.get(filetypeList.size() - 1))) {
+                if (filetypeFromList.equalsIgnoreCase("webp") || (filetypeFromList.equalsIgnoreCase(filetypeList.get(filetypeList.size() - 1)) && !filetypeFromList.equalsIgnoreCase(filetypeList.get(filetypeList.size() - 1)))) {
                     filetype = "jpg";
                     break;
                 } else {
@@ -47,7 +47,7 @@ public class DownloadManager {
 
         URL url = new URL(linkToMedia.trim());
 
-        if (filetype.equals("mp4") || filetype.equals("avi") || filetype.equals("mkv")) {
+        if (filetype.equalsIgnoreCase("mp4") || filetype.equalsIgnoreCase("avi") || filetype.equalsIgnoreCase("mkv")) {
             // Video Download
             HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
             int responseCode = httpConn.getResponseCode();
@@ -82,7 +82,7 @@ public class DownloadManager {
 
     public static void download(String linkToMedia, String path, String filename, String filetype) throws IOException {
         URL url = new URL(linkToMedia.trim());
-        if (filetype.equals("mp4") || filetype.equals("avi") || filetype.equals("mkv")) {
+        if (filetype.equalsIgnoreCase("mp4") || filetype.equalsIgnoreCase("avi") || filetype.equalsIgnoreCase("mkv")) {
             // Video Download
             HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
             int responseCode = httpConn.getResponseCode();
