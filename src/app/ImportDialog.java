@@ -75,17 +75,17 @@ public class ImportDialog extends JDialog {
                 if (retVal == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
                     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                        String zeile;
+                        String line;
                         if (!this.chckAppend.isSelected()) {
                             taDisplayMW.setText("");
                         } else {
                             taDisplayMW.append("\n");
                         }
-                        while ((zeile = br.readLine()) != null) {
-                            taDisplayMW.append(zeile + "\n");
+                        while ((line = br.readLine()) != null) {
+                            taDisplayMW.append(line + "\n");
                         }
                     } catch (IOException io) {
-                        JOptionPane.showMessageDialog(mw, io.getMessage());
+                        JOptionPane.showMessageDialog(mw, "Error: " + io.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

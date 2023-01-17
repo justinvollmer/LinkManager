@@ -5,9 +5,18 @@ import config.Config;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.*;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainWindow extends JFrame {
     private String displayPlaceholder;
@@ -115,6 +124,68 @@ public class MainWindow extends JFrame {
         taDisplay.setEditable(false);
         scrollPane.setViewportView(taDisplay);
         pnlCenter.add(scrollPane);
+
+        // Drag & Drop
+        new DropTarget(taDisplay, new DropTargetListener() {
+            @Override
+            public void dragEnter(DropTargetDragEvent dtde) {
+
+            }
+
+            @Override
+            public void dragOver(DropTargetDragEvent dtde) {
+
+            }
+
+            @Override
+            public void dropActionChanged(DropTargetDragEvent dtde) {
+
+            }
+
+            @Override
+            public void dragExit(DropTargetEvent dte) {
+
+            }
+
+            @Override
+            public void drop(DropTargetDropEvent event) {
+                int yesNo = JOptionPane.showConfirmDialog(MainWindow.this, "You are about to import one or multiple lists. " +
+                        "\nDo you want to append them to your exisiting list?", "Warning", JOptionPane.YES_NO_OPTION);
+                if (yesNo == 0) {
+                    taDisplay.setText(taDisplay.getText() + "\n");
+                }
+                if (yesNo == 1) {
+                    taDisplay.setText("");
+                }
+                try {
+                    Transferable tr = event.getTransferable();
+                    DataFlavor[] flavors = tr.getTransferDataFlavors();
+                    for (int i = 0; i < flavors.length; i++) {
+                        if (flavors[i].isFlavorJavaFileListType()) {
+                            event.acceptDrop(event.getDropAction());
+                            List<File> files = (List<File>) tr.getTransferData(flavors[i]);
+                            for (File file : files) {
+                                if (file.getName().endsWith("txt")) {
+                                    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                                        String line;
+                                        while ((line = br.readLine()) != null) {
+                                            taDisplay.append(line + "\n");
+                                        }
+                                    } catch (IOException io) {
+                                        JOptionPane.showMessageDialog(MainWindow.this, "Error: " + io.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                }
+                            }
+                            event.dropComplete(true);
+                        }
+                    }
+                } catch (IOException io) {
+                    JOptionPane.showMessageDialog(MainWindow.this, "Error: " + io.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (UnsupportedFlavorException ufe) {
+                    JOptionPane.showMessageDialog(MainWindow.this, "Error: " + ufe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // BUTTONS
         pnlSouth = new JPanel();
