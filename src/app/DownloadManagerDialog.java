@@ -387,7 +387,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
 
     private void chooseFolder() {
         JFileChooser fc = new JFileChooser();
-        fc.setCurrentDirectory(new java.io.File("."));
+        fc.setCurrentDirectory(new java.io.File(System.getProperty("user.home") + "/Desktop"));
         fc.setDialogTitle("Download Manager - Select folder");
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fc.setAcceptAllFileFilterUsed(false); // "All files" option disabled

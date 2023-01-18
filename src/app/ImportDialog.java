@@ -67,7 +67,7 @@ public class ImportDialog extends JDialog {
             super.setVisible(false);
             if (this.cmbMode.getSelectedIndex() == 0) {
                 JFileChooser fc = new JFileChooser();
-                fc.setCurrentDirectory(new java.io.File("."));
+                fc.setCurrentDirectory(new java.io.File(System.getProperty("user.home") + "/Desktop"));
                 fc.setDialogTitle("MassLinkOpener - Import");
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file (.txt)", "txt");
                 fc.setFileFilter(filter);

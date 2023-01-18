@@ -51,7 +51,7 @@ public class SaveDialog extends JDialog {
             super.setVisible(false);
             if (cmbMode.getSelectedIndex() == 0) {
                 JFileChooser fc = new JFileChooser();
-                fc.setCurrentDirectory(new java.io.File("."));
+                fc.setCurrentDirectory(new java.io.File(System.getProperty("user.home") + "/Desktop"));
                 fc.setDialogTitle("MassLinkOpener - Save");
                 fc.setAcceptAllFileFilterUsed(false); // "All files" option disabled
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file (.txt)", "txt");
