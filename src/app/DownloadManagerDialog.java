@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DownloadManagerDialog extends JDialog implements Runnable {
     private DownloadManager manager;
-    private int interval;
+    private double interval;
     private Thread downloadingThread;
     private JPanel pnlNorth;
     private JLabel lblTitle;
@@ -283,15 +283,15 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         btnDownload.addActionListener(e -> {
             this.manager = new DownloadManager(tfPath.getText());
             try {
-                if ((tfInterval.getText().isBlank() || Integer.parseInt(tfInterval.getText()) < 1) && !isDownloading) {
+                if ((tfInterval.getText().isBlank() || Double.parseDouble(tfInterval.getText()) <= 0) && !isDownloading) {
                     int yesno = JOptionPane.showConfirmDialog(this, "We would recommend using an interval. The website might detect you as spam. \nDo you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
                     if (yesno == 1) {
                         return;
                     }
-                    tfInterval.setText("0");
-                    this.interval = 0;
+                    tfInterval.setText("0.0");
+                    this.interval = 0.0;
                 } else {
-                    this.interval = Integer.parseInt(tfInterval.getText());
+                    this.interval = Double.parseDouble(tfInterval.getText());
                 }
             } catch (Exception cannotCastToInt) {
                 JOptionPane.showMessageDialog(this, "Your interval input is not a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -469,7 +469,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                 tableModel.fireTableDataChanged();
                 current++;
                 tfDownloadStatus.setText(currentStatus + " " + current + "/" + total);
-                Thread.sleep(interval * 1000L);
+                Thread.sleep((long) (interval * 1000L));
             }
             int okQuit = JOptionPane.showConfirmDialog(DownloadManagerDialog.this, "Downloading process finished! \nDo you want to Exit the Download Manager?", "Done", JOptionPane.YES_NO_OPTION);
             if (okQuit == 0) {
