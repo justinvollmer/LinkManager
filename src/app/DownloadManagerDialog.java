@@ -3,6 +3,8 @@ package app;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -33,16 +35,19 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
     private JButton btnApplyNameToSelected;
     private JButton btnClearAllName;
     private JPanel pnlCenterAction4;
+    private JButton btnCopy;
+    private JButton btnDeleteEntry;
+    private JPanel pnlCenterAction5;
     private JLabel lblDirectory;
     private JButton btnSelectFolder;
-    private JPanel pnlCenterAction5;
+    private JPanel pnlCenterAction6;
     private JTextField tfPath;
     private String noDirectory;
-    private JPanel pnlCenterAction6;
+    private JPanel pnlCenterAction7;
     private JLabel lblInterval;
     private JTextField tfInterval;
     private JLabel lblSeconds;
-    private JPanel pnlCenterAction7;
+    private JPanel pnlCenterAction8;
     private JButton btnCheckFilenames;
     private JButton btnCheckLinks;
     private JLabel lblDownloadStatus;
@@ -105,7 +110,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
 
         pnlActionBar = new JPanel();
         pnlActionBar.setBorder(new EmptyBorder(0, 5, 0, 5));
-        pnlActionBar.setLayout(new GridLayout(10, 1));
+        pnlActionBar.setLayout(new GridLayout(11, 1));
         FlowLayout flowLeft = new FlowLayout();
         flowLeft.setAlignment(FlowLayout.LEFT);
         pnlCenterAction1 = new JPanel();
@@ -122,6 +127,8 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         pnlCenterAction6.setLayout(flowLeft);
         pnlCenterAction7 = new JPanel();
         pnlCenterAction7.setLayout(flowLeft);
+        pnlCenterAction8 = new JPanel();
+        pnlCenterAction8.setLayout(flowLeft);
         lblNamingSystem = new JLabel("file name: ");
         tfNamingSystem = new JTextField();
         tfNamingSystem.setFont(new Font(null, Font.PLAIN, 15));
@@ -138,6 +145,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         btnApplyNaming = new JButton("Apply name to all");
         btnApplyNaming.addActionListener(e -> {
             if (tfNamingSystem.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please make sure that you file name is not blank.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             for (LinkEntry entry : linkEntryList) {
@@ -153,6 +161,10 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         btnApplyNameToSelected = new JButton("Apply name to selection");
         btnApplyNameToSelected.addActionListener(e -> {
             int[] selectedRows = table.getSelectedRows();
+            if (selectedRows.length == 0 || tfNamingSystem.getText().isBlank()) {
+                JOptionPane.showMessageDialog(this, "Please make sure that you have selected at least one row and that the file name is not blank", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             for (int row : selectedRows) {
                 linkEntryList.get(row).setFilename(tfNamingSystem.getText());
             }
@@ -162,6 +174,38 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         btnClearAllName.addActionListener(e -> {
             for (LinkEntry entry : linkEntryList) {
                 entry.setFilename("");
+            }
+            tableModel.fireTableDataChanged();
+        });
+        btnCopy = new JButton("Copy link from selection");
+        btnCopy.addActionListener(e -> {
+            int[] selectedRows = table.getSelectedRows();
+            if (selectedRows.length != 1) {
+                JOptionPane.showMessageDialog(this, "Please select one entry.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            StringSelection stringSelection = new StringSelection(linkEntryList.get(selectedRows[0]).getLink().trim());
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+        });
+        btnDeleteEntry = new JButton("Delete entry");
+        btnDeleteEntry.addActionListener(e -> {
+            ArrayList<LinkEntry> buffer = new ArrayList<>();
+            int[] selectedRows = table.getSelectedRows();
+            int newId= 1;
+            if (selectedRows.length == 0) {
+                JOptionPane.showMessageDialog(this, "Make sure you select at least one entry.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            for (int row : selectedRows) {
+                buffer.add(linkEntryList.get(row));
+            }
+            for (LinkEntry entry : buffer) {
+                linkEntryList.remove(entry);
+            }
+            for (LinkEntry entry : linkEntryList) {
+                entry.setId(newId);
+                newId++;
             }
             tableModel.fireTableDataChanged();
         });
@@ -209,13 +253,13 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                         entry.setProgress("ready");
                         break;
                     }
-                    if ((!entry.getLink().contains(filetype.toLowerCase()) || !entry.getLink().contains(filetype.toUpperCase())) && supportedFiletypes.get(supportedFiletypes.size()-1).equalsIgnoreCase(filetype)) {
+                    if ((!entry.getLink().contains(filetype.toLowerCase()) || !entry.getLink().contains(filetype.toUpperCase())) && supportedFiletypes.get(supportedFiletypes.size() - 1).equalsIgnoreCase(filetype)) {
                         entry.setProgress("invalid filetype");
                     }
                     if (!isValidLink(entry.getLink())) {
                         entry.setProgress("invalid link");
                     }
-                    if ((!entry.getLink().contains(filetype.toLowerCase()) || !entry.getLink().contains(filetype.toUpperCase()))&& supportedFiletypes.get(supportedFiletypes.size()-1).equalsIgnoreCase(filetype) && !isValidLink(entry.getLink())) {
+                    if ((!entry.getLink().contains(filetype.toLowerCase()) || !entry.getLink().contains(filetype.toUpperCase())) && supportedFiletypes.get(supportedFiletypes.size() - 1).equalsIgnoreCase(filetype) && !isValidLink(entry.getLink())) {
                         entry.setProgress("invalid link");
                     }
                 }
@@ -301,13 +345,15 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                 JOptionPane.showMessageDialog(this, "Please select a valid download path first!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (!isDownloading ) {
+            if (!isDownloading) {
                 btnDownload.setText("Stop Download");
                 setDownloadStatus(inProgress);
                 btnSelectFolder.setEnabled(false);
                 tfInterval.setEnabled(false);
                 isDownloading = true;
                 btnCancel.setEnabled(false);
+                btnCopy.setEnabled(false);
+                btnDeleteEntry.setEnabled(false);
                 super.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                 this.downloadingThread = new Thread(this);
                 downloadingThread.start();
@@ -325,14 +371,16 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         pnlCenterAction2.add(btnApplyNaming);
         pnlCenterAction3.add(btnApplyNameToSelected);
         pnlCenterAction3.add(btnClearAllName);
-        pnlCenterAction4.add(lblDirectory);
-        pnlCenterAction4.add(btnSelectFolder);
-        pnlCenterAction5.add(tfPath);
-        pnlCenterAction6.add(lblInterval);
-        pnlCenterAction6.add(tfInterval);
-        pnlCenterAction6.add(lblSeconds);
-        pnlCenterAction7.add(lblDownloadStatus);
-        pnlCenterAction7.add(tfDownloadStatus);
+        pnlCenterAction4.add(btnCopy);
+        pnlCenterAction4.add(btnDeleteEntry);
+        pnlCenterAction5.add(lblDirectory);
+        pnlCenterAction5.add(btnSelectFolder);
+        pnlCenterAction6.add(tfPath);
+        pnlCenterAction7.add(lblInterval);
+        pnlCenterAction7.add(tfInterval);
+        pnlCenterAction7.add(lblSeconds);
+        pnlCenterAction8.add(lblDownloadStatus);
+        pnlCenterAction8.add(tfDownloadStatus);
         pnlActionBar.add(pnlCenterAction1);
         pnlActionBar.add(pnlCenterAction2);
         pnlActionBar.add(pnlCenterAction3);
@@ -340,6 +388,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         pnlActionBar.add(pnlCenterAction5);
         pnlActionBar.add(pnlCenterAction6);
         pnlActionBar.add(pnlCenterAction7);
+        pnlActionBar.add(pnlCenterAction8);
         pnlActionBar.add(btnCheckLinks);
         pnlActionBar.add(btnCheckFilenames);
         pnlActionBar.add(btnDownload);
@@ -449,6 +498,8 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         setDownloadStatus(readyForDownload);
         btnSelectFolder.setEnabled(true);
         btnCancel.setEnabled(true);
+        btnCopy.setEnabled(true);
+        btnDeleteEntry.setEnabled(true);
         super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         tfInterval.setEnabled(true);
         for (LinkEntry entry : linkEntryList) {
