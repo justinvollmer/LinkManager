@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainWindow extends JFrame {
@@ -54,6 +53,9 @@ public class MainWindow extends JFrame {
         Image icon = Toolkit.getDefaultToolkit().getImage("src/ico/icon.png"); // icon is used when pulled from repo
         super.setIconImage(icon);
 
+        // UPDATING THEME
+        Theme.updateTheme(MainWindow.this);
+
         displayPlaceholder = "https://example.com/image.jpg\nhttps://example.com/image.jpg\nhttps://example.com/image.jpg\nhttps://example.com/image.jpg";
 
         // MENUBAR
@@ -78,7 +80,7 @@ public class MainWindow extends JFrame {
         mnSettings = new JMenu("Settings");
         mniEncryption = new JMenuItem("Encryption");
         mniEncryption.addActionListener(e -> {
-            new SettingsDialog(MainWindow.this);
+            new EncryptionSettingsDialog(MainWindow.this);
         });
         mnHelp = new JMenu("Help");
         mniAbout = new JMenuItem("About");

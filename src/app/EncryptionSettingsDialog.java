@@ -9,7 +9,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.security.NoSuchAlgorithmException;
 
-public class SettingsDialog extends JDialog {
+public class EncryptionSettingsDialog extends JDialog {
     private JPanel pnlNorth;
     private JLabel lblAlgorithm;
     private JComboBox<String> cmbAlgorithm;
@@ -26,7 +26,7 @@ public class SettingsDialog extends JDialog {
     private JButton btnApplyChanges;
     private JButton btnCancel;
 
-    public SettingsDialog(MainWindow mw) {
+    public EncryptionSettingsDialog(MainWindow mw) {
         super(mw, true);
         super.setDefaultCloseOperation(HIDE_ON_CLOSE);
         super.setTitle("Settings");
