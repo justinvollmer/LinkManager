@@ -115,7 +115,7 @@ public class EncryptionDialog extends JDialog {
                     eligibleChange = false;
                     btnUse.setEnabled(true);
                 } catch (Exception e2) {
-                    JOptionPane.showMessageDialog(this, "An error occured while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "An error occurred while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "The list has already been edited. " +
@@ -133,7 +133,7 @@ public class EncryptionDialog extends JDialog {
                     eligibleChange = false;
                     btnUse.setEnabled(true);
                 } catch (Exception e2) {
-                    JOptionPane.showMessageDialog(this, "An error occured while setting the encryption key. " +
+                    JOptionPane.showMessageDialog(this, "An error occurred while setting the encryption key. " +
                             "\nOr the key cannot decrypt the list.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {

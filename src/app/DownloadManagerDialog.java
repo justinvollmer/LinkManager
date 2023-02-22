@@ -152,7 +152,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                 try {
                     entry.setFilename(tfNamingSystem.getText());
                 } catch (Exception namingException) {
-                    JOptionPane.showMessageDialog(this, "An error occured. Please make sure you do not apply a filename with illegal characters.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "An error occurred. Please make sure you do not apply a filename with illegal characters.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
@@ -527,7 +527,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                 super.setVisible(false);
             }
         } catch (IOException e) {
-            int okQuit = JOptionPane.showConfirmDialog(DownloadManagerDialog.this, "An error occured while downloading a file. The download has been stopped! \nDo you want to Exit the Download Manager?", "Error", JOptionPane.YES_NO_OPTION);
+            int okQuit = JOptionPane.showConfirmDialog(DownloadManagerDialog.this, "An error occurred while downloading a file. The download has been stopped! \nDo you want to Exit the Download Manager?", "Error", JOptionPane.YES_NO_OPTION);
             if (okQuit == 0) {
                 super.setVisible(false);
             }
