@@ -1,9 +1,12 @@
 package app;
 
+import config.Config;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EditDialog extends JDialog {
@@ -143,11 +146,44 @@ public class EditDialog extends JDialog {
         pnlSouth.add(pnlSouthLeft, BorderLayout.WEST);
         pnlSouth.add(pnlSouthRight, BorderLayout.EAST);
 
+        try {
+            updateTheme();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(EditDialog.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
         super.getContentPane().add(pnlCenter, BorderLayout.CENTER);
         super.getContentPane().add(pnlSouth, BorderLayout.SOUTH);
         super.pack();
         super.setVisible(true);
+    }
+
+    private void updateTheme() throws Exception {
+        String theme;
+        try {
+            theme = Config.getTheme();
+        } catch (Exception e) {
+            throw new Exception("An error occured while accessing the properties file");
+        }
+
+        if (theme.equalsIgnoreCase("dark")) {
+            Color darkGray = Color.DARK_GRAY;
+            Color white = Color.WHITE;
+            List<Component> components = Arrays.asList(
+                    pnlNorth, lblTitle, pnlCenter, scrollPane, taDisplay, pnlSouth,
+                    pnlSouthLeft, cmbFormatter, pnlSouthRight, btnSaveChanges, btnClear,
+                    btnCancel
+            );
+            for (Component component : components) {
+                component.setBackground(darkGray);
+                component.setForeground(white);
+            }
+            for (JButton button : Arrays.asList(btnSaveChanges, btnClear, btnCancel)) {
+                button.setFocusPainted(false);
+                button.setContentAreaFilled(false);
+            }
+        }
     }
 
 }

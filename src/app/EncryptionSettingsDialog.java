@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.List;
 
 public class EncryptionSettingsDialog extends JDialog {
     private JPanel pnlNorth;
@@ -124,10 +126,44 @@ public class EncryptionSettingsDialog extends JDialog {
         pnlSouth.add(btnApplyChanges);
         pnlSouth.add(btnCancel);
 
+        try {
+            updateTheme();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(EncryptionSettingsDialog.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
         super.getContentPane().add(pnlCenter, BorderLayout.CENTER);
         super.getContentPane().add(pnlSouth, BorderLayout.SOUTH);
         super.pack();
         super.setVisible(true);
+    }
+
+    private void updateTheme() throws Exception {
+        String theme;
+        try {
+            theme = Config.getTheme();
+        } catch (Exception e) {
+            throw new Exception("An error occured while accessing the properties file");
+        }
+
+        if (theme.equalsIgnoreCase("dark")) {
+            Color darkGray = Color.DARK_GRAY;
+            Color white = Color.WHITE;
+            List<Component> components = Arrays.asList(
+                    pnlNorth, lblAlgorithm, cmbAlgorithm, pnlCenter, lblEncryptionKey,
+                    taEncryptionKey, scrollPane, pnlSouth, btnGetDefaultKey, btnSetDefaultKey,
+                    btnGenerateKey, btnClear, btnCopyToClipboard, btnApplyChanges, btnCancel
+            );
+            for (Component component : components) {
+                component.setBackground(darkGray);
+                component.setForeground(white);
+            }
+            for (JButton button : Arrays.asList(btnGetDefaultKey, btnSetDefaultKey,
+                    btnGenerateKey, btnClear, btnCopyToClipboard, btnApplyChanges, btnCancel)) {
+                button.setFocusPainted(false);
+                button.setContentAreaFilled(false);
+            }
+        }
     }
 }

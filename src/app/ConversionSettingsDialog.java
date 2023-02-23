@@ -1,5 +1,7 @@
 package app;
 
+import config.Config;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -8,6 +10,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class ConversionSettingsDialog extends JDialog {
     private JPanel pnlNorth;
@@ -197,10 +201,46 @@ public class ConversionSettingsDialog extends JDialog {
         pnlSouth.add(pnlInnerGrid);
         pnlSouth.add(pnlButtons);
 
+        try {
+            updateTheme();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(ConversionSettingsDialog.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
         super.getContentPane().add(pnlCenter, BorderLayout.CENTER);
         super.getContentPane().add(pnlSouth, BorderLayout.SOUTH);
         super.pack();
         super.setVisible(true);
+    }
+
+    private void updateTheme() throws Exception {
+        String theme;
+        try {
+            theme = Config.getTheme();
+        } catch (Exception e) {
+            throw new Exception("An error occured while accessing the properties file");
+        }
+
+        if (theme.equalsIgnoreCase("dark")) {
+            Color darkGray = Color.DARK_GRAY;
+            Color white = Color.WHITE;
+            List<Component> components = Arrays.asList(
+                    pnlNorth, lblMode, pnlCenter, scrollPane, taDisplay, pnlSouth,
+                    pnlButtons, btnExport, btnConvert, btnReset, btnCancel, pnlInnerGrid,
+                    pnlInnerGrid1, pnlInnerGrid2, pnlInnerGrid3, pnlInnerGrid4, pnlInnerGrid5,
+                    pnlInnerGrid6, pnlInnerGrid7, pnlInnerGrid8, lblBrowser, cmbBrowser,
+                    lblIncognito, chckIncognito, lblDelay, chckDelay, lblIntervalLength,
+                    tfInterval
+            );
+            for (Component component : components) {
+                component.setBackground(darkGray);
+                component.setForeground(white);
+            }
+            for (JButton button : Arrays.asList(btnExport, btnConvert, btnReset, btnCancel)) {
+                button.setFocusPainted(false);
+                button.setContentAreaFilled(false);
+            }
+        }
     }
 }

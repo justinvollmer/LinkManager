@@ -5,6 +5,8 @@ import config.Config;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class EncryptionDialog extends JDialog {
     private boolean eligibleChange;
@@ -16,7 +18,7 @@ public class EncryptionDialog extends JDialog {
     private JScrollPane scrollPaneOriginal;
     private JTextArea taDisplayOriginal;
     private JPanel pnlCenterPreview;
-    private JLabel getLblCenterPreview;
+    private JLabel lblCenterPreview;
     private JScrollPane scrollPanePeview;
     private JTextArea taDisplayPreview;
     private JButton btnUse;
@@ -67,7 +69,7 @@ public class EncryptionDialog extends JDialog {
 
         // DISPLAY - PREVIEW
         pnlCenterPreview = new JPanel();
-        getLblCenterPreview = new JLabel("Preview");
+        lblCenterPreview = new JLabel("Preview");
         pnlCenterPreview.setBorder(new EmptyBorder(0, 0, 0, 5));
         pnlCenterPreview.setLayout(new BorderLayout());
         scrollPanePeview = new JScrollPane();
@@ -83,7 +85,7 @@ public class EncryptionDialog extends JDialog {
             super.setVisible(false);
         });
         btnUse.setEnabled(false);
-        pnlCenterPreview.add(getLblCenterPreview, BorderLayout.NORTH);
+        pnlCenterPreview.add(lblCenterPreview, BorderLayout.NORTH);
         pnlCenterPreview.add(scrollPanePeview, BorderLayout.CENTER);
         pnlCenterPreview.add(btnUse, BorderLayout.SOUTH);
 
@@ -152,6 +154,12 @@ public class EncryptionDialog extends JDialog {
         pnlSouth.add(pnlSouthLeft, BorderLayout.WEST);
         pnlSouth.add(pnlSouthRight, BorderLayout.EAST);
 
+        try {
+            updateTheme();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(EncryptionDialog.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
         super.getContentPane().add(pnlCenterOriginal, BorderLayout.CENTER);
         super.getContentPane().add(pnlCenterPreview, BorderLayout.EAST);
@@ -167,5 +175,33 @@ public class EncryptionDialog extends JDialog {
             res.append(s + "\n");
         }
         return res.toString();
+    }
+
+    private void updateTheme() throws Exception {
+        String theme;
+        try {
+            theme = Config.getTheme();
+        } catch (Exception e) {
+            throw new Exception("An error occured while accessing the properties file");
+        }
+
+        if (theme.equalsIgnoreCase("dark")) {
+            Color darkGray = Color.DARK_GRAY;
+            Color white = Color.WHITE;
+            List<Component> components = Arrays.asList(
+                    pnlNorth, lblTitle, pnlCenterOriginal, lblCenterOriginal,
+                    scrollPaneOriginal, taDisplayOriginal, pnlCenterPreview, lblCenterPreview,
+                    scrollPanePeview, taDisplayPreview, btnUse, pnlSouth, pnlSouthLeft, btnHow,
+                    pnlSouthRight, btnEncrypt, btnDecrypt, btnCancel
+            );
+            for (Component component : components) {
+                component.setBackground(darkGray);
+                component.setForeground(white);
+            }
+            for (JButton button : Arrays.asList(btnUse, btnHow, btnEncrypt, btnDecrypt, btnCancel)) {
+                button.setFocusPainted(false);
+                button.setContentAreaFilled(false);
+            }
+        }
     }
 }

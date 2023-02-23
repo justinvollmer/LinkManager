@@ -45,6 +45,8 @@ public class MainWindow extends JFrame {
     private JMenu mnHelp;
     private JMenuItem mniAbout;
 
+    // TODO: Add Theme Setting JDialog and MenuItem
+
     public MainWindow() {
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setTitle("Link-Manager");
@@ -87,6 +89,7 @@ public class MainWindow extends JFrame {
         mniAbout = new JMenuItem("About");
         mniAbout.addActionListener(e -> {
             JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: justinvollmer \nVersion:     " + Version.getSoftwareVersion(), "Link-Manager - About", JOptionPane.INFORMATION_MESSAGE);
+            // TODO: Replace JOptionPane with seperate JDialog
         });
         mnFile.add(mniImport);
         mnFile.add(mniSaveAs);
@@ -296,7 +299,7 @@ public class MainWindow extends JFrame {
     private void updateTheme() throws Exception {
         String theme;
         try {
-            theme = Theme.getTheme();
+            theme = Config.getTheme();
         } catch (Exception e) {
             throw new Exception("An error occured while accessing the properties file");
         }
