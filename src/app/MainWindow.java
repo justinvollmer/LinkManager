@@ -92,7 +92,6 @@ public class MainWindow extends JFrame {
         mniAbout = new JMenuItem("About");
         mniAbout.addActionListener(e -> {
             JOptionPane.showMessageDialog(MainWindow.this, "©️ Justin Vollmer \nVisit me on GitHub: justinvollmer \nVersion:     " + Version.getSoftwareVersion(), "Link-Manager - About", JOptionPane.INFORMATION_MESSAGE);
-            // TODO: Replace JOptionPane with seperate JDialog
         });
         mnFile.add(mniImport);
         mnFile.add(mniSaveAs);
