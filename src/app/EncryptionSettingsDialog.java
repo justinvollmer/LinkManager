@@ -31,7 +31,7 @@ public class EncryptionSettingsDialog extends JDialog {
     public EncryptionSettingsDialog(MainWindow mw) {
         super(mw, true);
         super.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        super.setTitle("Settings");
+        super.setTitle("Encryption Settings");
         super.setLocation(mw.getLocation());
         super.setResizable(false);
 
@@ -55,7 +55,7 @@ public class EncryptionSettingsDialog extends JDialog {
         try {
             taEncryptionKey.setText(Config.getProperties("encryptionkey"));
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "An error occured while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(EncryptionSettingsDialog.this, "An error occured while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
         }
         scrollPane.setViewportView(taEncryptionKey);
         pnlCenter.add(lblEncryptionKey);
@@ -73,10 +73,10 @@ public class EncryptionSettingsDialog extends JDialog {
                 if (!Config.getProperties("defaultkey").isBlank()) {
                     taEncryptionKey.setText(Config.getProperties("defaultkey"));
                 } else {
-                    JOptionPane.showMessageDialog(this, "There is no key that has been set as default!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(EncryptionSettingsDialog.this, "There is no key that has been set as default!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception getDefaultKeyError) {
-                JOptionPane.showMessageDialog(this, "An error occured!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(EncryptionSettingsDialog.this, "An error occured!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         btnSetDefaultKey = new JButton("Set as Default Key");
@@ -110,7 +110,7 @@ public class EncryptionSettingsDialog extends JDialog {
             try {
                 Config.setProperties("encryptionkey", taEncryptionKey.getText().trim());
             } catch (Exception e2) {
-                JOptionPane.showMessageDialog(this, "An error occured while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(EncryptionSettingsDialog.this, "An error occured while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
             }
             super.setVisible(false);
         });
