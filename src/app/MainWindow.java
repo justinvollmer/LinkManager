@@ -353,7 +353,7 @@ public class MainWindow extends JFrame {
                 mniEncryption, mniTheme, mnHelp, mniAbout
         );
         for (Component component : components) {
-            component.setBackground(white);
+            component.setBackground(null);
             component.setForeground(black);
         }
         for (JButton button : Arrays.asList(btnDownloadManager, btnEncryption, btnEdit, btnClear,
@@ -361,7 +361,7 @@ public class MainWindow extends JFrame {
             button.setFocusPainted(true);
             button.setContentAreaFilled(true);
         }
-        menuBar.setBackground(Color.WHITE);
+        menuBar.setBackground(null);
         menuBar.setForeground(Color.BLACK);
         for (JMenu menu : Arrays.asList(mnFile, mnSettings, mnHelp)) {
             menu.setFocusPainted(true);

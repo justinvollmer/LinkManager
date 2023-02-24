@@ -132,14 +132,13 @@ public class ThemeSettingsDialog extends JDialog {
 
     private void setTheme(String theme) {
         if (theme.equalsIgnoreCase("light")) {
-            Color white = Color.WHITE;
             Color black = Color.BLACK;
             List<Component> components = Arrays.asList(
                     pnlCenter, lblTheme, cmbTheme, pnlSouth, btnApplyChanges,
                     btnCancel
             );
             for (Component component : components) {
-                component.setBackground(white);
+                component.setBackground(null);
                 component.setForeground(black);
             }
             for (JButton button : Arrays.asList(btnApplyChanges, btnCancel)) {
