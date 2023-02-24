@@ -1,5 +1,7 @@
 package app;
 
+import config.Config;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -10,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DownloadManagerDialog extends JDialog implements Runnable {
@@ -59,6 +62,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
     private JPanel pnlSouthRight;
     private JButton btnHow;
     private JButton btnCancel;
+    private String theme;
     private String notCheckedLinks;
     private String checkingLinks;
     private String checkingFilenames;
@@ -76,6 +80,14 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         super.setLocation(mw.getLocation());
         super.setResizable(true);
         super.setSize((int) (mw.getWidth() * 1.2), mw.getHeight()); // I don't use super.pack() to improve the visibility of the columns
+
+        // GET Theme for setDownloadStatus()
+        theme = null;
+        try {
+            theme = Config.getTheme();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(DownloadManagerDialog.this, "An error occured while accessing the properties file", "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
         // SAVING LINKS IN ENTRIES AND ADDING TO ARRAYLIST
         linkEntryList = new ArrayList<>();
@@ -152,7 +164,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                 try {
                     entry.setFilename(tfNamingSystem.getText());
                 } catch (Exception namingException) {
-                    JOptionPane.showMessageDialog(this, "An error occured. Please make sure you do not apply a filename with illegal characters.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "An error occurred. Please make sure you do not apply a filename with illegal characters.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
@@ -192,7 +204,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         btnDeleteEntry.addActionListener(e -> {
             ArrayList<LinkEntry> buffer = new ArrayList<>();
             int[] selectedRows = table.getSelectedRows();
-            int newId= 1;
+            int newId = 1;
             if (selectedRows.length == 0) {
                 JOptionPane.showMessageDialog(this, "Make sure you select at least one entry.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -428,6 +440,12 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         pnlSouth.add(pnlSouthLeft, BorderLayout.WEST);
         pnlSouth.add(pnlSouthRight, BorderLayout.EAST);
 
+        try {
+            updateTheme();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(DownloadManagerDialog.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
         super.getContentPane().add(pnlCenter, BorderLayout.CENTER);
         super.getContentPane().add(pnlSouth, BorderLayout.SOUTH);
@@ -447,12 +465,17 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
     }
 
     private void setDownloadStatus(String status) {
-        if (status.equalsIgnoreCase(notCheckedLinks)) {
+        if (status.equalsIgnoreCase(notCheckedLinks) && !this.theme.equalsIgnoreCase("dark")) {
             tfDownloadStatus.setText(notCheckedLinks);
             tfDownloadStatus.setDisabledTextColor(Color.gray);
             return;
         }
-        if (status.equalsIgnoreCase(checkingLinks)) {
+        if (status.equalsIgnoreCase(notCheckedLinks) && this.theme.equalsIgnoreCase("dark")) {
+            tfDownloadStatus.setText(notCheckedLinks);
+            tfDownloadStatus.setDisabledTextColor(Color.lightGray);
+            return;
+        }
+        if (status.equalsIgnoreCase(checkingLinks) && !this.theme.equalsIgnoreCase("dark")) {
             tfDownloadStatus.setText(checkingLinks);
             tfDownloadStatus.setDisabledTextColor(Color.orange);
             return;
@@ -462,9 +485,14 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
             tfDownloadStatus.setDisabledTextColor(Color.orange);
             return;
         }
-        if (status.equalsIgnoreCase(readyForDownload)) {
+        if (status.equalsIgnoreCase(readyForDownload) && !this.theme.equalsIgnoreCase("dark")) {
             tfDownloadStatus.setText(readyForDownload);
             tfDownloadStatus.setDisabledTextColor(Color.black);
+            return;
+        }
+        if (status.equalsIgnoreCase(readyForDownload) && this.theme.equalsIgnoreCase("dark")) {
+            tfDownloadStatus.setText(readyForDownload);
+            tfDownloadStatus.setDisabledTextColor(Color.white);
             return;
         }
         if (status.equalsIgnoreCase(inProgress)) {
@@ -527,7 +555,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                 super.setVisible(false);
             }
         } catch (IOException e) {
-            int okQuit = JOptionPane.showConfirmDialog(DownloadManagerDialog.this, "An error occured while downloading a file. The download has been stopped! \nDo you want to Exit the Download Manager?", "Error", JOptionPane.YES_NO_OPTION);
+            int okQuit = JOptionPane.showConfirmDialog(DownloadManagerDialog.this, "An error occurred while downloading a file. The download has been stopped! \nDo you want to Exit the Download Manager?", "Error", JOptionPane.YES_NO_OPTION);
             if (okQuit == 0) {
                 super.setVisible(false);
             }
@@ -538,6 +566,44 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
             }
         } finally {
             resetUiAfterDownload();
+        }
+    }
+
+    private void updateTheme() throws Exception {
+        String theme;
+        try {
+            theme = Config.getTheme();
+        } catch (Exception e) {
+            throw new Exception("An error occured while accessing the properties file");
+        }
+
+        if (theme.equalsIgnoreCase("dark")) {
+            Color darkGray = Color.DARK_GRAY;
+            Color white = Color.WHITE;
+            List<Component> components = Arrays.asList(
+                    pnlNorth, lblTitle, pnlCenter, pnlActionBar, scrollPane, table,
+                    pnlCenterAction1, lblNamingSystem, tfNamingSystem, pnlCenterAction2,
+                    lblPreviewName, tfPreviewName, btnApplyNaming, pnlCenterAction3,
+                    btnApplyNameToSelected, btnClearAllName, pnlCenterAction4, btnCopy,
+                    btnDeleteEntry, pnlCenterAction5, lblDirectory, btnSelectFolder,
+                    pnlCenterAction6, tfPath, pnlCenterAction7, lblInterval, tfInterval,
+                    lblSeconds, pnlCenterAction8, btnCheckFilenames, btnCheckLinks,
+                    lblDownloadStatus, tfDownloadStatus, btnDownload, pnlSouth, pnlSouthLeft,
+                    pnlSouthRight, btnHow, btnCancel, table.getTableHeader()
+            );
+            for (Component component : components) {
+                component.setBackground(darkGray);
+                component.setForeground(white);
+            }
+            for (JButton button : Arrays.asList(btnApplyNaming, btnApplyNameToSelected,
+                    btnClearAllName, btnCopy, btnDeleteEntry, btnSelectFolder,
+                    btnCheckFilenames, btnCheckLinks, btnDownload, btnHow, btnCancel)) {
+                button.setFocusPainted(false);
+                button.setContentAreaFilled(false);
+            }
+            tfPreviewName.setDisabledTextColor(Color.WHITE);
+            table.setGridColor(Color.WHITE);
+            scrollPane.getViewport().setBackground(Color.DARK_GRAY);
         }
     }
 }

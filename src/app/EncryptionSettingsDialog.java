@@ -8,8 +8,10 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.List;
 
-public class SettingsDialog extends JDialog {
+public class EncryptionSettingsDialog extends JDialog {
     private JPanel pnlNorth;
     private JLabel lblAlgorithm;
     private JComboBox<String> cmbAlgorithm;
@@ -26,10 +28,10 @@ public class SettingsDialog extends JDialog {
     private JButton btnApplyChanges;
     private JButton btnCancel;
 
-    public SettingsDialog(MainWindow mw) {
+    public EncryptionSettingsDialog(MainWindow mw) {
         super(mw, true);
         super.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        super.setTitle("Settings");
+        super.setTitle("Encryption Settings");
         super.setLocation(mw.getLocation());
         super.setResizable(false);
 
@@ -53,7 +55,7 @@ public class SettingsDialog extends JDialog {
         try {
             taEncryptionKey.setText(Config.getProperties("encryptionkey"));
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "An error occured while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(EncryptionSettingsDialog.this, "An error occured while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
         }
         scrollPane.setViewportView(taEncryptionKey);
         pnlCenter.add(lblEncryptionKey);
@@ -71,10 +73,10 @@ public class SettingsDialog extends JDialog {
                 if (!Config.getProperties("defaultkey").isBlank()) {
                     taEncryptionKey.setText(Config.getProperties("defaultkey"));
                 } else {
-                    JOptionPane.showMessageDialog(this, "There is no key that has been set as default!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(EncryptionSettingsDialog.this, "There is no key that has been set as default!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception getDefaultKeyError) {
-                JOptionPane.showMessageDialog(this, "An error occured!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(EncryptionSettingsDialog.this, "An error occured!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         btnSetDefaultKey = new JButton("Set as Default Key");
@@ -108,7 +110,7 @@ public class SettingsDialog extends JDialog {
             try {
                 Config.setProperties("encryptionkey", taEncryptionKey.getText().trim());
             } catch (Exception e2) {
-                JOptionPane.showMessageDialog(this, "An error occured while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(EncryptionSettingsDialog.this, "An error occured while setting the encryption key", "Error", JOptionPane.ERROR_MESSAGE);
             }
             super.setVisible(false);
         });
@@ -124,10 +126,44 @@ public class SettingsDialog extends JDialog {
         pnlSouth.add(btnApplyChanges);
         pnlSouth.add(btnCancel);
 
+        try {
+            updateTheme();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(EncryptionSettingsDialog.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
         super.getContentPane().add(pnlCenter, BorderLayout.CENTER);
         super.getContentPane().add(pnlSouth, BorderLayout.SOUTH);
         super.pack();
         super.setVisible(true);
+    }
+
+    private void updateTheme() throws Exception {
+        String theme;
+        try {
+            theme = Config.getTheme();
+        } catch (Exception e) {
+            throw new Exception("An error occured while accessing the properties file");
+        }
+
+        if (theme.equalsIgnoreCase("dark")) {
+            Color darkGray = Color.DARK_GRAY;
+            Color white = Color.WHITE;
+            List<Component> components = Arrays.asList(
+                    pnlNorth, lblAlgorithm, cmbAlgorithm, pnlCenter, lblEncryptionKey,
+                    taEncryptionKey, scrollPane, pnlSouth, btnGetDefaultKey, btnSetDefaultKey,
+                    btnGenerateKey, btnClear, btnCopyToClipboard, btnApplyChanges, btnCancel
+            );
+            for (Component component : components) {
+                component.setBackground(darkGray);
+                component.setForeground(white);
+            }
+            for (JButton button : Arrays.asList(btnGetDefaultKey, btnSetDefaultKey,
+                    btnGenerateKey, btnClear, btnCopyToClipboard, btnApplyChanges, btnCancel)) {
+                button.setFocusPainted(false);
+                button.setContentAreaFilled(false);
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainWindow extends JFrame {
@@ -42,6 +42,7 @@ public class MainWindow extends JFrame {
     private JMenuItem mniExit;
     private JMenu mnSettings;
     private JMenuItem mniEncryption;
+    private JMenuItem mniTheme;
     private JMenu mnHelp;
     private JMenuItem mniAbout;
 
@@ -54,7 +55,10 @@ public class MainWindow extends JFrame {
         Image icon = Toolkit.getDefaultToolkit().getImage("src/ico/icon.png"); // icon is used when pulled from repo
         super.setIconImage(icon);
 
-        displayPlaceholder = "https://example.com/image.jpg\nhttps://example.com/image.jpg\nhttps://example.com/image.jpg\nhttps://example.com/image.jpg";
+        displayPlaceholder = "https://example.com/image.jpg" +
+                "\nhttps://example.com/image.jpg" +
+                "\nhttps://example.com/image.jpg" +
+                "\nhttps://example.com/image.jpg";
 
         // MENUBAR
         menuBar = new JMenuBar();
@@ -78,7 +82,11 @@ public class MainWindow extends JFrame {
         mnSettings = new JMenu("Settings");
         mniEncryption = new JMenuItem("Encryption");
         mniEncryption.addActionListener(e -> {
-            new SettingsDialog(MainWindow.this);
+            new EncryptionSettingsDialog(MainWindow.this);
+        });
+        mniTheme = new JMenuItem("Theme");
+        mniTheme.addActionListener(e -> {
+            new ThemeSettingsDialog(MainWindow.this);
         });
         mnHelp = new JMenu("Help");
         mniAbout = new JMenuItem("About");
@@ -90,6 +98,7 @@ public class MainWindow extends JFrame {
         mnFile.add(mniConvert);
         mnFile.add(mniExit);
         mnSettings.add(mniEncryption);
+        mnSettings.add(mniTheme);
         mnHelp.add(mniAbout);
         menuBar.add(mnFile);
         menuBar.add(mnSettings);
@@ -272,6 +281,12 @@ public class MainWindow extends JFrame {
         pnlSouth.add(pnlSouthLeft, BorderLayout.WEST);
         pnlSouth.add(pnlSouthRight, BorderLayout.EAST);
 
+        try {
+            updateTheme();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(MainWindow.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         super.setJMenuBar(menuBar);
         super.getContentPane().add(pnlNorth, BorderLayout.NORTH);
         super.getContentPane().add(pnlCenter, BorderLayout.CENTER);
@@ -282,6 +297,80 @@ public class MainWindow extends JFrame {
 
     public static void openUrl(String url) throws IOException {
         Desktop.getDesktop().browse(URI.create(url));
+    }
+
+    public void updateTheme() throws Exception {
+        String theme;
+        try {
+            theme = Config.getTheme();
+        } catch (Exception e) {
+            throw new Exception("An error occured while accessing the properties file");
+        }
+
+        if (theme.equalsIgnoreCase("dark")) {
+            Color darkGray = Color.DARK_GRAY;
+            Color white = Color.WHITE;
+            List<Component> components = Arrays.asList(
+                    pnlNorth, lblTitle, pnlCenter, scrollPane, taDisplay,
+                    pnlSouth, pnlSouthLeft, pnlSouthRight,
+                    btnDownloadManager, btnEncryption, btnEdit, btnClear, btnReset, btnExecute,
+                    menuBar, mnFile, mniImport, mniSaveAs, mniConvert, mniExit, mnSettings,
+                    mniEncryption, mniTheme, mnHelp, mniAbout
+            );
+            for (Component component : components) {
+                component.setBackground(darkGray);
+                component.setForeground(white);
+            }
+            for (JButton button : Arrays.asList(btnDownloadManager, btnEncryption, btnEdit, btnClear,
+                    btnReset, btnExecute)) {
+                button.setFocusPainted(false);
+                button.setContentAreaFilled(false);
+            }
+            menuBar.setBackground(Color.DARK_GRAY);
+            menuBar.setForeground(Color.WHITE);
+            for (JMenu menu : Arrays.asList(mnFile, mnSettings, mnHelp)) {
+                menu.setFocusPainted(false);
+                menu.setContentAreaFilled(false);
+            }
+            for (JMenuItem menuItem : Arrays.asList(mniImport, mniSaveAs, mniConvert, mniExit,
+                    mniEncryption, mniAbout)) {
+                menuItem.setFocusPainted(false);
+                menuItem.setContentAreaFilled(false);
+            }
+        }
+    }
+
+    // This method is only meant to be executed by the ThemeSettingsDialog
+    public void setThemeToLight() {
+        Color white = Color.WHITE;
+        Color black = Color.BLACK;
+        List<Component> components = Arrays.asList(
+                pnlNorth, lblTitle, pnlCenter, scrollPane, taDisplay,
+                pnlSouth, pnlSouthLeft, pnlSouthRight,
+                btnDownloadManager, btnEncryption, btnEdit, btnClear, btnReset, btnExecute,
+                menuBar, mnFile, mniImport, mniSaveAs, mniConvert, mniExit, mnSettings,
+                mniEncryption, mniTheme, mnHelp, mniAbout
+        );
+        for (Component component : components) {
+            component.setBackground(null);
+            component.setForeground(black);
+        }
+        for (JButton button : Arrays.asList(btnDownloadManager, btnEncryption, btnEdit, btnClear,
+                btnReset, btnExecute)) {
+            button.setFocusPainted(true);
+            button.setContentAreaFilled(true);
+        }
+        menuBar.setBackground(null);
+        menuBar.setForeground(Color.BLACK);
+        for (JMenu menu : Arrays.asList(mnFile, mnSettings, mnHelp)) {
+            menu.setFocusPainted(true);
+            menu.setContentAreaFilled(true);
+        }
+        for (JMenuItem menuItem : Arrays.asList(mniImport, mniSaveAs, mniConvert, mniExit,
+                mniEncryption, mniAbout)) {
+            menuItem.setFocusPainted(true);
+            menuItem.setContentAreaFilled(true);
+        }
     }
 
 }
