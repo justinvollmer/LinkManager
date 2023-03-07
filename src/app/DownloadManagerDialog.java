@@ -61,6 +61,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
     private JPanel pnlSouthLeft;
     private JPanel pnlSouthRight;
     private JButton btnHow;
+    private JButton btnOverwriteOriginal;
     private JButton btnCancel;
     private String theme;
     private String notCheckedLinks;
@@ -363,6 +364,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                 btnSelectFolder.setEnabled(false);
                 tfInterval.setEnabled(false);
                 isDownloading = true;
+                btnOverwriteOriginal.setEnabled(false);
                 btnCancel.setEnabled(false);
                 btnCopy.setEnabled(false);
                 btnDeleteEntry.setEnabled(false);
@@ -431,11 +433,25 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         });
         pnlSouthRight = new JPanel();
         pnlSouthRight.setLayout(flowRight);
+        btnOverwriteOriginal = new JButton("Overwrite Original List");
+        btnOverwriteOriginal.addActionListener(e -> {
+            int yesNo = JOptionPane.showConfirmDialog(DownloadManagerDialog.this, "You are about to overwrite your original list and close the DownloadManager." +
+                    "\nDo you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
+            if (yesNo == 0) {
+                StringBuilder sb = new StringBuilder();
+                for (LinkEntry entry : linkEntryList) {
+                    sb.append(entry.getLink()).append("\n");
+                }
+                taDisplayMW.setText(sb.toString());
+                super.setVisible(false);
+            }
+        });
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(e -> {
             this.setVisible(false);
         });
         pnlSouthLeft.add(btnHow);
+        pnlSouthRight.add(btnOverwriteOriginal);
         pnlSouthRight.add(btnCancel);
         pnlSouth.add(pnlSouthLeft, BorderLayout.WEST);
         pnlSouth.add(pnlSouthRight, BorderLayout.EAST);
@@ -525,6 +541,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         btnDownload.setText("Start Download");
         setDownloadStatus(readyForDownload);
         btnSelectFolder.setEnabled(true);
+        btnOverwriteOriginal.setEnabled(true);
         btnCancel.setEnabled(true);
         btnCopy.setEnabled(true);
         btnDeleteEntry.setEnabled(true);
@@ -589,7 +606,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
                     pnlCenterAction6, tfPath, pnlCenterAction7, lblInterval, tfInterval,
                     lblSeconds, pnlCenterAction8, btnCheckFilenames, btnCheckLinks,
                     lblDownloadStatus, tfDownloadStatus, btnDownload, pnlSouth, pnlSouthLeft,
-                    pnlSouthRight, btnHow, btnCancel, table.getTableHeader()
+                    pnlSouthRight, btnHow, btnOverwriteOriginal, btnCancel, table.getTableHeader()
             );
             for (Component component : components) {
                 component.setBackground(darkGray);
@@ -597,7 +614,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
             }
             for (JButton button : Arrays.asList(btnApplyNaming, btnApplyNameToSelected,
                     btnClearAllName, btnCopy, btnDeleteEntry, btnSelectFolder,
-                    btnCheckFilenames, btnCheckLinks, btnDownload, btnHow, btnCancel)) {
+                    btnCheckFilenames, btnCheckLinks, btnDownload, btnHow, btnOverwriteOriginal, btnCancel)) {
                 button.setFocusPainted(false);
                 button.setContentAreaFilled(false);
             }

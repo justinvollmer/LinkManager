@@ -34,7 +34,7 @@ public class DownloadManager {
     public void download(String linkToMedia, String filename, int imageNumber) throws IOException {
         String filetype = null;
         for (String filetypeFromList : filetypeList) {
-            if (linkToMedia.contains(filetypeFromList) || filetypeFromList.equalsIgnoreCase(filetypeList.get(filetypeList.size() - 1))) {
+            if (linkToMedia.toLowerCase().contains(filetypeFromList) || filetypeFromList.equalsIgnoreCase(filetypeList.get(filetypeList.size() - 1))) {
                 if (filetypeFromList.equalsIgnoreCase("webp") || (filetypeFromList.equalsIgnoreCase(filetypeList.get(filetypeList.size() - 1)) && !filetypeFromList.equalsIgnoreCase(filetypeList.get(filetypeList.size() - 1)))) {
                     filetype = "jpg";
                     break;
