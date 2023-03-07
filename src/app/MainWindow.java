@@ -55,10 +55,11 @@ public class MainWindow extends JFrame {
         Image icon = Toolkit.getDefaultToolkit().getImage("src/ico/icon.png"); // icon is used when pulled from repo
         super.setIconImage(icon);
 
-        displayPlaceholder = "https://example.com/image.jpg" +
-                "\nhttps://example.com/image.jpg" +
-                "\nhttps://example.com/image.jpg" +
-                "\nhttps://example.com/image.jpg";
+        displayPlaceholder = """
+                https://example.com/image.jpg
+                https://example.com/image.jpg
+                https://example.com/image.jpg
+                https://example.com/image.jpg""";
 
         // MENUBAR
         menuBar = new JMenuBar();
