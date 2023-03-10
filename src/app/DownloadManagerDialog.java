@@ -94,10 +94,18 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         linkEntryList = new ArrayList<>();
         String[] linkArr = taDisplayMW.getText().trim().split("\n");
         int id = 0;
-        for (String link : linkArr) {
-            if (!link.startsWith("//") && !link.isBlank()) {
+        for (String row : linkArr) {
+            if (!row.startsWith("//") && !row.isBlank()) {
+                String[] contentArr = row.split(" ", 2);
+                String link = contentArr[0];
+                String filename;
+                if (contentArr.length == 2) {
+                    filename = contentArr[1];
+                } else {
+                    filename = " ";
+                }
                 id++;
-                linkEntryList.add(new LinkEntry(id, link, "", "not ready"));
+                linkEntryList.add(new LinkEntry(id, link, filename, "not ready"));
             }
         }
 
@@ -440,7 +448,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
             if (yesNo == 0) {
                 StringBuilder sb = new StringBuilder();
                 for (LinkEntry entry : linkEntryList) {
-                    sb.append(entry.getLink()).append("\n");
+                    sb.append(entry.getLink()).append(" ").append(entry.getFilename()).append("\n");
                 }
                 taDisplayMW.setText(sb.toString());
                 super.setVisible(false);
