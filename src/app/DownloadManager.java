@@ -57,7 +57,7 @@ public class DownloadManager {
             }
 
             InputStream in = httpConn.getInputStream();
-            FileOutputStream out = new FileOutputStream(path + filename + imageNumber + "." + filetype);
+            FileOutputStream out = new FileOutputStream(path + filename + " (" + imageNumber + ")." + filetype);
 
             int bytesRead = -1;
             byte[] buffer = new byte[4096];
@@ -70,7 +70,7 @@ public class DownloadManager {
         } else {
             // Image Download
             InputStream in = new BufferedInputStream(url.openStream());
-            OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + imageNumber + "." + filetype));
+            OutputStream out = new BufferedOutputStream(new FileOutputStream(path + filename + " (" + imageNumber + ")." + filetype));
 
             for (int i; (i = in.read()) != -1; ) {
                 out.write(i);
