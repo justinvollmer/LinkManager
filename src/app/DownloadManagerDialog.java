@@ -162,7 +162,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         tfPreviewName.setBackground(Color.white);
         tfPreviewName.setDisabledTextColor(Color.black);
         tfPreviewName.setFont(new Font(null, Font.PLAIN, 15));
-        tfPreviewName.setText("'CustomName_'" + "ID");
+        tfPreviewName.setText("'CustomName'" + " (ID)");
         btnApplyNaming = new JButton("Apply name to all");
         btnApplyNaming.addActionListener(e -> {
             if (tfNamingSystem.getText().isEmpty()) {
@@ -605,6 +605,7 @@ public class DownloadManagerDialog extends JDialog implements Runnable {
         if (theme.equalsIgnoreCase("dark")) {
             Color darkGray = Color.DARK_GRAY;
             Color white = Color.WHITE;
+            tfNamingSystem.setDisabledTextColor(white);
             List<Component> components = Arrays.asList(
                     pnlNorth, lblTitle, pnlCenter, pnlActionBar, scrollPane, table,
                     pnlCenterAction1, lblNamingSystem, tfNamingSystem, pnlCenterAction2,
